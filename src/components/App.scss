@@ -1,9 +1,12 @@
+@import '../index.scss';
+
 body {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
 .welcome {
-    color:red;
+    color:$bg-color;
     text-align: center;
     font-weight: bold;
+    font-size: $fontSize;
 }
