@@ -1,0 +1,9 @@
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.welcome {
+    color:red;
+    text-align: center;
+    font-weight: bold;
+}
