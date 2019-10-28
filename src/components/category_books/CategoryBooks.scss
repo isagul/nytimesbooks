@@ -1,0 +1,54 @@
+.category-books {
+    display: flex;
+    flex-direction: column;
+    h1 {
+        text-align: center;
+    }
+    .all-detail {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 2rem;
+        width: 40%;
+        justify-self: center;
+        align-self: center;
+        border-bottom: 1px solid lightgray;
+        padding: 10px 10px 2rem 10px;
+        transition: all 0.2s ease-in-out;
+        &:hover {
+            box-shadow: 1px 1px lightgray;
+            transform: scale(1.02);
+            cursor: pointer;
+        }
+        .index-number {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        .book-image {
+            height: 220px;
+            margin-right: 1rem;
+        }
+        .details {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            .name-author {
+                display: flex;
+                flex-direction: column;
+                h3 {
+                    margin-top: 0;
+                    margin-bottom: 5px;
+                }
+                p {
+                    color: #6CA184;
+                }
+            }
+            .desc {
+                margin-top: 1rem;
+                text-align: justify;
+            }
+            button {
+                margin-top: 5rem;
+            }
+        }
+    }
+}

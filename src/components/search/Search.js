@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Input} from 'semantic-ui-react';
 import {Store} from '../../store';
+import './Search.scss';
 
 const Search = () => {
     const [searchParam, setSearchParam] = useState('');
@@ -14,7 +15,7 @@ const Search = () => {
         });
     }
     return (
-        <Input icon='search' placeholder='Search Categories...' onChange={handleSearchParam} value={searchParam}/>
+        <Input className="search" icon='search' placeholder='Search Categories...' onChange={handleSearchParam} value={searchParam}/>
     )
 }
 

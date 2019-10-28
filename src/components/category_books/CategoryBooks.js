@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Store} from '../../store';
 import axios from 'axios';
 import apiConfig from '../../config';
-import { Dimmer, Loader, Segment} from 'semantic-ui-react'
+import { Dimmer, Loader, Segment, Button} from 'semantic-ui-react';
+import './CategoryBooks.scss';
 
 
 const CategoryBooks = (props) => {
@@ -41,17 +42,31 @@ const CategoryBooks = (props) => {
     const categoryDetail = state.categoryBooks.length > 0 && 
     state.categoryBooks.map((value, index) => {
         return (
-            <p key={index}>{value.title}</p>
+            <div className="all-detail" key={index}>
+                <p className="index-number">{index + 1}</p>
+                <img className="book-image" src={`${value.book_image}`}/>
+                <div className="details">
+                    <div className="name-author">
+                        <h3>{value.title}</h3>
+                        <p><span>by </span>{value.author}</p>
+                    </div>
+                    <p className="desc">{value.description}</p>
+                    <Button inverted color='blue'>
+                        Add To Card
+                    </Button>
+                </div>
+            </div>
         )
     })
 
     return (
-        <div>
+        <div className="category-books">
+            <h1>{props.location.state.category.list_name}</h1>
             {
                 isActive &&
                 <Segment>
                     <Dimmer active style={{height:'100vh'}}>
-                        <Loader indeterminate>Preparing Files</Loader>
+                        <Loader indeterminate>Preparing Page</Loader>
                     </Dimmer>
                 </Segment>                
             }

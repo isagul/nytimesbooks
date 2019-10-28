@@ -71,30 +71,31 @@ const App = () => {
     return (
         <div className="app">
             <h1>The New York Times® Bestsellers</h1>
-            <Search/>
             {
                 isActive &&
                 <Segment>
                     <Dimmer active style={{height:'100vh'}}>
-                        <Loader indeterminate>Preparing Files</Loader>
+                        <Loader indeterminate>Preparing Page</Loader>
                     </Dimmer>
                 </Segment>
             }
-            <Table basic='very' celled collapsing>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>Display Name</Table.HeaderCell>
-                        <Table.HeaderCell>Oldest Published Date</Table.HeaderCell>
-                        <Table.HeaderCell>Newest Published Date</Table.HeaderCell>
-                        <Table.HeaderCell>Action</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
+            <div className="category-table">
+                <Search/>
+                <Table basic='very' celled collapsing>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell>Display Name</Table.HeaderCell>
+                            <Table.HeaderCell>Oldest Published Date</Table.HeaderCell>
+                            <Table.HeaderCell>Newest Published Date</Table.HeaderCell>
+                            <Table.HeaderCell>Action</Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
 
-                <Table.Body>
-                    {allCategories}
-                </Table.Body>
-            </Table>
-            
+                    <Table.Body>
+                        {allCategories}
+                    </Table.Body>
+                </Table>
+            </div>                        
         </div>
     )
 }

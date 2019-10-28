@@ -11,4 +11,9 @@ body {
     h1 {
         text-align: center;
     }
+    .category-table {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 }
