@@ -1,16 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import './App.scss';
-import { Dimmer, Loader, Segment, Button, List, Header, Image, Table } from 'semantic-ui-react'
+import { Dimmer, Loader, Segment, Button, Header, Image, Table } from 'semantic-ui-react'
 const axios = require('axios');
 import BooksAvatar from '../../assets/images/books-avatar.png';
 import Search from './search/Search';
 import {Store} from '../store';
 import apiConfig from '../config';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const App = () => {
     const [isActive, setIsActive] = useState(true);
+    const [getCategoryDetail, setCategoryDetail] = useState('');
     const { state, dispatch } = React.useContext(Store);
-    console.log(state);
+
     useEffect(() => {
         axios.get('https://api.nytimes.com/svc/books/v3/lists/names.json', {
             params: {
@@ -34,32 +36,12 @@ const App = () => {
           }); 
     },[]);
 
-    const goCategoryDetail = function (value){
-        setIsActive(true);
-        let getDetail = value.toLowerCase().split(' ').join('-');
-        axios.get(`https://api.nytimes.com/svc/books/v3/lists/current/${getDetail}.json`, {
-            params: {
-              'api-key': apiConfig.apiKey
-            }
-          })
-          .then(function (response) {
-            if(response.status === 200) {
-                setIsActive(false);
-                dispatch({
-                    type: 'SET_CATEGORY_DATA',
-                    payload: response.data.results.books
-                })
-                console.log(response);
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          })
-          .finally(function () {
-            //console.log('state', state);
-          }); 
-    }
+    /*const goCategoryDetail = function (value){
+        setIsActive(true); 
+        setCategoryDetail(value.toLowerCase().split(' ').join('-')) ;
+    }*/
 
+    
     const allCategories = state.categories.length > 0 &&
         state.categories.map((value, index) => {
             return (
@@ -75,7 +57,11 @@ const App = () => {
                 </Table.Cell>
                 <Table.Cell>{value.oldest_published_date}</Table.Cell>
                 <Table.Cell>{value.newest_published_date}</Table.Cell>
-                <Table.Cell><Button onClick={() => goCategoryDetail(value.display_name)}>Detail</Button></Table.Cell>
+                <Table.Cell>
+                    <Link to={{ pathname: `/categories/${value.list_name_encoded}`, state: { category: value} }}>
+                        <Button>Detail</Button>                    
+                    </Link>
+                </Table.Cell>
             </Table.Row>
         )                    
     })

@@ -17,6 +17,7 @@ function reducer(state, action) {
           return {...state, categories: [...action.payload], filteredCategories: [...action.payload]};
         case 'SET_CATEGORY_DATA':
           // updatedState = [...action.payload];
+          console.log(action.payload);
           return {...state, categoryBooks: [...action.payload]};
         case 'FILTER_CATEGORIES':
             updatedState = state.filteredCategories.filter(item => {
