@@ -6,6 +6,7 @@ import BooksAvatar from '../../assets/images/books-avatar.png';
 import Search from './search/Search';
 import {Store} from '../store';
 import apiConfig from '../config';
+import HeaderComponent from './header/Header';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const App = () => {
@@ -14,34 +15,40 @@ const App = () => {
     const { state, dispatch } = React.useContext(Store);
 
     useEffect(() => {
-        axios.get('https://api.nytimes.com/svc/books/v3/lists/names.json', {
-            params: {
-              'api-key': apiConfig.apiKey
-            }
-          })
-          .then(function (response) {
-            if(response.status === 200) {
+        if (state.categories.length === 0) {
+          axios.get('https://api.nytimes.com/svc/books/v3/lists/names.json', {
+              params: {
+                'api-key': apiConfig.apiKey
+              }
+            })
+            .then(function (response) {
+              if(response.status === 200) {
                 setIsActive(false);
-                dispatch({
-                    type: 'SET_DATA',
-                    payload: response.data.results
-                })
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          })
-          .finally(function () {
-            //console.log('state', state);
-          }); 
+                  dispatch({
+                      type: 'SET_DATA',
+                      payload: response.data.results
+                  })
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            })
+            .finally(function () {
+              //console.log('state', state);
+            });
+        } else {
+          setTimeout(() => {
+            setIsActive(false);
+          },500)
+        }
     },[]);
 
     /*const goCategoryDetail = function (value){
-        setIsActive(true); 
+        setIsActive(true);
         setCategoryDetail(value.toLowerCase().split(' ').join('-')) ;
     }*/
 
-    
+
     const allCategories = state.categories.length > 0 &&
         state.categories.map((value, index) => {
             return (
@@ -59,43 +66,42 @@ const App = () => {
                 <Table.Cell>{value.newest_published_date}</Table.Cell>
                 <Table.Cell>
                     <Link to={{ pathname: `/categories/${value.list_name_encoded}`, state: { category: value} }}>
-                        <Button>Detail</Button>                    
+                        <Button>Detail</Button>
                     </Link>
                 </Table.Cell>
             </Table.Row>
-        )                    
+        )
     })
 
 
 
     return (
         <div className="app">
-            <h1>The New York Times® Bestsellers</h1>
+            <HeaderComponent/>
             {
-                isActive &&
+                isActive ?
                 <Segment>
                     <Dimmer active style={{height:'100vh'}}>
-                        <Loader indeterminate>Preparing Page</Loader>
+                        <Loader indeterminate>Loading</Loader>
                     </Dimmer>
-                </Segment>
-            }
-            <div className="category-table">
-                <Search/>
-                <Table basic='very' celled collapsing>
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell>Display Name</Table.HeaderCell>
-                            <Table.HeaderCell>Oldest Published Date</Table.HeaderCell>
-                            <Table.HeaderCell>Newest Published Date</Table.HeaderCell>
-                            <Table.HeaderCell>Action</Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
+                </Segment> :
+                <div className="category-table">
+                    <Table basic='very' celled collapsing>
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell>Display Name</Table.HeaderCell>
+                                <Table.HeaderCell>Oldest Published Date</Table.HeaderCell>
+                                <Table.HeaderCell>Newest Published Date</Table.HeaderCell>
+                                <Table.HeaderCell>Action</Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
 
-                    <Table.Body>
-                        {allCategories}
-                    </Table.Body>
-                </Table>
-            </div>                        
+                        <Table.Body>
+                            {allCategories}
+                        </Table.Body>
+                    </Table>
+                </div>
+            }
         </div>
     )
 }

@@ -1,0 +1,43 @@
+@import '../../index.scss';
+
+.header-component {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  background-color: #FF6000;
+  padding: 1rem;
+  h1 {
+    color: white;
+    font-family: 'Lora', serif;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .shopping-area {
+    position: relative;
+    .shopping-cart{
+      color:white;
+      font-size: 24px !important;
+      margin-right: 1rem;
+      &:hover {
+        cursor: pointer;
+        border-bottom :3px solid $header-color;
+      }
+    }
+    .item-count {
+      position: absolute;
+      right: 3px;
+      top: -10px;
+      border: 1px solid $header-color;
+      border-radius: 50%;
+      height: 20px;
+      width: 20px;
+      text-align: center;
+      background-color: $header-color;
+      color:white;
+    }
+  }
+
+}

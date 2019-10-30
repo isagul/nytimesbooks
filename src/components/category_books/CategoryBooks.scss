@@ -8,12 +8,15 @@
         display: flex;
         flex-direction: row;
         margin-bottom: 2rem;
-        width: 40%;
+        width: 768px;
         justify-self: center;
         align-self: center;
         border-bottom: 1px solid lightgray;
         padding: 10px 10px 2rem 10px;
         transition: all 0.2s ease-in-out;
+        @media screen and (max-width: 767px) {
+            width: 100%;
+        }
         &:hover {
             box-shadow: 1px 1px lightgray;
             transform: scale(1.02);
@@ -46,8 +49,10 @@
                 margin-top: 1rem;
                 text-align: justify;
             }
-            button {
+            .add-to-card {
                 margin-top: 5rem;
+                display: block;
+                margin-left: auto;
             }
         }
     }
