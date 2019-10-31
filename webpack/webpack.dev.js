@@ -3,11 +3,6 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  output: {
-    path: __dirname + '/dist',
-    publicPath: '/',
-    filename: 'bundle.js'
-  },
   devServer: {
     contentBase: './dist',
     compress: true,
