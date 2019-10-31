@@ -1,68 +1,91 @@
 @import '../../index.scss';
 
-.added-items {
+.shopping-basket {
   display: flex;
-  flex-direction: column;
-  width: 400px;
-  margin-bottom: 1rem;
-  padding: 0 1rem;
-  .heading {
-    display: flex;
-    flex-direction: column;
-    .title {
-      margin-bottom: 3px;
-      font-weight: bold;
-    }
-    .author {
-      font-style: italic;
-      font-size:12px;
-    }
-  }
-  .content {
-    display: flex;
-    flex-direction: row;
-    margin-top: 1rem;
-    justify-content: space-between;
-    border-bottom: 1px solid lightgray;
-    padding-bottom: 2rem;
-    .added-items-left-side {
-      display: flex;
-      flex-direction: column;
-      margin-right: 1rem;
-      .book-image {
-          height: 135px;
-          outline-offset: 2px;
-          &:hover {
-            outline: $header-color solid 2px;
+  flex-direction: row;
+  justify-content: space-evenly;
+  .items-div {
+      margin-top: 5rem;
+      .added-items {
+        display: flex;
+        flex-direction: column;
+        width: 380px;
+        margin-bottom: 1rem;
+        padding: 0 1rem;
+        margin-right: 2rem;
+        .heading {
+          display: flex;
+          flex-direction: column;
+          .title {
+            margin-bottom: 3px;
+            font-weight: bold;
           }
-      }
-    }
-    .added-items-center {
-      p {
-        font-family: 'Lato', sans-serif;
-      }
-      font-size:12px;
-      ul {
-        padding: 0;
-        list-style-type: square;
-        li {
-          a {
-            color:black;
+          .author {
+            font-style: italic;
+            font-size:12px;
+          }
+        }
+        .content {
+          display: flex;
+          flex-direction: row;
+          margin-top: 1rem;
+          justify-content: space-between;
+          border-bottom: 1px solid lightgray;
+          padding-bottom: 2rem;
+          .added-items-left-side {
+            display: flex;
+            flex-direction: column;
+            margin-right: 1rem;
+            .book-image {
+                height: 135px;
+                outline-offset: 2px;
+                &:hover {
+                  outline: $header-color solid 2px;
+                }
+            }
+          }
+          .added-items-center {
+            p {
+              font-family: 'Lato', sans-serif;
+            }
+            font-size:12px;
+            ul {
+              padding: 0;
+              list-style-type: square;
+              li {
+                a {
+                  color:black;
+                }
+              }
+            }
+          }
+          .added-items-right-side {
+            .count-list {
+              min-width: 80px !important;
+            }
+            .count-price {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-end;
+              margin-top: 10px;
+              .price, .item-count {
+                span {
+                  font-weight: bold;
+                }
+              }
+              .item-count {
+                margin-bottom: 3px;
+              }
+            }
           }
         }
       }
-    }
-    .added-items-right-side {
-      .count-list {
-        min-width: 80px !important;
-      }
-      .price {
-        font-weight: bold;
-        text-align: right;
-        margin-top: 1rem;
-      }
-    }
   }
+}
 
-
+@media screen and (max-width: 414px) {
+  .shopping-basket {
+    flex-direction: column;
+    margin-top: 5rem;
+  }
 }

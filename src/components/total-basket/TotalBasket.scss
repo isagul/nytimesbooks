@@ -1,0 +1,54 @@
+.total-basket {
+    width: 300px;
+    border: 1px solid lightgray;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    position: sticky;
+    height:280px;
+    top: 80px;
+    margin-top: 5rem;
+  .title {
+    align-self: center;
+  }
+  .basket-summary {
+    display: flex;
+    flex-direction: column;
+    > div {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      p {
+        font-size: 12px;
+      }
+    }
+  }
+  .order-total {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 24px;
+    font-weight: bold;
+    border-top:1px solid lightgray;
+    padding-top: 1rem;
+  }
+
+  .checkout {
+    height: 50px;
+    color: white;
+    background-color: #254D3E;
+    border: 0;
+    opacity: 0.9;
+    &:hover {
+      cursor: pointer;
+      opacity: 1;
+    }
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .total-basket {
+    margin-right: auto;
+    margin-left: auto;
+  }
+}

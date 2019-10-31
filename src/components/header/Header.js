@@ -13,12 +13,12 @@ const HeaderComponent = () => {
           <h1>The New York Times Bestsellers</h1>
        </Link>
        <Search/>
-       <Link to='/your-shopping-basket'>
+       <Link to='/your-shopping-basket' className="basket">
          <div className="shopping-area">
             <Icon name='shopping cart' className="shopping-cart"/>
             <div className="item-count">{state.addedItems.length}</div>
          </div>
-       </Link>       
+       </Link>
     </div>
   )
 }

@@ -13,5 +13,12 @@ body {
         flex-direction: column;
         justify-content: center;
         padding: 1rem;
+        margin-top: 5rem;
     }
+}
+
+@media screen and (max-width: 414px) {
+  .category-table {
+    margin-top: 8rem !important;
+  }
 }

@@ -28,7 +28,6 @@ const CategoryBooks = (props) => {
                       type: 'SET_CATEGORY_DATA',
                       payload: response.data.results.books
                   })
-                  console.log(response);
               }
             })
             .catch(function (error) {

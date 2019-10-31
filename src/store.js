@@ -26,8 +26,34 @@ function reducer(state, action) {
         case 'ADD_TO_CARD':
           index = state.addedItems.findIndex(el => el.primary_isbn10 == action.payload.primary_isbn10);
           if(index === -1) {
+            let price = Number((Math.random() * (50 - 10) + 10).toFixed(2));
+            let orderCount = 1;
+            action.payload["book_price"] = price;
+            action.payload["total_book_price"] = price;
+            action.payload["order_count"] = orderCount;
             return { ...state, addedItems: [...state.addedItems, action.payload]}
           }
+        case 'INCREASE_ITEM_COUNT':
+          let currentBookPrice = 0;
+          updatedState = state.addedItems.map(item => {
+              if (item.primary_isbn10 === action.payload.primary_isbn10) {
+                item.order_count++;
+                item.total_book_price = item.book_price * item.order_count;
+              }
+              return item;
+          });
+          return {...state, addedItems: updatedState};
+        case 'DECREASE_ITEM_COUNT':
+          updatedState = state.addedItems.map(item => {
+              if (item.primary_isbn10 === action.payload.primary_isbn10) {
+                if (item.order_count > 1) {
+                  item.order_count--;
+                  item.total_book_price = item.book_price * item.order_count;
+                }
+              }
+              return item;
+          });
+          return {...state, addedItems: updatedState};
         default:
           return state;
       }

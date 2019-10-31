@@ -1,7 +1,8 @@
 import React, {useContext, useState} from 'react';
 import {Store} from '../../store';
 import Header from '../header/Header';
-import {Select} from 'semantic-ui-react';
+import TotalBasket from '../total-basket/TotalBasket';
+import {Select, Button} from 'semantic-ui-react';
 import './ShoppingBasket.scss';
 
 const ShoppingBasket = () => {
@@ -17,8 +18,18 @@ const ShoppingBasket = () => {
     { value: 5, text: '5', key:5 },
   ]
 
-  const getBookCount = (e,{value}) => {
-    console.log(value);
+  const increaseItemCount = function(value) {
+    dispatch({
+      type:'INCREASE_ITEM_COUNT',
+      payload: value
+    })
+  }
+
+  const decreaseItemCount = function(value) {
+    dispatch({
+      type:'DECREASE_ITEM_COUNT',
+      payload: value
+    })
   }
 
   const items = state.addedItems.map((value,index) => {
@@ -45,8 +56,18 @@ const ShoppingBasket = () => {
             </ul>
           </div>
           <div className="added-items-right-side">
-            <Select placeholder="1" selection options={countOptions} dropdown={value} className="count-list" onChange={getBookCount} />
-            <p className="price">$ {value.price}</p>
+            <div className="item-count-change">
+              <Button onClick={() => increaseItemCount(value)}>
+                +
+              </Button>
+              <Button onClick={() => decreaseItemCount(value)}>
+                -
+              </Button>
+            </div>
+            <div className="count-price">
+              <p className="item-count">Item Count: <span>{value.order_count}</span></p>
+              <p className="price">Total Price: <span>${Number(value.total_book_price.toFixed(2))}</span></p>
+            </div>
           </div>
         </div>
       </div>
@@ -56,7 +77,16 @@ const ShoppingBasket = () => {
   return (
     <div>
       <Header/>
-      {items}
+      <div className="shopping-basket">
+        <div className="items-div">
+          {items}
+        </div>
+        {
+          state.addedItems.length > 0 &&
+          <TotalBasket/>
+        }
+      </div>
+
     </div>
   )
 }
