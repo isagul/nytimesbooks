@@ -54,6 +54,11 @@ function reducer(state, action) {
               return item;
           });
           return {...state, addedItems: updatedState};
+        case 'DELETE_BOOK':
+          updatedState = [...state.addedItems];
+          index = updatedState.findIndex(el => el.primary_isbn10 == action.payload.primary_isbn10);
+          updatedState.splice(index, 1);
+          return {...state, addedItems: updatedState}
         default:
           return state;
       }
