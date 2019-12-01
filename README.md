@@ -4,7 +4,7 @@ This is a shopping cart project which lists books. It has features like adding i
 
 You can click following link to see how it works.
 
-[Live Demo](https://app-nytimes.herokuapp.com/)
+[Live Demo](https://app-nytimes.netlify.com/)
 
 ## Used Technologies
  1. React Hooks
