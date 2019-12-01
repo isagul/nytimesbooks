@@ -1,24 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import './App.scss';
-import { Dimmer, Loader, Segment, Button, Header, Image, Table } from 'semantic-ui-react'
+import { Dimmer, Loader, Segment} from 'semantic-ui-react'
 const axios = require('axios');
-import BooksAvatar from '../../assets/images/books-avatar.png';
-import Search from './search/Search';
 import {Store} from '../store';
-import apiConfig from '../config';
 import HeaderComponent from './header/Header';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import FooterComponent from './footer/Footer';
+import Categories from './categories/Categories';
 
 const App = () => {
     const [isActive, setIsActive] = useState(true);
-    const [getCategoryDetail, setCategoryDetail] = useState('');
     const { state, dispatch } = React.useContext(Store);
 
     useEffect(() => {
         if (state.categories.length === 0) {
           axios.get('https://api.nytimes.com/svc/books/v3/lists/names.json', {
               params: {
-                'api-key': apiConfig.apiKey
+                'api-key': process.env.API_KEY
               }
             })
             .then(function (response) {
@@ -43,40 +40,8 @@ const App = () => {
         }
     },[]);
 
-    /*const goCategoryDetail = function (value){
-        setIsActive(true);
-        setCategoryDetail(value.toLowerCase().split(' ').join('-')) ;
-    }*/
-
-
-    const allCategories = state.categories.length > 0 &&
-        state.categories.map((value, index) => {
-            return (
-            <Table.Row key={index}>
-                <Table.Cell>
-                    <Header as='h4' image>
-                        <Image src={BooksAvatar} rounded size='mini' />
-                        <Header.Content>
-                            {value.display_name}
-                        <Header.Subheader>{value.updated}</Header.Subheader>
-                        </Header.Content>
-                    </Header>
-                </Table.Cell>
-                <Table.Cell>{value.oldest_published_date}</Table.Cell>
-                <Table.Cell>{value.newest_published_date}</Table.Cell>
-                <Table.Cell>
-                    <Link to={{ pathname: `/categories/${value.list_name_encoded}`, state: { category: value} }}>
-                        <Button>Detail</Button>
-                    </Link>
-                </Table.Cell>
-            </Table.Row>
-        )
-    })
-
-
-
     return (
-        <div className="app">
+        <div className="app-component">
             <HeaderComponent/>
             {
                 isActive ?
@@ -85,23 +50,9 @@ const App = () => {
                         <Loader indeterminate>Loading</Loader>
                     </Dimmer>
                 </Segment> :
-                <div className="category-table">
-                    <Table basic='very' celled collapsing>
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell>Display Name</Table.HeaderCell>
-                                <Table.HeaderCell>Oldest Published Date</Table.HeaderCell>
-                                <Table.HeaderCell>Newest Published Date</Table.HeaderCell>
-                                <Table.HeaderCell>Action</Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
-
-                        <Table.Body>
-                            {allCategories}
-                        </Table.Body>
-                    </Table>
-                </div>
+                <Categories />
             }
+            <FooterComponent />
         </div>
     )
 }

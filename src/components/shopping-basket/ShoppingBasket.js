@@ -2,6 +2,7 @@ import React, {useContext, useState} from 'react';
 import {Store} from '../../store';
 import Header from '../header/Header';
 import TotalBasket from '../total-basket/TotalBasket';
+import FooterComponent from '../footer/Footer';
 import {Select, Button, Modal} from 'semantic-ui-react';
 import './ShoppingBasket.scss';
 
@@ -76,12 +77,12 @@ const ShoppingBasket = () => {
           </div>
           <div className="added-items-right-side">
             <div className="item-count-change">
-              <Button onClick={() => decreaseItemCount(value)}>
-                -
-              </Button>
               <Button onClick={() => increaseItemCount(value)}>
                 +
               </Button>
+              <Button onClick={() => decreaseItemCount(value)}>
+                -
+              </Button>              
             </div>
             <div className="count-price">
               <p className="item-count">Item Count: <span>{value.order_count}</span></p>
@@ -125,7 +126,7 @@ const ShoppingBasket = () => {
         </div> :
         <p className="empty-cart">Your shopping cart is empty.</p>
       }
-
+      <FooterComponent />
     </div>
   )
 }

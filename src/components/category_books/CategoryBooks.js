@@ -1,24 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
 import {Store} from '../../store';
 import axios from 'axios';
-import apiConfig from '../../config';
 import { Dimmer, Loader, Segment, Button} from 'semantic-ui-react';
 import './CategoryBooks.scss';
-import Header from '../header/Header';
+import HeaderComponent from '../header/Header';
+import FooterComponent from '../footer/Footer';
 
 
 const CategoryBooks = (props) => {
     const { state, dispatch } = React.useContext(Store);
     const [isActive, setIsActive] = useState(true);
-    const [loadingMessage, setLoadingMessage] = useState('Loading');
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         let categoryRoute = props.location.state.category.list_name_encoded;
         if (state.categoryBooks.length === 0) {
           axios.get(`https://api.nytimes.com/svc/books/v3/lists/current/${categoryRoute}.json`, {
               params: {
-                'api-key': apiConfig.apiKey
+                'api-key': process.env.API_KEY
               }
             })
             .then(function (response) {
@@ -71,7 +70,7 @@ const CategoryBooks = (props) => {
                     </div>
                     <p className="desc">{value.description}</p>
                     <Button inverted color="orange" onClick={() => addToCard(value)} className="add-to-card">
-                        Add To Card
+                        Add To Cart
                     </Button>
                 </div>
             </div>
@@ -80,18 +79,23 @@ const CategoryBooks = (props) => {
 
     return (
         <div className="category-books">
-            <Header/>
-            <h1>{props.location.state.category.list_name}</h1>
+            <HeaderComponent/>
             {
                 isActive ?
                 <Segment>
                     <Dimmer active style={{height:'100vh'}}>
-                        <Loader indeterminate>{loadingMessage}</Loader>
+                        <Loader indeterminate>Loading</Loader>
                     </Dimmer>
                 </Segment> :
-                categoryDetail
+                <div className="category-detail-container">
+                  <h2 className="title">{props.location.state.category.display_name}</h2>
+                  {
+                    categoryDetail
+                  }
+                </div>
+                
             }
-
+            <FooterComponent />
         </div>
     )
 }

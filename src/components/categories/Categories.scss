@@ -1,0 +1,15 @@
+.category-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    margin-top: 5rem;
+    margin-bottom: 5rem
+}
+
+@media screen and (max-width: 414px) {
+    .category-table {
+      margin-top: 8rem !important;
+    }
+  }
+  

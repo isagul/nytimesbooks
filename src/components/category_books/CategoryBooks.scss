@@ -1,7 +1,11 @@
-.category-books {
-    display: flex;
-    flex-direction: column;
-    h1 {
+.category-books {    
+    .category-detail-container {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 5rem;
+        margin-top: 5rem;
+    }
+    .title {
         text-align: center;
     }
     .all-detail {
@@ -61,5 +65,8 @@
 @media screen and (max-width: 414px) {
   .all-detail {
     margin-top: 2rem;
+  }
+  .category-detail-container {
+    margin-top: 8rem !important;
   }
 }

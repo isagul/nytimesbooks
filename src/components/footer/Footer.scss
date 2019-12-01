@@ -1,0 +1,23 @@
+@import '../../index.scss';
+
+.footer-component {
+    height: 5rem;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: $general-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    a {
+        text-align: center;
+        .github-icon {
+            font-size: 2rem;
+            color:black;
+        }
+        p {
+            color:white;
+        }
+    }
+    
+}
