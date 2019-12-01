@@ -14,32 +14,26 @@ const CategoryBooks = (props) => {
     useEffect(() => {
         window.scrollTo(0, 0);
         let categoryRoute = props.location.state.category.list_name_encoded;
-        if (state.categoryBooks.length === 0) {
-          axios.get(`https://api.nytimes.com/svc/books/v3/lists/current/${categoryRoute}.json`, {
-              params: {
-                'api-key': process.env.API_KEY
-              }
-            })
-            .then(function (response) {
-              if(response.status === 200) {
-                  setIsActive(false);
-                  dispatch({
-                      type: 'SET_CATEGORY_DATA',
-                      payload: response.data.results.books
-                  })
-              }
-            })
-            .catch(function (error) {
-              console.log(error);
-            })
-            .finally(function () {
-              //console.log('state', state);
-            });
-        } else {
-          setTimeout(() => {
-            setIsActive(false);
-          },500)
-        }
+        axios.get(`https://api.nytimes.com/svc/books/v3/lists/current/${categoryRoute}.json`, {
+            params: {
+              'api-key': process.env.API_KEY
+            }
+          })
+          .then(function (response) {
+            if(response.status === 200) {
+                setIsActive(false);
+                dispatch({
+                    type: 'SET_CATEGORY_DATA',
+                    payload: response.data.results.books
+                })
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+          .finally(function () {
+            //console.log('state', state);
+          });
 
     },[]);
 
