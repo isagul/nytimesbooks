@@ -8,6 +8,7 @@ You can click following link to see how it works.
 
 ## Used Technologies
  1. React Hooks
+ 2. Context
  2. Webpack
  3. Babel
  4. Express
