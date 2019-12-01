@@ -54,6 +54,8 @@ module.exports = {
           filename: "./index.html",
           favicon: "./dist/favicon.ico"
         }),
-        new Dotenv()
+        new Dotenv({
+          path: './.env'
+        })
     ]
   }
