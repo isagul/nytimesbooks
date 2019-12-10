@@ -16,7 +16,7 @@ const CategoryBooks = (props) => {
         let categoryRoute = props.location.state.category.list_name_encoded;
         axios.get(`https://api.nytimes.com/svc/books/v3/lists/current/${categoryRoute}.json`, {
             params: {
-              'api-key': process.env.API_KEY
+              'api-key': 'DFIRke4dzKfDtBZokg0Ayeht2A0gpazc'
             }
           })
           .then(function (response) {
