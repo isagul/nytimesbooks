@@ -115,7 +115,10 @@
       margin-left: 1rem;
     }
   }
-  
+}
+
+.ui.dimmer {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 @media screen and (max-width: 425px) {
