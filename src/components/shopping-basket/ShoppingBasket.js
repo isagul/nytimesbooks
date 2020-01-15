@@ -1,25 +1,17 @@
-import React, {useContext, useState} from 'react';
-import {Store} from '../../store';
+import React, { useContext, useState } from 'react';
+import { Store } from '../../store';
 import Header from '../header/Header';
 import TotalBasket from '../total-basket/TotalBasket';
 import FooterComponent from '../footer/Footer';
-import {Select, Button, Modal} from 'semantic-ui-react';
+import { Select, Button, Modal } from 'semantic-ui-react';
 import './ShoppingBasket.scss';
 
 const ShoppingBasket = () => {
-  const {state, dispatch} = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const [openModal, setOpenModal] = useState(false);
   const [deletedBook, setDeletedBook] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
   const [price, setPrice] = useState(1);
-
-  const countOptions = [
-    { value: 1, text: '1', key:1 },
-    { value: 2, text: '2', key:2 },
-    { value: 3, text: '3', key:3 },
-    { value: 4, text: '4', key:4 },
-    { value: 5, text: '5', key:5 },
-  ]
 
   const show = function (value) {
     setOpenModal(true);
@@ -30,29 +22,29 @@ const ShoppingBasket = () => {
     setOpenModal(false);
   }
 
-  const increaseItemCount = function(value) {
+  const increaseItemCount = function (value) {
     dispatch({
-      type:'INCREASE_ITEM_COUNT',
+      type: 'INCREASE_ITEM_COUNT',
       payload: value
     })
   }
 
-  const decreaseItemCount = function(value) {
+  const decreaseItemCount = function (value) {
     dispatch({
-      type:'DECREASE_ITEM_COUNT',
+      type: 'DECREASE_ITEM_COUNT',
       payload: value
     })
   }
 
-  const deleteItem = function(value) {
-      close();
-      dispatch({
-        type:'DELETE_BOOK',
-        payload: value
-      })
+  const deleteItem = function (value) {
+    close();
+    dispatch({
+      type: 'DELETE_BOOK',
+      payload: value
+    })
   }
 
-  const items = state.addedItems.map((value,index) => {
+  const items = state.addedItems.map((value, index) => {
     return (
       <div className="added-items" key={index}>
         <div className="heading">
@@ -61,16 +53,16 @@ const ShoppingBasket = () => {
         </div>
         <div className="content">
           <div className="added-items-left-side">
-            <img className="book-image" src={`${value.book_image}`}/>
+            <img className="book-image" src={`${value.book_image}`} />
           </div>
           <div className="added-items-center">
             <p>Buy Online</p>
             <ul>
               {value.buy_links.map((link, index) => {
                 return (
-                    <li key={index}>
-                      <a href={link.url} target="_blank">{link.name}</a>
-                    </li>
+                  <li key={index}>
+                    <a href={link.url} target="_blank">{link.name}</a>
+                  </li>
                 )
               })}
             </ul>
@@ -82,7 +74,7 @@ const ShoppingBasket = () => {
               </Button>
               <Button onClick={() => decreaseItemCount(value)}>
                 -
-              </Button>              
+              </Button>
             </div>
             <div className="count-price">
               <p className="item-count">Item Count: <span>{value.order_count}</span></p>
@@ -93,10 +85,10 @@ const ShoppingBasket = () => {
             </Button>
           </div>
         </div>
-        <Modal size="mini" open={openModal} onClose={close}>
+        <Modal size="mini" open={openModal} onClose={close} className="delete-modal">
           <Modal.Header>Delete Book</Modal.Header>
           <Modal.Content>
-            <p>Are you sure you want to delete this book</p>
+            <p className="modal-content"><span>{deletedBook.title}</span> will be deleted.</p>
           </Modal.Content>
           <Modal.Actions>
             <Button negative onClick={close}>No</Button>
@@ -115,16 +107,16 @@ const ShoppingBasket = () => {
 
   return (
     <div className="shopping-basket-component">
-      <Header/>
+      <Header />
       {
         state.addedItems.length > 0 ?
-        <div className="shopping-basket">
-          <div className="items-div">
-            {items}
-          </div>
-          <TotalBasket/>
-        </div> :
-        <p className="empty-cart">Your shopping cart is empty.</p>
+          <div className="shopping-basket">
+            <div className="items-div">
+              {items}
+            </div>
+            <TotalBasket />
+          </div> :
+          <p className="empty-cart">Your shopping cart is empty.</p>
       }
       <FooterComponent />
     </div>

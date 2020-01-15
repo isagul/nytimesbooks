@@ -43,7 +43,7 @@
                   height: 135px;
                   outline-offset: 2px;
                   &:hover {
-                    outline: $header-color solid 2px;
+                    outline: $shopping-image-outline-color solid 2px;
                   }
               }
             }
@@ -96,7 +96,7 @@
                 font-size: 10px;
               }
             }
-          }
+          }          
         }
     }
   }
@@ -105,6 +105,14 @@
     margin-top: 5rem;
     font-weight: bold;
     font-size: 20px;
+  }
+}
+
+.delete-modal {
+  .modal-content {
+    span {
+      font-weight: bold;
+    }
   }
 }
 

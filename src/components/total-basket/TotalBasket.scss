@@ -1,3 +1,5 @@
+@import '../../index.scss';
+
 .total-basket {
     width: 300px;
     border: 1px solid lightgray;
@@ -36,7 +38,10 @@
   .checkout {
     height: 50px;
     color: white;
-    background-color: #254D3E;
+    // background-color: #254D3E;
+    background-color: $checkout-bg-color;
+    font-weight: bold;
+    font-family: 'Open Sans', sans-serif;
     border: 0;
     opacity: 0.9;
     &:hover {

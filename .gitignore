@@ -2,3 +2,4 @@
 /webpack/build
 .env
 .idea/
+firebase.config.js
