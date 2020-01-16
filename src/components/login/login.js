@@ -14,6 +14,7 @@ const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
     
     const db = firebase.firestore();
     const ref = db.collection('nytimes');
+    const auth = firebase.auth();
 
     useEffect(() => {
         ref.get().then(snapshot => {
@@ -49,6 +50,13 @@ const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
                 return user.mailAddress === newUser.mailAddress;
             });
             if (userInfo.password === password) {
+                auth.signInWithEmailAndPassword(mailAddress, password).then(cred => {
+                    console.log(cred);
+                    dispatch({
+                        type: 'LOGGED_USER',
+                        payload: cred.user
+                    });
+                })
                 NotificationManager.success('Login Success', `You logged in successfully`);
             } else {
                 NotificationManager.error('Error', `Password does not match`);

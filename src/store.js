@@ -7,7 +7,8 @@ const initialState = {
     filteredCategories: [],
     categoryBooks: [],
     addedItems: [],
-    users: []
+    users: [],
+    loggedUser: {}
 };
 
 function reducer(state, action) {
@@ -64,6 +65,9 @@ function reducer(state, action) {
           updatedState = [...state.users];
           updatedState.push(action.payload);
           return {...state, users: updatedState}
+        case 'LOGGED_USER':
+          updatedState = {...action.payload};
+          return {...state, loggedUser: updatedState}
         default:
           return state;
       }

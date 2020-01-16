@@ -15,6 +15,7 @@ const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
 
     const db = firebase.firestore();
     const ref = db.collection('nytimes');
+    const auth = firebase.auth();
 
     useEffect(() => {
         ref.get().then(snapshot => {
@@ -45,6 +46,9 @@ const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
             return user.mailAddress === newUser.mailAddress;
         })
         if (!existUser) {
+            auth.createUserWithEmailAndPassword(mailAddress, password).then(info => {
+                console.log(info);
+            })
             ref.add(newUser)
             .then(() => {
                 dispatch({

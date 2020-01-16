@@ -25,6 +25,11 @@
     flex-direction: row;
     .user-area {
       position: relative;
+      .user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
       &:hover {
         .login-panel-container {
           visibility: visible;
@@ -84,6 +89,16 @@
           border: solid 1px #dedede;
           font-family: 'Open Sans', sans-serif;
         }
+        .user-mail {
+          color: #f27a1a;
+          font-weight: bold;
+        }
+        .logout{
+          border:none;
+          color: #fff;
+          background-color: #f27a1a;
+          font-family: 'Open Sans', sans-serif;
+        } 
       }
     }
     

@@ -6,6 +6,8 @@ import Login from '../login/login';
 import Register from '../register/register';
 import { Link, withRouter } from 'react-router-dom';
 import { Store } from '../../store';
+import firebase from '../../firebase.config';
+
 
 const HeaderComponent = (props) => {
   const { state } = useContext(Store);
@@ -13,6 +15,15 @@ const HeaderComponent = (props) => {
 
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openSignModal, setOpenSignModal] = useState(false);
+  const [loggedUser, setLoggedUser] = useState("")
+
+  const auth = firebase.auth();
+
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      setLoggedUser(user.email);
+    }
+  })
 
   useEffect(() => {
     props.location.pathname === '/' ? setIsShowSearch(true) : setIsShowSearch(false);
@@ -24,7 +35,14 @@ const HeaderComponent = (props) => {
 
   function toggleRegisterModal(value) {
     setOpenSignModal(value);
-  } 
+  }
+
+  function logoutUser(e){
+    e.preventDefault();
+    auth.signOut().then(() => {
+      window.location.reload();
+    })
+  }
 
   return (
     <div className="header-component">
@@ -34,11 +52,26 @@ const HeaderComponent = (props) => {
       {isShowSearch && <Search />}
       <div className="header-user-action">
         <div className="user-area">
-          <Icon name='user' className="user icon" />
-          <div className="login-panel-container">
-            <div className="account-button login" onClick={() => toggleLoginModal(true)}>Giriş Yap</div>
-            <div className="account-button register" onClick={() => toggleRegisterModal(true)}>Üye Ol</div>
+          <div className="user-info">
+            <Icon name='user' className="user icon" />
+            {
+              // loggedUser.length > 0 && <p>{loggedUser}</p>
+            }
           </div>
+
+          {
+            loggedUser.length === 0 ?
+              <div className="login-panel-container">
+                <div className="account-button login" onClick={() => toggleLoginModal(true)}>Giriş Yap</div>
+                <div className="account-button register" onClick={() => toggleRegisterModal(true)}>Üye Ol</div>
+              </div> :
+              <div className="login-panel-container">
+                <p className="user-mail">{loggedUser}</p>
+                <button className="account-button logout" onClick={(e) => logoutUser(e)}>Logout</button>
+              </div>
+          }
+
+
         </div>
         <Link to='/your-shopping-basket' className="basket">
           <div className="shopping-area">
@@ -51,10 +84,10 @@ const HeaderComponent = (props) => {
         </Link>
       </div>
       {
-        openLoginModal && <Login modalValue={openLoginModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal}/>
+        openLoginModal && <Login modalValue={openLoginModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal} />
       }
       {
-        openSignModal && <Register modalValue={openSignModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal}/>
+        openSignModal && <Register modalValue={openSignModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal} />
       }
     </div>
   )
