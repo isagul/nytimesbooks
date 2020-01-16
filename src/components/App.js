@@ -6,6 +6,7 @@ import {Store} from '../store';
 import HeaderComponent from './header/Header';
 import FooterComponent from './footer/Footer';
 import Categories from './categories/Categories';
+import 'react-notifications/lib/notifications.css';
 
 const App = () => {
     const [isActive, setIsActive] = useState(true);

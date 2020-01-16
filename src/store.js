@@ -6,7 +6,8 @@ const initialState = {
     categories: [],
     filteredCategories: [],
     categoryBooks: [],
-    addedItems: []
+    addedItems: [],
+    users: []
 };
 
 function reducer(state, action) {
@@ -59,6 +60,10 @@ function reducer(state, action) {
           index = updatedState.findIndex(el => el.primary_isbn10 == action.payload.primary_isbn10);
           updatedState.splice(index, 1);
           return {...state, addedItems: updatedState}
+        case 'SET_USERS':
+          updatedState = [...state.users];
+          updatedState.push(action.payload);
+          return {...state, users: updatedState}
         default:
           return state;
       }
