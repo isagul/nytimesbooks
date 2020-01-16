@@ -100,7 +100,7 @@ const ShoppingBasket = () => {
               })}
             </ul>
           </div>
-          <Button inverted color='red' onClick={() => show(value)} className="delete-button">
+          <Button inverted color='red' onClick={() => show(value)} className="delete-button" style={{alignSelf: 'flex-start'}}>
               Delete
           </Button>
           {/* <div className="added-items-right-side">

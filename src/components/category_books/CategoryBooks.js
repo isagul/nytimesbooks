@@ -37,19 +37,41 @@ const CategoryBooks = (props) => {
       })
   }, []);
 
-  function addToCard(value) {
-    setIsActive(true);
-    dispatch({
-      type: 'ADD_TO_CARD',
-      payload: value
-    });
+  useEffect(() => {
     auth.onAuthStateChanged(user => {
       if (user) {
         db.collection("nytimes").where("uid", "==", user.uid)
           .get()
           .then(function (querySnapshot) {
             querySnapshot.forEach(function (doc) {
-              db.collection("nytimes").doc(doc.id).update({ basket: state.addedItems });
+              if (doc.data().basket) {
+                dispatch({
+                  type: 'GET_SHOPPING_ITEMS',
+                  payload: doc.data().basket
+                })
+              }              
+            });
+          })
+      }
+    })
+  }, [])
+
+  function addToCard(value) {
+    setIsActive(true);
+    dispatch({
+      type: 'ADD_TO_CARD',
+      payload: value
+    });
+
+    const newItemsArray = [...state.addedItems, value];
+  
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        db.collection("nytimes").where("uid", "==", user.uid)
+          .get()
+          .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+              db.collection("nytimes").doc(doc.id).update({ basket: newItemsArray });
             });
           })
       }
