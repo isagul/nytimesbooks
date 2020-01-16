@@ -6,21 +6,12 @@ import {Store} from '../store';
 import HeaderComponent from './header/Header';
 import FooterComponent from './footer/Footer';
 import Categories from './categories/Categories';
-import ScrollToTop from 'react-scroll-up';
 import 'react-notifications/lib/notifications.css';
+import ScrollUpButton from './shared/scrollUpButton';
 
 const App = () => {
     const [isActive, setIsActive] = useState(true);
     const { state, dispatch } = React.useContext(Store);
-
-    const scrollUpBtnStyle = {
-      padding: '10px 1rem',
-      border: '1px solid lightgray',
-      fontFamily: 'Open Sans, sans-serif',
-      fontWeight: 'bold',
-      backgroundColor: 'white',
-      bottom: '100px'
-    }
 
     useEffect(() => {
         if (state.categories.length === 0) {
@@ -64,9 +55,7 @@ const App = () => {
                 <Categories />
             }
             <FooterComponent />
-            <ScrollToTop showUnder={160} style={scrollUpBtnStyle}>
-              <span><Icon name="arrow up"/>Scroll Up</span>
-            </ScrollToTop>
+            <ScrollUpButton />
         </div>
     )
 }
