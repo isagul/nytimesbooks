@@ -72,8 +72,8 @@ const HeaderComponent = (props) => {
           {
             loggedUser.length === 0 ?
               <div className="login-panel-container">
-                <div className="account-button login" onClick={() => toggleLoginModal(true)}>Giriş Yap</div>
-                <div className="account-button register" onClick={() => toggleRegisterModal(true)}>Üye Ol</div>
+                <div className="account-button login" onClick={() => toggleLoginModal(true)}>Login</div>
+                <div className="account-button register" onClick={() => toggleRegisterModal(true)}>Sign Up</div>
               </div> :
               <div className="login-panel-container">
                 <p className="user-mail">{loggedUser}</p>

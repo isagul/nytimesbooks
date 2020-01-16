@@ -23,10 +23,12 @@ const ShoppingBasket = () => {
           .get()
           .then(function (querySnapshot) {
             querySnapshot.forEach(function (doc) {
-              dispatch({
-                type: 'GET_SHOPPING_ITEMS',
-                payload: doc.data().basket
-              })
+              if (doc.data().basket) {
+                dispatch({
+                  type: 'GET_SHOPPING_ITEMS',
+                  payload: doc.data().basket
+                })
+              }            
             });
           })
       }
