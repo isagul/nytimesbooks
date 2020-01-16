@@ -45,24 +45,25 @@ const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
         const existUser = state.users.some(user => {
             return user.mailAddress === newUser.mailAddress;
         })
-        if (!existUser) {
-            auth.createUserWithEmailAndPassword(mailAddress, password).then(info => {
-                console.log(info);
-            })
+        // if (!existUser) {
+        auth.createUserWithEmailAndPassword(mailAddress, password).then(info => {
+            newUser["uid"] = info.user.uid;
             ref.add(newUser)
             .then(() => {
                 dispatch({
                     type:'SET_USERS',
                     payload: newUser
                 })
-            })
-            .catch(err => {
-                console.log(err);
+                NotificationManager.success(`You signed in successfully`, 'Success', );
             })            
-            NotificationManager.success('Register Success', `You signed in successfully`);
-        } else {
-            NotificationManager.error('Error', `Mail address already exist.`);
-        }  
+        })    
+        .catch(err => {
+            console.log(err);
+            NotificationManager.error(`${err.message}`, 'Error');
+        })                    
+        // } else {
+        //     NotificationManager.error('Error', `Mail address already exist.`);
+        // }  
         toggleRegisterModal(false);              
     }
 

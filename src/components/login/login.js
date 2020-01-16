@@ -46,21 +46,16 @@ const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
         })
 
         if (existUser) {    
-            const userInfo = state.users.find(user => {
-                return user.mailAddress === newUser.mailAddress;
-            });
-            if (userInfo.password === password) {
-                auth.signInWithEmailAndPassword(mailAddress, password).then(cred => {
-                    console.log(cred);
-                    dispatch({
-                        type: 'LOGGED_USER',
-                        payload: cred.user
-                    });
-                })
-                NotificationManager.success('Login Success', `You logged in successfully`);
-            } else {
-                NotificationManager.error('Error', `Password does not match`);
-            }
+            auth.signInWithEmailAndPassword(mailAddress, password).then(cred => {
+                dispatch({
+                    type: 'LOGGED_USER',
+                    payload: cred.user
+                });
+                NotificationManager.success(`You logged in successfully`, 'Success');
+            })                
+            .catch(err => {
+                NotificationManager.error(`${err.message}`, 'Error');
+            })
         } else {
             NotificationManager.error('Error', `Mail address not found`);
         }  

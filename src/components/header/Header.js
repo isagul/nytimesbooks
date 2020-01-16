@@ -10,24 +10,38 @@ import firebase from '../../firebase.config';
 
 
 const HeaderComponent = (props) => {
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const [isShowSearch, setIsShowSearch] = useState(true);
-
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openSignModal, setOpenSignModal] = useState(false);
   const [loggedUser, setLoggedUser] = useState("")
 
   const auth = firebase.auth();
-
-  auth.onAuthStateChanged(user => {
-    if (user) {
-      setLoggedUser(user.email);
-    }
-  })
+  const db = firebase.firestore();
 
   useEffect(() => {
     props.location.pathname === '/' ? setIsShowSearch(true) : setIsShowSearch(false);
   }, []);
+
+  useEffect(() => {
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        setLoggedUser(user.email);
+        db.collection("nytimes").where("uid", "==", user.uid)
+          .get()
+          .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+              if (doc.data().basket) {
+                dispatch({
+                  type: 'GET_SHOPPING_ITEMS',
+                  payload: doc.data().basket
+                })
+              }              
+            });
+          })
+      }
+    })
+  }, [])
 
   function toggleLoginModal(value) {
     setOpenLoginModal(value);
@@ -37,7 +51,7 @@ const HeaderComponent = (props) => {
     setOpenSignModal(value);
   }
 
-  function logoutUser(e){
+  function logoutUser(e) {
     e.preventDefault();
     auth.signOut().then(() => {
       window.location.reload();
@@ -54,11 +68,7 @@ const HeaderComponent = (props) => {
         <div className="user-area">
           <div className="user-info">
             <Icon name='user' className="user icon" />
-            {
-              // loggedUser.length > 0 && <p>{loggedUser}</p>
-            }
           </div>
-
           {
             loggedUser.length === 0 ?
               <div className="login-panel-container">
@@ -70,12 +80,11 @@ const HeaderComponent = (props) => {
                 <button className="account-button logout" onClick={(e) => logoutUser(e)}>Logout</button>
               </div>
           }
-
-
         </div>
         <Link to='/your-shopping-basket' className="basket">
           <div className="shopping-area">
             <Icon name='shopping cart' className="shopping-cart icon" />
+
             {
               state.addedItems.length > 0 &&
               <div className="item-count">{state.addedItems.length}</div>

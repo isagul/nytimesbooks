@@ -1,10 +1,14 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const Dotenv = require('dotenv-webpack');
+require("babel-polyfill");
 
 module.exports = {
     entry: [
-      './src/index.js'
+      'babel-polyfill', './src/index.js'
     ],
+    output: {
+      publicPath: '/'
+    },
     module: {
         rules: [
           {
