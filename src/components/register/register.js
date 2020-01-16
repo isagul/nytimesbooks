@@ -8,8 +8,6 @@ import './register.scss';
 const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
 
     const {state, dispatch} = useContext(Store);
-    const [isMailAddressValid, setIsMailAddressValid] = useState(false);
-    const [isPasswordValid, setIsPasswordValid] = useState(false);
     const [mailAddress, setMailAddress] = useState("");
     const [password, setPassword] = useState("");
 
@@ -45,7 +43,6 @@ const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
         const existUser = state.users.some(user => {
             return user.mailAddress === newUser.mailAddress;
         })
-        // if (!existUser) {
         auth.createUserWithEmailAndPassword(mailAddress, password).then(info => {
             newUser["uid"] = info.user.uid;
             ref.add(newUser)
@@ -58,12 +55,8 @@ const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
             })            
         })    
         .catch(err => {
-            console.log(err);
             NotificationManager.error(`${err.message}`, 'Error');
-        })                    
-        // } else {
-        //     NotificationManager.error('Error', `Mail address already exist.`);
-        // }  
+        })
         toggleRegisterModal(false);              
     }
 

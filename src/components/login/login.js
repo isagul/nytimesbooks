@@ -7,8 +7,6 @@ import './login.scss';
 
 const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
     const {state, dispatch} = useContext(Store);
-    const [isMailAddressValid, setIsMailAddressValid] = useState(false);
-    const [isPasswordValid, setIsPasswordValid] = useState(false);
     const [mailAddress, setMailAddress] = useState("");
     const [password, setPassword] = useState("");
     

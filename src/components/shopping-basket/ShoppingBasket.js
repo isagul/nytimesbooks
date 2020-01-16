@@ -4,13 +4,23 @@ import firebase from '../../firebase.config';
 import Header from '../header/Header';
 import TotalBasket from '../total-basket/TotalBasket';
 import FooterComponent from '../footer/Footer';
-import {  Button, Modal } from 'semantic-ui-react';
+import { Button, Modal, Icon } from 'semantic-ui-react';
+import ScrollToTop from 'react-scroll-up';
 import './ShoppingBasket.scss';
 
 const ShoppingBasket = () => {
   const { state, dispatch } = useContext(Store);
   const [openModal, setOpenModal] = useState(false);
   const [deletedBook, setDeletedBook] = useState({});
+
+  const scrollUpBtnStyle = {
+    padding: '10px 1rem',
+    border: '1px solid lightgray',
+    fontFamily: 'Open Sans, sans-serif',
+    fontWeight: 'bold',
+    backgroundColor: 'white',
+    bottom: '100px'
+  }
 
   const db = firebase.firestore();
   const auth = firebase.auth();
@@ -100,8 +110,8 @@ const ShoppingBasket = () => {
               })}
             </ul>
           </div>
-          <Button inverted color='red' onClick={() => show(value)} className="delete-button" style={{alignSelf: 'flex-start'}}>
-              Delete
+          <Button inverted color='red' onClick={() => show(value)} className="delete-button" style={{ alignSelf: 'flex-start' }}>
+            Delete
           </Button>
           {/* <div className="added-items-right-side">
             <div className="item-count-change">
@@ -156,6 +166,9 @@ const ShoppingBasket = () => {
           <p className="empty-cart">Your shopping cart is empty.</p>
       }
       <FooterComponent />
+      <ScrollToTop showUnder={160} style={scrollUpBtnStyle}>
+        <span><Icon name="arrow up"/>Scroll Up</span>
+      </ScrollToTop>
     </div>
   )
 }

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Store } from '../../store';
 import axios from 'axios';
-import { Dimmer, Loader, Segment, Button } from 'semantic-ui-react';
+import { Dimmer, Loader, Segment, Button, Icon } from 'semantic-ui-react';
 import './CategoryBooks.scss';
 import firebase from '../../firebase.config';
+import ScrollToTop from 'react-scroll-up';
 import HeaderComponent from '../header/Header';
 import FooterComponent from '../footer/Footer';
 
@@ -11,6 +12,15 @@ import FooterComponent from '../footer/Footer';
 const CategoryBooks = (props) => {
   const { state, dispatch } = React.useContext(Store);
   const [isActive, setIsActive] = useState(true);
+
+  const scrollUpBtnStyle = {
+    padding: '10px 1rem',
+    border: '1px solid lightgray',
+    fontFamily: 'Open Sans, sans-serif',
+    fontWeight: 'bold',
+    backgroundColor: 'white',
+    bottom: '100px'
+  }
 
   const db = firebase.firestore();
   const auth = firebase.auth();
@@ -121,6 +131,9 @@ const CategoryBooks = (props) => {
 
       }
       <FooterComponent />
+      <ScrollToTop showUnder={160} style={scrollUpBtnStyle}>
+        <span><Icon name="arrow up"/>Scroll Up</span>
+      </ScrollToTop>
     </div>
   )
 }

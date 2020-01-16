@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Icon, Input, Modal } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import './Header.scss';
 import Search from '../search/Search';
 import Login from '../login/login';
