@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   mode: 'development',  
@@ -11,4 +11,10 @@ module.exports = {
     historyApiFallback: true
   },
   plugins: [new webpack.HotModuleReplacementPlugin()],
+  plugins: [
+    new Dotenv({
+      path: './.env',
+      systemvars: true
+    })
+]
 };

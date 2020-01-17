@@ -1,5 +1,4 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
-const Dotenv = require('dotenv-webpack');
 require("babel-polyfill");
 
 module.exports = {
@@ -57,9 +56,6 @@ module.exports = {
           template: "./dist/index.html",
           filename: "./index.html",
           favicon: "./dist/favicon.ico"
-        }),
-        new Dotenv({
-          path: './.env'
         })
     ]
   }
