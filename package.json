@@ -9,6 +9,9 @@
     "build": "cross-env NODE_ENV=production  webpack --mode production",
     "start": "node server.js -p $PORT"
   },
+  "engines": {
+    "npm": "10.14.1"
+  },
   "author": "isagul",
   "license": "ISC",
   "devDependencies": {

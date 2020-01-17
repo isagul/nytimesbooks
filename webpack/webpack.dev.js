@@ -10,11 +10,5 @@ module.exports = {
     port: 1905,
     historyApiFallback: true
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
-  plugins: [
-    new Dotenv({
-      path: './.env',
-      systemvars: true
-    })
-]
+  plugins: [new webpack.HotModuleReplacementPlugin()]
 };
