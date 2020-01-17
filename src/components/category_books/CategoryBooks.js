@@ -7,6 +7,7 @@ import firebase from '../../firebase.config';
 import ScrollUpButton from '../shared/scrollUpButton';
 import HeaderComponent from '../header/Header';
 import FooterComponent from '../footer/Footer';
+import { NotificationManager } from 'react-notifications';
 
 
 const CategoryBooks = (props) => {
@@ -58,29 +59,35 @@ const CategoryBooks = (props) => {
   }, [])
 
   function addToCard(value) {
-    setIsActive(true);
-    dispatch({
-      type: 'ADD_TO_CARD',
-      payload: value
-    });
+    
+    const index = state.addedItems.findIndex(el => el.primary_isbn10 == value.primary_isbn10);
+    if (index === -1) {
+      setIsActive(true);
 
-    const newItemsArray = [...state.addedItems, value];
+      dispatch({
+        type: 'ADD_TO_CARD',
+        payload: value
+      });
+
+      const newItemsArray = [...state.addedItems, value];
   
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        db.collection("nytimes").where("uid", "==", user.uid)
-          .get()
-          .then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-              db.collection("nytimes").doc(doc.id).update({ basket: newItemsArray });
-            });
-          })
-      }
-    })
-
-    setTimeout(() => {
-      setIsActive(false);
-    }, 500);
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          db.collection("nytimes").where("uid", "==", user.uid)
+            .get()
+            .then(function (querySnapshot) {
+              querySnapshot.forEach(function (doc) {
+                db.collection("nytimes").doc(doc.id).update({ basket: newItemsArray });
+              });
+            })
+        }
+      })
+      setTimeout(() => {
+        setIsActive(false);
+      }, 500);
+    } else {
+      NotificationManager.warning('This book already exists in your cart', 'Warning');
+    }    
   }
 
   const categoryDetail = state.categoryBooks.length > 0 &&
