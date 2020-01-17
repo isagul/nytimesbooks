@@ -10,7 +10,9 @@
     "start": "node server.js -p $PORT"
   },
   "engines": {
-    "npm": "10.14.1"
+    "node": "10.14.1",
+    "npm": "6.9.0",
+    "yarn":"1.12.3"  
   },
   "author": "isagul",
   "license": "ISC",
