@@ -1,0 +1,46 @@
+@import '../../index.scss';
+
+.page-numbers {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0;
+    list-style-type: none;
+    user-select: none;
+    .page-direction {
+      padding-top: 3px;
+      font-size: 20px;
+      &:last-child{
+        padding-left: 5px;
+      }
+      
+    }
+    li {
+      margin-right: 10px;
+      font-size: 18px;
+      color:black;
+      height: 35px;
+      width: 35px;
+      background-color: lightgray;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: .8;
+      font-family: 'Open Sans', sans-serif;
+      &:hover {
+        opacity: 1;
+      }
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    .current-page-style {
+      transition: all;
+      transition-duration: .5s;
+      opacity: 1;
+      background-color: $pagination-color;
+      color:white;
+    }
+  }

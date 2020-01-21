@@ -3,6 +3,7 @@ import { Input, Modal } from 'semantic-ui-react';
 import firebase from '../../firebase.config';
 import {Store} from '../../store';
 import {NotificationManager} from "react-notifications";
+import {SET_USERS, LOGGED_USER} from '../../constants/actions';
 import './login.scss';
 
 const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
@@ -19,7 +20,7 @@ const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
             snapshot.docs.forEach(doc => {
                 let user = doc.data();
                 dispatch({
-                    type:'SET_USERS',
+                    type: SET_USERS,
                     payload: user
                 })
             })
@@ -46,7 +47,7 @@ const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
         if (existUser) {    
             auth.signInWithEmailAndPassword(mailAddress, password).then(cred => {
                 dispatch({
-                    type: 'LOGGED_USER',
+                    type: LOGGED_USER,
                     payload: cred.user
                 });
                 NotificationManager.success(`You logged in successfully`, 'Success');

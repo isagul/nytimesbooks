@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Input, Icon } from 'semantic-ui-react';
 import { Store } from '../../store';
 import { withRouter } from 'react-router-dom';
+import {FILTER_CATEGORIES} from '../../constants/actions';
 import './Search.scss';
 
 const Search = (props) => {
   const [searchParam, setSearchParam] = useState('');
-  const { state, dispatch } = React.useContext(Store);
+  const { dispatch } = React.useContext(Store);
 
   const handleSearchParam = (event) => {
     setSearchParam(event.target.value);
@@ -18,7 +19,7 @@ const Search = (props) => {
 
   const filterParam = (event) => {
     dispatch({
-      type: 'FILTER_CATEGORIES',
+      type: FILTER_CATEGORIES,
       payload: searchParam
     });
   }

@@ -6,6 +6,7 @@ import Login from '../login/login';
 import Register from '../register/register';
 import { Link, withRouter } from 'react-router-dom';
 import { Store } from '../../store';
+import {GET_SHOPPING_ITEMS} from '../../constants/actions';
 import firebase from '../../firebase.config';
 
 
@@ -33,7 +34,7 @@ const HeaderComponent = (props) => {
             querySnapshot.forEach(function (doc) {
               if (doc.data().basket) {
                 dispatch({
-                  type: 'GET_SHOPPING_ITEMS',
+                  type: GET_SHOPPING_ITEMS,
                   payload: doc.data().basket
                 })
               }              

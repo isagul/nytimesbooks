@@ -4,8 +4,10 @@ import firebase from '../../firebase.config';
 import Header from '../header/Header';
 import TotalBasket from '../total-basket/TotalBasket';
 import FooterComponent from '../footer/Footer';
-import { Button, Modal, Icon } from 'semantic-ui-react';
+import { Button, Modal } from 'semantic-ui-react';
 import ScrollUpButton from '../shared/scrollUpButton';
+import Paginate from '../../services/pagination/paginate';
+import { GET_SHOPPING_ITEMS, INCREASE_ITEM_COUNT, DECREASE_ITEM_COUNT, DELETE_BOOK } from '../../constants/actions';
 import './ShoppingBasket.scss';
 
 const ShoppingBasket = () => {
@@ -25,10 +27,10 @@ const ShoppingBasket = () => {
             querySnapshot.forEach(function (doc) {
               if (doc.data().basket) {
                 dispatch({
-                  type: 'GET_SHOPPING_ITEMS',
+                  type: GET_SHOPPING_ITEMS,
                   payload: doc.data().basket
                 })
-              }            
+              }
             });
           })
       }
@@ -44,24 +46,24 @@ const ShoppingBasket = () => {
     setOpenModal(false);
   }
 
-  const increaseItemCount = function (value) {
+  function increaseItemCount(value) {
     dispatch({
-      type: 'INCREASE_ITEM_COUNT',
+      type: INCREASE_ITEM_COUNT,
       payload: value
     })
   }
 
-  const decreaseItemCount = function (value) {
+  function decreaseItemCount(value) {
     dispatch({
-      type: 'DECREASE_ITEM_COUNT',
+      type: DECREASE_ITEM_COUNT,
       payload: value
     })
   }
 
-  const deleteItem = function (value) {
+  function deleteItem(value) {
     close();
     dispatch({
-      type: 'DELETE_BOOK',
+      type: DELETE_BOOK,
       payload: value
     });
     auth.onAuthStateChanged(user => {
@@ -78,9 +80,10 @@ const ShoppingBasket = () => {
           })
       }
     })
+    console.log(state.paginateBooks);
   }
 
-  const items = state.addedItems.map((value, index) => {
+  const items = state.paginateBooks.map((value, index) => {
     return (
       <div className="added-items" key={index}>
         <div className="heading">
@@ -103,10 +106,10 @@ const ShoppingBasket = () => {
               })}
             </ul>
           </div>
-          <Button inverted color='red' onClick={() => show(value)} className="delete-button" style={{ alignSelf: 'flex-start' }}>
+          {/* <Button inverted color='red' onClick={() => show(value)} className="delete-button" style={{ alignSelf: 'flex-start' }}>
             Delete
-          </Button>
-          {/* <div className="added-items-right-side">
+          </Button> */}
+          <div className="added-items-right-side">
             <div className="item-count-change">
               <Button onClick={() => increaseItemCount(value)}>
                 +
@@ -122,7 +125,7 @@ const ShoppingBasket = () => {
             <Button inverted color='red' onClick={() => show(value)} className="delete-button">
               Delete
             </Button>
-          </div> */}
+          </div>
         </div>
         <Modal size="mini" open={openModal} onClose={close} className="delete-modal">
           <Modal.Header>Delete Book</Modal.Header>
@@ -144,7 +147,6 @@ const ShoppingBasket = () => {
     )
   });
 
-
   return (
     <div className="shopping-basket-component">
       <Header />
@@ -153,8 +155,9 @@ const ShoppingBasket = () => {
           <div className="shopping-basket">
             <div className="items-div">
               {items}
+              <Paginate />
             </div>
-            {/* <TotalBasket /> */}
+            <TotalBasket />
           </div> :
           <p className="empty-cart">Your shopping cart is empty.</p>
       }

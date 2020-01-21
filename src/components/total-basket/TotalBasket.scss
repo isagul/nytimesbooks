@@ -6,10 +6,9 @@
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    position: sticky;
     height:280px;
-    top: 80px;
     margin-top: 5rem;
+    font-family: 'Open Sans', sans-serif;
   .title {
     align-self: center;
   }
@@ -55,5 +54,6 @@
   .total-basket {
     margin-right: auto;
     margin-left: auto;
+    margin-top: 1rem;
   }
 }

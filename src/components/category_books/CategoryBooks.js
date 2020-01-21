@@ -8,6 +8,7 @@ import ScrollUpButton from '../shared/scrollUpButton';
 import HeaderComponent from '../header/Header';
 import FooterComponent from '../footer/Footer';
 import { NotificationManager } from 'react-notifications';
+import {SET_CATEGORY_DATA, GET_SHOPPING_ITEMS, ADD_TO_CARD} from '../../constants/actions';
 
 
 const CategoryBooks = (props) => {
@@ -29,7 +30,7 @@ const CategoryBooks = (props) => {
         if (response.status === 200) {
           setIsActive(false);
           dispatch({
-            type: 'SET_CATEGORY_DATA',
+            type: SET_CATEGORY_DATA,
             payload: response.data.results.books
           })
         }
@@ -48,7 +49,7 @@ const CategoryBooks = (props) => {
             querySnapshot.forEach(function (doc) {
               if (doc.data().basket) {
                 dispatch({
-                  type: 'GET_SHOPPING_ITEMS',
+                  type: GET_SHOPPING_ITEMS,
                   payload: doc.data().basket
                 })
               }
@@ -65,7 +66,7 @@ const CategoryBooks = (props) => {
       setIsActive(true);
 
       dispatch({
-        type: 'ADD_TO_CARD',
+        type: ADD_TO_CARD,
         payload: value
       });
 

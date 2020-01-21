@@ -8,6 +8,7 @@ import FooterComponent from './footer/Footer';
 import Categories from './categories/Categories';
 import 'react-notifications/lib/notifications.css';
 import ScrollUpButton from './shared/scrollUpButton';
+import {SET_DATA} from '../constants/actions';
 
 const App = () => {
     const [isActive, setIsActive] = useState(true);
@@ -24,7 +25,7 @@ const App = () => {
               if(response.status === 200) {
                 setIsActive(false);
                   dispatch({
-                      type: 'SET_DATA',
+                      type: SET_DATA,
                       payload: response.data.results
                   })
               }

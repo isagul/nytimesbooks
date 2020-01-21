@@ -3,6 +3,7 @@ import { Input, Modal } from 'semantic-ui-react';
 import firebase from '../../firebase.config';
 import {Store} from '../../store';
 import {NotificationManager} from "react-notifications";
+import {SET_USERS} from '../../constants/actions';
 import './register.scss';
 
 const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
@@ -20,7 +21,7 @@ const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
             snapshot.docs.forEach(doc => {
                 let user = doc.data();
                 dispatch({
-                    type:'SET_USERS',
+                    type: SET_USERS,
                     payload: user
                 })
             })
@@ -48,7 +49,7 @@ const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
             ref.add(newUser)
             .then(() => {
                 dispatch({
-                    type:'SET_USERS',
+                    type: SET_USERS,
                     payload: newUser
                 })
                 NotificationManager.success(`You signed in successfully`, 'Success', );
