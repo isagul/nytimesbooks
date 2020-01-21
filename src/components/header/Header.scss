@@ -5,43 +5,138 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: $general-color;
+  background-color: $header-bg-color;
   padding: 1rem;
   position: fixed;
   width: 100%;
   top:0;
   z-index: 1;
+  border-bottom: solid 1px lightgray;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
   h1 {
-    color: white;
+    color: $header-title-color;
     font-family: 'Lora', serif;
     &:hover {
       cursor: pointer;
     }
   }
-  .shopping-area {
-    position: relative;
-    .shopping-cart{
-      color:white;
-      font-size: 24px !important;
-      margin-right: 1rem;
+  .header-user-action {
+    display: flex;
+    flex-direction: row;
+    .user-area {
+      position: relative;
+      .user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .icon-info {
+          font-size: 12px;
+        }
+      }
       &:hover {
-        cursor: pointer;
-        border-bottom :3px solid $header-color;
+        .login-panel-container {
+          visibility: visible;
+        }
+      }
+      .user {
+        color:black;
+        font-size: 22px;        
+      }
+      .login-panel-container {
+        visibility: hidden;
+        position: absolute;
+        width:200px;    
+        font-weight: 400!important;
+        position: absolute;
+        left: -90px;
+        background-color: #fff;
+        box-shadow: 0 4px 3px 1px rgba(0,0,0,.07);
+        border: solid 1px #d6d6d6;
+        padding: 1rem;
+        margin-top: 10px;        
+        &::after, &::before {
+          content: '';
+          display: block;
+          position: absolute;
+          bottom: 100%;
+          width: 0;
+          height: 0;
+        }
+        &::after{
+          left: 106px;
+          border: 10px solid transparent;
+          border-bottom-color: #fff;
+        }
+        &::before {
+          left: 105px;
+          border: 11px solid transparent;
+          border-bottom-color: #ddd;
+        }
+        .account-button {
+          width: 100%;
+          height: 34px;
+          line-height: 34px;
+          text-align: center;
+          cursor: pointer;
+          font-weight: 600;
+        }
+        .login {
+          color: #fff;
+          background-color: #f27a1a;
+          font-family: 'Open Sans', sans-serif;
+
+        }
+        .register {
+          margin-top: 10px;
+          color: #666;
+          border: solid 1px #dedede;
+          font-family: 'Open Sans', sans-serif;
+        }
+        .user-mail {
+          color: #f27a1a;
+          font-weight: bold;
+        }
+        .logout{
+          border:none;
+          color: #fff;
+          background-color: #f27a1a;
+          font-family: 'Open Sans', sans-serif;
+        } 
       }
     }
-    .item-count {
-      position: absolute;
-      right: 3px;
-      top: -10px;
-      border: 1px solid $header-color;
-      border-radius: 50%;
-      height: 20px;
-      width: 20px;
-      text-align: center;
-      background-color: $header-color;
-      color:white;
+    
+    .shopping-area {
+      position: relative;
+      .shopping-cart{
+        color:black;
+        font-size: 22px !important;
+        margin-right: 1rem;
+        &:hover {
+          cursor: pointer;
+          border-bottom :3px solid $shopping-cart-color;
+        }
+      }
+      .item-count {
+        position: absolute;
+        right: 3px;
+        top: -10px;
+        border: 1px solid $shopping-cart-color;
+        border-radius: 50%;
+        height: 20px;
+        width: 20px;
+        text-align: center;
+        background-color: $shopping-cart-color;
+        color:white;
+      }
+    }
+    .icon {
+      margin-left: 1rem;
     }
   }
+}
+
+.ui.dimmer {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 @media screen and (max-width: 425px) {
@@ -50,6 +145,9 @@
     h1 {
       font-size:20px;
       margin-bottom: 1rem;
+    }
+    .header-user-action {
+      align-self: flex-end;
     }
     .basket {
       display: block;

@@ -1,8 +1,8 @@
 const webpack = require('webpack');
-const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
-  mode: 'development',
+  mode: 'development',  
   devServer: {
     contentBase: './dist',
     compress: true,
@@ -10,5 +10,5 @@ module.exports = {
     port: 1905,
     historyApiFallback: true
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
+  plugins: [new webpack.HotModuleReplacementPlugin()]
 };

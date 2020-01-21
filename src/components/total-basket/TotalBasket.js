@@ -1,14 +1,14 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Store} from '../../store';
+import React, { useContext, useEffect, useState } from 'react';
+import { Store } from '../../store';
 import './TotalBasket.scss'
 
 const TotalBasket = () => {
-  const {state, dispatch} = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const [orderPrice, setOrderPrice] = useState(0);
   let totalPrice = 0;
   useEffect(() => {
     let result = state.addedItems.map(a => a.total_book_price);
-    totalPrice = result.reduce((acc,sum) => {
+    totalPrice = result.reduce((acc, sum) => {
       return sum += acc;
     }, 0);
     setOrderPrice(totalPrice);
@@ -35,7 +35,7 @@ const TotalBasket = () => {
         <p>${Number(orderPrice.toFixed(2))}</p>
       </div>
 
-      <button className="checkout">CHECKOUT</button>
+      <button className="checkout">Checkout</button>
     </div>
   )
 }

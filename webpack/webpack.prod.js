@@ -3,8 +3,6 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
-const path = require('path');
-
 module.exports = {
   mode: 'production',
   output: {
@@ -72,7 +70,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: `css/[name].css`,
       chunkFilename: `css/[name].css`,
-    }),
+    })
   ],
   devtool: 'source-map',
 };

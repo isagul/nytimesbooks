@@ -1,97 +1,137 @@
-import React, {useEffect, useState} from 'react';
-import {Store} from '../../store';
+import React, { useEffect, useState } from 'react';
+import { Store } from '../../store';
 import axios from 'axios';
-import { Dimmer, Loader, Segment, Button} from 'semantic-ui-react';
+import { Dimmer, Loader, Segment, Button } from 'semantic-ui-react';
 import './CategoryBooks.scss';
+import firebase from '../../firebase.config';
+import ScrollUpButton from '../shared/scrollUpButton';
 import HeaderComponent from '../header/Header';
 import FooterComponent from '../footer/Footer';
+import { NotificationManager } from 'react-notifications';
 
 
 const CategoryBooks = (props) => {
-    const { state, dispatch } = React.useContext(Store);
-    const [isActive, setIsActive] = useState(true);
+  const { state, dispatch } = React.useContext(Store);
+  const [isActive, setIsActive] = useState(true);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        let categoryRoute = props.location.state.category.list_name_encoded;
-        axios.get(`https://api.nytimes.com/svc/books/v3/lists/current/${categoryRoute}.json`, {
-            params: {
-              'api-key': 'DFIRke4dzKfDtBZokg0Ayeht2A0gpazc'
-            }
+  const db = firebase.firestore();
+  const auth = firebase.auth();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    let categoryRoute = props.location.state.category.list_name_encoded;
+    axios.get(`https://api.nytimes.com/svc/books/v3/lists/current/${categoryRoute}.json`, {
+      params: {
+        'api-key': process.env.API_KEY
+      }
+    })
+      .then(function (response) {
+        if (response.status === 200) {
+          setIsActive(false);
+          dispatch({
+            type: 'SET_CATEGORY_DATA',
+            payload: response.data.results.books
           })
-          .then(function (response) {
-            if(response.status === 200) {
-                setIsActive(false);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+  }, []);
+
+  useEffect(() => {
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        db.collection("nytimes").where("uid", "==", user.uid)
+          .get()
+          .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+              if (doc.data().basket) {
                 dispatch({
-                    type: 'SET_CATEGORY_DATA',
-                    payload: response.data.results.books
+                  type: 'GET_SHOPPING_ITEMS',
+                  payload: doc.data().basket
                 })
-            }
+              }
+            });
           })
-          .catch(function (error) {
-            console.log(error);
-          })
-          .finally(function () {
-            //console.log('state', state);
-          });
+      }
+    })
+  }, [])
 
-    },[]);
+  function addToCard(value) {
 
-    /*const editRouteName = route => {
-        return route.toLowerCase().split(' ').join('-');
-    }*/
-    const addToCard = function(value){
+    const index = state.addedItems.findIndex(el => el.primary_isbn10 == value.primary_isbn10);
+    if (index === -1) {
       setIsActive(true);
+
       dispatch({
         type: 'ADD_TO_CARD',
         payload: value
       });
+
+      const newItemsArray = [...state.addedItems, value];
+
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          db.collection("nytimes").where("uid", "==", user.uid)
+            .get()
+            .then(function (querySnapshot) {
+              querySnapshot.forEach(function (doc) {
+                db.collection("nytimes").doc(doc.id).update({ basket: newItemsArray });
+              });
+            })
+        }
+      })
       setTimeout(() => {
         setIsActive(false);
-      },500);
+      }, 500);
+    } else {
+      NotificationManager.warning('This book already exists in your cart', 'Warning');
     }
+  }
 
-    const categoryDetail = state.categoryBooks.length > 0 &&
+  const categoryDetail = state.categoryBooks.length > 0 &&
     state.categoryBooks.map((value, index) => {
-        return (
-            <div className="all-detail" key={index}>
-                <p className="index-number">{index + 1}</p>
-                <img className="book-image" src={`${value.book_image}`}/>
-                <div className="details">
-                    <div className="name-author">
-                        <h3>{value.title}</h3>
-                        <p><span>by </span>{value.author}</p>
-                    </div>
-                    <p className="desc">{value.description}</p>
-                    <Button inverted color="orange" onClick={() => addToCard(value)} className="add-to-card">
-                        Add To Cart
-                    </Button>
-                </div>
+      return (
+        <div className="all-detail" key={index}>
+          <p className="index-number">{index + 1}</p>
+          <img className="book-image" src={`${value.book_image}`} />
+          <div className="details">
+            <div className="name-author">
+              <h3>{value.title}</h3>
+              <p><span>by </span>{value.author}</p>
             </div>
-        )
+            <p className="desc">{value.description}</p>
+            <Button inverted color="orange" onClick={() => addToCard(value)} className="add-to-card">
+              Add To Cart
+            </Button>
+          </div>
+        </div>
+      )
     })
 
-    return (
-        <div className="category-books">
-            <HeaderComponent/>
+  return (
+    <div className="category-books">
+      <HeaderComponent />
+      {
+        isActive ?
+          <Segment>
+            <Dimmer active style={{ height: '100vh' }}>
+              <Loader indeterminate>Loading</Loader>
+            </Dimmer>
+          </Segment> :
+          <div className="category-detail-container">
+            <h2 className="title">{props.location.state.category.display_name}</h2>
             {
-                isActive ?
-                <Segment>
-                    <Dimmer active style={{height:'100vh'}}>
-                        <Loader indeterminate>Loading</Loader>
-                    </Dimmer>
-                </Segment> :
-                <div className="category-detail-container">
-                  <h2 className="title">{props.location.state.category.display_name}</h2>
-                  {
-                    categoryDetail
-                  }
-                </div>
-                
+              categoryDetail
             }
-            <FooterComponent />
-        </div>
-    )
+          </div>
+
+      }
+      <FooterComponent />
+      <ScrollUpButton />
+    </div>
+  )
 }
 
 export default CategoryBooks;

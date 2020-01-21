@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import './App.scss';
-import { Dimmer, Loader, Segment} from 'semantic-ui-react'
+import { Dimmer, Loader, Segment, Icon} from 'semantic-ui-react'
 const axios = require('axios');
 import {Store} from '../store';
 import HeaderComponent from './header/Header';
 import FooterComponent from './footer/Footer';
 import Categories from './categories/Categories';
+import 'react-notifications/lib/notifications.css';
+import ScrollUpButton from './shared/scrollUpButton';
 
 const App = () => {
     const [isActive, setIsActive] = useState(true);
@@ -53,6 +55,7 @@ const App = () => {
                 <Categories />
             }
             <FooterComponent />
+            <ScrollUpButton />
         </div>
     )
 }
