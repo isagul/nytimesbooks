@@ -83,7 +83,7 @@ function reducer(state, action) {
       let indexPaginate = updatedPaginateBooks.findIndex(el => el.primary_isbn10 == action.payload.primary_isbn10);
       updatedPaginateBooks.splice(indexPaginate, 1);
 
-      return { ...state, addedItems: updatedState, paginateBooks: updatedPaginateBooks }
+      return { ...state, addedItems: updatedState, paginateBooks: updatedPaginateBooks}
     case SET_USERS:
       updatedState = [...state.users];
       updatedState.push(action.payload);

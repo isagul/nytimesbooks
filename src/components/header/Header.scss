@@ -3,6 +3,7 @@
 .header-component {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   background-color: $header-bg-color;
@@ -19,6 +20,9 @@
     &:hover {
       cursor: pointer;
     }
+  }
+  .search {
+    margin-top: 5px;
   }
   .header-user-action {
     display: flex;
@@ -109,7 +113,7 @@
       position: relative;
       .shopping-cart{
         color:black;
-        font-size: 22px !important;
+        font-size: 22px;
         margin-right: 1rem;
         &:hover {
           cursor: pointer;
@@ -118,12 +122,15 @@
       }
       .item-count {
         position: absolute;
-        right: 3px;
-        top: -10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        right: 0;
+        top: -15px;
         border: 1px solid $shopping-cart-color;
         border-radius: 50%;
-        height: 20px;
-        width: 20px;
+        height: 25px;
+        width: 25px;
         text-align: center;
         background-color: $shopping-cart-color;
         color:white;
@@ -140,14 +147,22 @@
 }
 
 @media screen and (max-width: 425px) {
-  .header-component {
-    flex-direction: column;
+  .header-component {    
     h1 {
-      font-size:20px;
-      margin-bottom: 1rem;
+      font-size:16px;
     }
     .header-user-action {
-      align-self: flex-end;
+      .shopping-area {
+        .item-count {
+          top:-12px;
+          font-size: 12px;
+          height:22px;
+          width:22px;
+        }
+      }
+      i {
+        font-size: 18px !important;
+      }
     }
     .basket {
       display: block;

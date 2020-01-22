@@ -38,6 +38,8 @@
               display: flex;
               flex-direction: column;
               margin-right: 1rem;
+              max-width: 130px;
+              max-height: 150px;
               .book-image {
                   height: 135px;
                   outline-offset: 2px;

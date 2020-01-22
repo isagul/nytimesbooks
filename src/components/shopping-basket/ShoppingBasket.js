@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Store } from '../../store';
 import firebase from '../../firebase.config';
 import Header from '../header/Header';
@@ -14,6 +14,8 @@ const ShoppingBasket = () => {
   const { state, dispatch } = useContext(Store);
   const [openModal, setOpenModal] = useState(false);
   const [deletedBook, setDeletedBook] = useState({});
+
+  const paginationComp = useRef();
 
   const db = firebase.firestore();
   const auth = firebase.auth();
@@ -80,7 +82,7 @@ const ShoppingBasket = () => {
           })
       }
     })
-    console.log(state.paginateBooks);
+    paginationComp.current.deletedBookFromParent();
   }
 
   const items = state.paginateBooks.map((value, index) => {
@@ -155,7 +157,7 @@ const ShoppingBasket = () => {
           <div className="shopping-basket">
             <div className="items-div">
               {items}
-              <Paginate />
+              <Paginate ref={paginationComp} paginateBook={state.paginateBooks} />
             </div>
             <TotalBasket />
           </div> :
