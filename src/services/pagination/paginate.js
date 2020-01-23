@@ -5,7 +5,7 @@ import { PAGINATE_BOOKS } from '../../constants/actions';
 import { Store } from '../../store'
 
 const Paginate = forwardRef((props, ref) => {
-    const {paginateBook} = props;
+    const { paginateBook } = props;
     const [currentPage, setCurrentPage] = useState(1);
     const [isClickedDelete, setIsClickedDelete] = useState(false);
     const linksPerPage = 3;
@@ -13,42 +13,46 @@ const Paginate = forwardRef((props, ref) => {
     const { addedItems } = state;
     const pageNumbers = [];
 
-    // Logic for displaying current links
-    const indexOfLastLink = currentPage * linksPerPage;
-    const indexOfFirstLink = indexOfLastLink - linksPerPage;
-    const currentBooks = addedItems.slice(indexOfFirstLink, indexOfLastLink);
+    const currentBooks = getCurrentBooks();
 
     for (let i = 1; i <= Math.ceil(addedItems.length / linksPerPage); i++) {
         pageNumbers.push(i);
     }
 
     useEffect(() => {
-        console.log('handle click effect');
         handleClickPagination();
     }, [currentPage]);
 
     useEffect(() => {
         if (isClickedDelete) {
-            console.log('paginateBook', paginateBook);
-
             if (currentPage > 1 && paginateBook.length === 0) {
                 setCurrentPage(currentPage => currentPage - 1);
             } else if (paginateBook.length > 0 && paginateBook.length < 3) {
-                setCurrentPage(currentPage);
+                const currentBooks = getCurrentBooks();
+                dispatch({
+                    type: PAGINATE_BOOKS,
+                    payload: currentBooks
+                })
             }
         }
         return (() => {
             setIsClickedDelete(false);
         })
-    },[state]);
+    }, [isClickedDelete]);
 
     useImperativeHandle(ref, () => ({ // this area works from parent when clicked a delete button
-        deletedBookFromParent(){       
+        deletedBookFromParent() {
             setIsClickedDelete(true);
-            // handleClickPagination();
         }
     }));
-    
+
+    function getCurrentBooks() {
+        // Logic for displaying current links
+        const indexOfLastLink = currentPage * linksPerPage;
+        const indexOfFirstLink = indexOfLastLink - linksPerPage;
+        return addedItems.slice(indexOfFirstLink, indexOfLastLink);
+    }
+
     const paginateLeft = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage => currentPage - 1);
@@ -59,19 +63,16 @@ const Paginate = forwardRef((props, ref) => {
         if (currentPage < pageNumbers.length) {
             setCurrentPage(currentPage => currentPage + 1);
         }
-    };    
+    };
 
     const handleClickPagination = (event = null) => {
         if (event !== null) {
             setCurrentPage(Number(event.target.id));
         }
-        console.log('currentbooks', currentBooks);
-
         dispatch({
             type: PAGINATE_BOOKS,
             payload: currentBooks
         })
-
     };
 
     const renderPageNumbers = pageNumbers.map((number, index) => {
@@ -90,9 +91,9 @@ const Paginate = forwardRef((props, ref) => {
             {
                 addedItems.length > 3 &&
                 <ul className="page-numbers">
-                    <li className="page-direction" onClick={paginateLeft}><Icon name="chevron left" /></li>
+                    <li className={`page-direction ${currentPage === 1 && 'disable-paginate-button'} `} onClick={paginateLeft}><Icon name="chevron left" /></li>
                     {renderPageNumbers}
-                    <li className="page-direction" onClick={paginateRight}><Icon name="chevron right" /></li>
+                    <li className={`page-direction ${currentPage === pageNumbers.length && 'disable-paginate-button'} `} onClick={paginateRight}><Icon name="chevron right" /></li>
                 </ul>
             }
         </>
