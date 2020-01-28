@@ -18,7 +18,7 @@ const App = () => {
         if (state.categories.length === 0) {
           axios.get('https://api.nytimes.com/svc/books/v3/lists/names.json', {
               params: {
-                'api-key': 'DFIRke4dzKfDtBZokg0Ayeht2A0gpazc'
+                'api-key': process.env.API_KEY
               }
             })
             .then(function (response) {

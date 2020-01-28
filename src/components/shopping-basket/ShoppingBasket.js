@@ -14,6 +14,7 @@ const ShoppingBasket = () => {
   const { state, dispatch } = useContext(Store);
   const [openModal, setOpenModal] = useState(false);
   const [deletedBook, setDeletedBook] = useState({});
+  const [currentBooks, setCurrentBooks] = useState([]);
 
   const paginationComp = useRef();
 
@@ -53,6 +54,7 @@ const ShoppingBasket = () => {
       type: INCREASE_ITEM_COUNT,
       payload: value
     })
+    paginationComp.current.increaseItemCount(value);
   }
 
   function decreaseItemCount(value) {
@@ -157,7 +159,7 @@ const ShoppingBasket = () => {
           <div className="shopping-basket">
             <div className="items-div">
               {items}
-              <Paginate ref={paginationComp} paginateBook={state.paginateBooks} />
+              <Paginate ref={paginationComp} paginateBook={state.paginateBooks}/>
             </div>
             <TotalBasket />
           </div> :

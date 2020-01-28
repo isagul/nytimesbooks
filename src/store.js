@@ -10,7 +10,8 @@ import {
   LOGGED_USER,
   PAGINATE_BOOKS,
   SET_USERS,
-  FILTER_CATEGORIES
+  FILTER_CATEGORIES,
+  INCREASE_BOOK_PAGINATE
 } from './constants/actions';
 
 export const Store = React.createContext();
@@ -63,6 +64,8 @@ function reducer(state, action) {
         return item;
       });
       return { ...state, addedItems: updatedState };
+    case INCREASE_BOOK_PAGINATE: 
+      return { ...state, paginateBooks: action.payload };
     case DECREASE_ITEM_COUNT:
       updatedState = state.addedItems.map(item => {
         if (item.primary_isbn10 === action.payload.primary_isbn10) {

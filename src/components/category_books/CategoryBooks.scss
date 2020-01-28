@@ -18,11 +18,12 @@
         border-bottom: 1px solid lightgray;
         padding: 10px 10px 2rem 10px;
         transition: all 0.2s ease-in-out;
+        color:black;
         @media screen and (max-width: 767px) {
             width: 100%;
         }
         &:hover {
-            box-shadow: 1px 1px lightgray;
+            box-shadow: 3px 3px 8px 4px grey;
             transform: scale(1.02);
             cursor: pointer;
         }

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, forwardRef, useImperativeHandle } from 'react';
 import './paginate.scss';
 import { Icon } from 'semantic-ui-react';
-import { PAGINATE_BOOKS } from '../../constants/actions';
+import { PAGINATE_BOOKS, INCREASE_BOOK_PAGINATE } from '../../constants/actions';
 import { Store } from '../../store'
 
 const Paginate = forwardRef((props, ref) => {
@@ -43,6 +43,12 @@ const Paginate = forwardRef((props, ref) => {
     useImperativeHandle(ref, () => ({ // this area works from parent when clicked a delete button
         deletedBookFromParent() {
             setIsClickedDelete(true);
+        },
+        increaseItemCount(){
+            dispatch({
+                type: INCREASE_BOOK_PAGINATE,
+                payload: currentBooks
+            })
         }
     }));
 
