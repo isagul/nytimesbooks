@@ -14,7 +14,6 @@ const ShoppingBasket = () => {
   const { state, dispatch } = useContext(Store);
   const [openModal, setOpenModal] = useState(false);
   const [deletedBook, setDeletedBook] = useState({});
-  const [currentBooks, setCurrentBooks] = useState([]);
 
   const paginationComp = useRef();
 
@@ -53,8 +52,21 @@ const ShoppingBasket = () => {
     dispatch({
       type: INCREASE_ITEM_COUNT,
       payload: value
+    });
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        db.collection("nytimes").where("uid", "==", user.uid)
+          .get()
+          .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+              db.collection("nytimes").doc(doc.id).update({ basket: state.addedItems });
+            });
+          })
+      }
     })
-    paginationComp.current.increaseItemCount(value);
+    
+    paginationComp.current.updatePaginateBooks();
   }
 
   function decreaseItemCount(value) {
@@ -62,6 +74,20 @@ const ShoppingBasket = () => {
       type: DECREASE_ITEM_COUNT,
       payload: value
     })
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        db.collection("nytimes").where("uid", "==", user.uid)
+          .get()
+          .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+              db.collection("nytimes").doc(doc.id).update({ basket: state.addedItems });
+            });
+          })
+      }
+    })
+
+    paginationComp.current.updatePaginateBooks();
   }
 
   function deleteItem(value) {

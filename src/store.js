@@ -11,7 +11,7 @@ import {
   PAGINATE_BOOKS,
   SET_USERS,
   FILTER_CATEGORIES,
-  INCREASE_BOOK_PAGINATE
+  UPDATE_PAGINATE_BOOKS
 } from './constants/actions';
 
 export const Store = React.createContext();
@@ -63,9 +63,7 @@ function reducer(state, action) {
         }
         return item;
       });
-      return { ...state, addedItems: updatedState };
-    case INCREASE_BOOK_PAGINATE: 
-      return { ...state, paginateBooks: action.payload };
+      return { ...state, addedItems: updatedState };    
     case DECREASE_ITEM_COUNT:
       updatedState = state.addedItems.map(item => {
         if (item.primary_isbn10 === action.payload.primary_isbn10) {
@@ -77,6 +75,8 @@ function reducer(state, action) {
         return item;
       });
       return { ...state, addedItems: updatedState };
+    case UPDATE_PAGINATE_BOOKS: 
+      return { ...state, paginateBooks: action.payload };
     case DELETE_BOOK:
       updatedState = [...state.addedItems];
       index = updatedState.findIndex(el => el.primary_isbn10 == action.payload.primary_isbn10);

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, forwardRef, useImperativeHandle } from 'react';
 import './paginate.scss';
 import { Icon } from 'semantic-ui-react';
-import { PAGINATE_BOOKS, INCREASE_BOOK_PAGINATE } from '../../constants/actions';
+import { PAGINATE_BOOKS, UPDATE_PAGINATE_BOOKS } from '../../constants/actions';
 import { Store } from '../../store'
 
 const Paginate = forwardRef((props, ref) => {
@@ -44,9 +44,9 @@ const Paginate = forwardRef((props, ref) => {
         deletedBookFromParent() {
             setIsClickedDelete(true);
         },
-        increaseItemCount(){
+        updatePaginateBooks(){
             dispatch({
-                type: INCREASE_BOOK_PAGINATE,
+                type: UPDATE_PAGINATE_BOOKS,
                 payload: currentBooks
             })
         }
