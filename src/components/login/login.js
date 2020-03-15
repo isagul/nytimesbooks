@@ -4,6 +4,7 @@ import firebase from '../../firebase.config';
 import {Store} from '../../store';
 import {NotificationManager} from "react-notifications";
 import {SET_USERS, LOGGED_USER} from '../../constants/actions';
+import axios from 'axios';
 import './login.scss';
 
 const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
@@ -36,14 +37,36 @@ const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
     }
 
     function loginUser(){
-        let newUser = {
+        /*let newUser = {
             mailAddress,
             password
-        }
+        }*/
+        
+        axios.post('https://api-appnytimes.herokuapp.com/user/login', {
+            email: mailAddress,
+            password: password
+        })
+            .then(response => {
+                if(response.data.status) {
+                    NotificationManager.success(`You logged in successfully`, 'Success');
+                    dispatch({
+                        type: LOGGED_USER,
+                        payload: response.data.user
+                    });
+                } else {
+                    NotificationManager.error(`${response.data.error.message}`, 'Error');
+                }
+            })
+            .catch(err => {
+                console.log(err);                
+            })
+
+        toggleLoginModal(false);      
+
+        /*
         const existUser = state.users.some(user => {
             return user.mailAddress === newUser.mailAddress;
         })
-
         if (existUser) {    
             auth.signInWithEmailAndPassword(mailAddress, password).then(cred => {
                 dispatch({
@@ -57,8 +80,7 @@ const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
             })
         } else {
             NotificationManager.error('Error', `Mail address not found`);
-        }  
-        toggleLoginModal(false);      
+        }  */
     }
 
     return (

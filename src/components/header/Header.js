@@ -6,7 +6,8 @@ import Login from '../login/login';
 import Register from '../register/register';
 import { Link, withRouter } from 'react-router-dom';
 import { Store } from '../../store';
-import {GET_SHOPPING_ITEMS} from '../../constants/actions';
+import axios from 'axios';
+import { GET_SHOPPING_ITEMS } from '../../constants/actions';
 import firebase from '../../firebase.config';
 
 
@@ -25,7 +26,28 @@ const HeaderComponent = (props) => {
   }, []);
 
   useEffect(() => {
-    auth.onAuthStateChanged(user => {
+    if (Object.keys(state.loggedUser).length > 0) {
+      axios.post('https://api-appnytimes.herokuapp.com/user/get-info', {
+        email: state.loggedUser.email
+      })
+        .then(response => {
+          console.log(response);
+          if (response.data.status) {
+            setLoggedUser(response.data.user.email);
+            dispatch({
+              type: GET_SHOPPING_ITEMS,
+              payload: response.data.user.basket
+            })
+          } else {
+
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+
+    /*auth.onAuthStateChanged(user => {
       if (user) {
         setLoggedUser(user.email);
         db.collection("nytimes").where("uid", "==", user.uid)
@@ -41,8 +63,8 @@ const HeaderComponent = (props) => {
             });
           })
       }
-    })
-  }, [])
+    })*/
+  }, [state.loggedUser])
 
   function toggleLoginModal(value) {
     setOpenLoginModal(value);

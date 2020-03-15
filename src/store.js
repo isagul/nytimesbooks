@@ -42,12 +42,7 @@ function reducer(state, action) {
       return { ...state, categories: updatedState };
     case ADD_TO_CARD:
       index = state.addedItems.findIndex(el => el.primary_isbn10 == action.payload.primary_isbn10);
-      if (index === -1) {
-        let price = Number((Math.random() * (30 - 10) + 10).toFixed(2));
-        let orderCount = 1;
-        action.payload["book_price"] = price;
-        action.payload["total_book_price"] = price;
-        action.payload["order_count"] = orderCount;
+      if (index === -1) {        
         return { ...state, addedItems: [...state.addedItems, action.payload] }
       }
     case GET_SHOPPING_ITEMS:

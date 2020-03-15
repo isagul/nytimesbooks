@@ -63,6 +63,12 @@ const CategoryBooks = (props) => {
 
     const index = state.addedItems.findIndex(el => el.primary_isbn10 == value.primary_isbn10);
     if (index === -1) {
+      let price = Number((Math.random() * (30 - 10) + 10).toFixed(2));
+      let orderCount = 1;
+      value["book_price"] = price;
+      value["total_book_price"] = price;
+      value["order_count"] = orderCount;
+
       setIsActive(true);
 
       dispatch({
@@ -70,6 +76,27 @@ const CategoryBooks = (props) => {
         payload: value
       });
 
+      axios.post('https://api-appnytimes.herokuapp.com/book/add-to-cart', {    
+          "primary_isbn10": value.primary_isbn10,
+          "primary_isbn13": value.primary_isbn13,
+          "publisher": value.publisher,
+          "description": value.description,
+          "title": value.title,
+          "author": value.author,
+          "contributor": value.contributor,
+          "book_image": value.book_image,
+          "buy_links": value.buy_links,
+          "book_price": value.book_price,
+          "total_book_price": value.total_book_price
+      })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
+      /*
       const newItemsArray = [...state.addedItems, value];
 
       auth.onAuthStateChanged(user => {
@@ -82,7 +109,7 @@ const CategoryBooks = (props) => {
               });
             })
         }
-      })
+      })*/
       setTimeout(() => {
         setIsActive(false);
       }, 500);

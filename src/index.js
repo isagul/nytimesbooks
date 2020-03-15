@@ -19,6 +19,9 @@ if('serviceWorker' in navigator) {
     //     .catch(registrationError => console.log('SW registration failed: ', registrationError))
     // })
     const registration = runtime.register();
+    registration
+    .then(reg => reg)
+    .catch(err => console.log(err))
 }
 
 ReactDOM.render(

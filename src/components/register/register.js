@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Input, Modal } from 'semantic-ui-react';
 import firebase from '../../firebase.config';
 import {Store} from '../../store';
+import axios from 'axios';
 import {NotificationManager} from "react-notifications";
 import {SET_USERS} from '../../constants/actions';
 import './register.scss';
@@ -41,10 +42,27 @@ const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
             mailAddress,
             password
         }
-        const existUser = state.users.some(user => {
-            return user.mailAddress === newUser.mailAddress;
+
+        axios.post('https://api-appnytimes.herokuapp.com/user/signup', {
+            email: mailAddress,
+            password: password
         })
-        auth.createUserWithEmailAndPassword(mailAddress, password).then(info => {
+            .then(response => {
+                if(response.data.status) {
+                    NotificationManager.success(`You signed in successfully`, 'Success', );
+                } else {
+                    NotificationManager.error(`${response.data.error.message}`, 'Error');
+                }
+                console.log(response);
+            })
+            .catch(err => {
+                console.log(err);                
+            })
+
+        /*const existUser = state.users.some(user => {
+            return user.mailAddress === newUser.mailAddress;
+        })*/
+        /*auth.createUserWithEmailAndPassword(mailAddress, password).then(info => {
             newUser["uid"] = info.user.uid;
             ref.add(newUser)
             .then(() => {
@@ -57,7 +75,7 @@ const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
         })    
         .catch(err => {
             NotificationManager.error(`${err.message}`, 'Error');
-        })
+        })*/
         toggleRegisterModal(false);              
     }
 
