@@ -26,12 +26,11 @@ const HeaderComponent = (props) => {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(state.loggedUser).length > 0) {
+    if (localStorage.getItem('token')) {
       axios.post('https://api-appnytimes.herokuapp.com/user/get-info', {
-        email: state.loggedUser.email
+        email: localStorage.getItem('email')
       })
         .then(response => {
-          console.log(response);
           if (response.data.status) {
             setLoggedUser(response.data.user.email);
             dispatch({
@@ -76,9 +75,12 @@ const HeaderComponent = (props) => {
 
   function logoutUser(e) {
     e.preventDefault();
-    auth.signOut().then(() => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    window.location.reload();
+    /*auth.signOut().then(() => {
       window.location.reload();
-    })
+    })*/
   }
 
   return (
@@ -93,7 +95,7 @@ const HeaderComponent = (props) => {
             <Icon name='user' className="user icon" />
           </div>
           {
-            loggedUser.length === 0 ?
+            !localStorage.getItem('token') ?
               <div className="login-panel-container">
                 <div className="account-button login" onClick={() => toggleLoginModal(true)}>Login</div>
                 <div className="account-button register" onClick={() => toggleRegisterModal(true)}>Sign Up</div>

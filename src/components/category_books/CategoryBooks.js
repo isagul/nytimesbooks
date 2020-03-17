@@ -41,7 +41,21 @@ const CategoryBooks = (props) => {
   }, []);
 
   useEffect(() => {
-    auth.onAuthStateChanged(user => {
+    axios.post('https://api-appnytimes.herokuapp.com/user/get-info', {
+        email: localStorage.getItem('email')
+      })
+      .then(response => {
+          if (response.data.status) {
+            dispatch({
+              type: GET_SHOPPING_ITEMS,
+              payload: response.data.user.basket
+            })
+          } 
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    /*auth.onAuthStateChanged(user => {
       if (user) {
         db.collection("nytimes").where("uid", "==", user.uid)
           .get()
@@ -56,7 +70,7 @@ const CategoryBooks = (props) => {
             });
           })
       }
-    })
+    })*/
   }, [])
 
   function addToCard(value) {
@@ -77,6 +91,7 @@ const CategoryBooks = (props) => {
       });
 
       axios.post('https://api-appnytimes.herokuapp.com/book/add-to-cart', {    
+          "email": localStorage.getItem('email'),
           "primary_isbn10": value.primary_isbn10,
           "primary_isbn13": value.primary_isbn13,
           "publisher": value.publisher,
@@ -90,7 +105,7 @@ const CategoryBooks = (props) => {
           "total_book_price": value.total_book_price
       })
         .then(response => {
-          console.log(response);
+          // console.log(response);
         })
         .catch(error => {
           console.log(error);

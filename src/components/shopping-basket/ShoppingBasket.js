@@ -8,6 +8,7 @@ import { Button, Modal } from 'semantic-ui-react';
 import ScrollUpButton from '../shared/scrollUpButton';
 import Paginate from '../../services/pagination/paginate';
 import { GET_SHOPPING_ITEMS, INCREASE_ITEM_COUNT, DECREASE_ITEM_COUNT, DELETE_BOOK } from '../../constants/actions';
+import axios from 'axios';
 import './ShoppingBasket.scss';
 
 const ShoppingBasket = () => {
@@ -96,7 +97,21 @@ const ShoppingBasket = () => {
       type: DELETE_BOOK,
       payload: value
     });
-    auth.onAuthStateChanged(user => {
+
+    axios.delete('https://api-appnytimes.herokuapp.com/book/delete', {
+      data: {
+        email: localStorage.getItem('email'),
+        primary_isbn10: value.primary_isbn10
+      }
+    })
+    .then(response => {
+      // console.log('delete book', response)
+    })
+    .catch(error => {
+      console.log(error);
+    })
+    
+    /*auth.onAuthStateChanged(user => {
       if (user) {
         db.collection("nytimes").where("uid", "==", user.uid)
           .get()
@@ -109,7 +124,7 @@ const ShoppingBasket = () => {
             });
           })
       }
-    })
+    })*/
     paginationComp.current.deletedBookFromParent();
   }
 

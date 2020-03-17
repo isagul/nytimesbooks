@@ -53,6 +53,8 @@ const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
                         type: LOGGED_USER,
                         payload: response.data.user
                     });
+                    localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('email', response.data.user.email);
                 } else {
                     NotificationManager.error(`${response.data.error.message}`, 'Error');
                 }
