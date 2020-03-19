@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Input, Icon } from 'semantic-ui-react';
+import { Input } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import { Store } from '../../store';
 import { withRouter } from 'react-router-dom';
 import {FILTER_CATEGORIES} from '../../constants/actions';
@@ -25,10 +26,13 @@ const Search = (props) => {
   }
 
   return (
-    <Input className="search"
-      placeholder='Search Categories...'
-      onKeyPress={handleSearchParam}
-      onChange={handleSearchParam} value={searchParam} icon={<Icon name='search' link onClick={filterParam} />} />
+      <Input className="search"
+            placeholder='Search Categories...' 
+            size="large" onKeyPress={handleSearchParam}
+            onChange={handleSearchParam}  
+            value={searchParam} 
+            prefix={<SearchOutlined />} 
+            />
   )
 }
 

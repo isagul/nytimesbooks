@@ -1,6 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import './App.scss';
-import { Dimmer, Loader, Segment } from 'semantic-ui-react'
 const axios = require('axios');
 import { Store } from '../store';
 import HeaderComponent from './header/Header';
@@ -8,11 +7,11 @@ import FooterComponent from './footer/Footer';
 import 'react-notifications/lib/notifications.css';
 import ScrollUpButton from './shared/scrollUpButton';
 import { SET_DATA } from '../constants/actions';
-const Categories = lazy(() => import('./categories/Categories'));
+import Categories from './categories/Categories';
 
 const App = () => {
   const { state, dispatch } = React.useContext(Store);
-  const [isActive, setIsActive] = useState(true)
+  const [isActive, setIsActive] = useState(true);
 
   useEffect(() => {
     if (state.categories.length === 0) {
@@ -43,22 +42,10 @@ const App = () => {
     }
   }, []);
 
-  const Loading = () => {
-    return (
-      <Segment>
-        <Dimmer active style={{ height: '100vh' }}>
-          <Loader indeterminate>Loading</Loader>
-        </Dimmer>
-      </Segment>
-    )
-  }
-
   return (
     <div className="app-component">
       <HeaderComponent />     
-      <Suspense fallback={Loading()}>
-        <Categories />
-      </Suspense>
+      <Categories />
       <FooterComponent />
       <ScrollUpButton />
     </div>

@@ -1,9 +1,11 @@
+@import '../../index.scss';
+
 .category-books {    
     .category-detail-container {
         display: flex;
         flex-direction: column;
         margin-bottom: 5rem;
-        margin-top: 5rem;
+        margin-top: 6rem;
     }
     .title {
         text-align: center;
@@ -58,6 +60,14 @@
                 margin-top: 5rem;
                 display: block;
                 margin-left: auto;
+                color: $shopping-cart-color;
+                border: 2px solid $shopping-image-outline-color;
+                font-weight: bold;
+                height: 40px;
+                &:hover{
+                    background-color: $shopping-cart-color;
+                    color:white
+                }
             }
         }
     }

@@ -1,15 +1,15 @@
-import React, {useState, useEffect, useContext} from 'react';
-import { Input, Modal } from 'semantic-ui-react';
+import React, { useState, useEffect, useContext } from 'react';
+import { Input, Modal } from 'antd';
 import firebase from '../../firebase.config';
-import {Store} from '../../store';
+import { Store } from '../../store';
 import axios from 'axios';
-import {NotificationManager} from "react-notifications";
-import {SET_USERS} from '../../constants/actions';
+import { NotificationManager } from "react-notifications";
+import { SET_USERS } from '../../constants/actions';
 import './register.scss';
 
-const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
+const Register = ({ modalValue, toggleLoginModal, toggleRegisterModal }) => {
 
-    const {state, dispatch} = useContext(Store);
+    const { state, dispatch } = useContext(Store);
     const [mailAddress, setMailAddress] = useState("");
     const [password, setPassword] = useState("");
 
@@ -27,9 +27,9 @@ const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
                 })
             })
         })
-    },[]);
+    }, []);
 
-    function getMailAddress(e){
+    function getMailAddress(e) {
         setMailAddress(e.target.value);
     }
 
@@ -37,7 +37,7 @@ const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
         setPassword(e.target.value);
     }
 
-    function registerUser(){
+    function registerUser() {
         let newUser = {
             mailAddress,
             password
@@ -48,15 +48,15 @@ const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
             password: password
         })
             .then(response => {
-                if(response.data.status) {
-                    NotificationManager.success(`You signed in successfully`, 'Success', );
+                if (response.data.status) {
+                    NotificationManager.success(`You signed in successfully`, 'Success');
                 } else {
                     NotificationManager.error(`${response.data.error.message}`, 'Error');
                 }
                 console.log(response);
             })
             .catch(err => {
-                console.log(err);                
+                console.log(err);
             })
 
         /*const existUser = state.users.some(user => {
@@ -76,26 +76,27 @@ const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
         .catch(err => {
             NotificationManager.error(`${err.message}`, 'Error');
         })*/
-        toggleRegisterModal(false);              
+        toggleRegisterModal(false);
     }
 
     return (
-        <Modal size="mini" open={modalValue} onClose={() => toggleRegisterModal(false)} className="register-modal" closeIcon>
-            <Modal.Header>Sign Up</Modal.Header>
-            <Modal.Content>
-                <section className="login-input">
-                    <div>E-mail Address</div>
-                    <Input autoFocus value={mailAddress} onChange={(e) => getMailAddress(e)} placeholder="Email address"/>
-                </section>
-                <section className="login-input">
-                    <div>Password</div>
-                    <Input type="password" placeholder="Password" value={password} onChange={e => getPassword(e)}/>
-                </section>
-                <button className="login-button" onClick={() => registerUser()}>Sign Up</button>
-            </Modal.Content>
-            <Modal.Actions>
-                <p>If you have any account <span className="login-text" onClick={() => {toggleRegisterModal(false); toggleLoginModal(true)}}>login!</span></p>
-            </Modal.Actions>
+        <Modal
+            title="Sign Up"
+            className="register-modal"
+            visible={modalValue}
+            onOk={() => registerUser()}
+            onCancel={() => toggleRegisterModal(false)}
+            footer={<p>If you have any account <span className="login-text" onClick={() => {toggleRegisterModal(false); toggleLoginModal(true)}}>login!</span></p>}
+        >
+            <section className="login-input">
+                <div>E-mail Address</div>
+                <Input autoFocus value={mailAddress} onChange={(e) => getMailAddress(e)} placeholder="Email address" />
+            </section>
+            <section className="login-input">
+                <div>Password</div>
+                <Input type="password" placeholder="Password" value={password} onChange={e => getPassword(e)} />
+            </section>
+            <button className="login-button" onClick={() => registerUser()}>Sign Up</button>
         </Modal>
     )
 }

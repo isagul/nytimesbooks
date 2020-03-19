@@ -1,13 +1,13 @@
 import React from 'react';
 import './Footer.scss';
-import { Icon } from 'semantic-ui-react';
+import { GithubOutlined } from '@ant-design/icons';
 
 
 const FooterComponent = () => {
     return (
         <div className="footer-component">
             <a href="https://github.com/isagul/nytimesbooks" target="_blank">
-                <Icon name='github' className="github-icon" />
+                <GithubOutlined className="github-icon" />
             <p>View Github Repository</p>
             </a>
         </div>

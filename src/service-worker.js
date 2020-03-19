@@ -29,7 +29,7 @@ self.addEventListener('activate', event => {
 });
 
 
-self.addEventListener('fetch', event => {
+self.addEventListener('fetch', event => {    
     let pattern = new RegExp("^(http|https):");
     let result = pattern.test(event.request.url);
     if (result === true) {

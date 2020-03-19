@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Header, Image, Table, Responsive, Container } from 'semantic-ui-react';
+import { Table, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { Store } from '../../store';
 import BooksAvatar from '../../../assets/images/books-avatar.png';
@@ -9,47 +9,57 @@ import './Categories.scss';
 const Categories = () => {
     const { state } = React.useContext(Store);
 
-    const allCategories = state.categories.length > 0 &&
-        state.categories.map((value, index) => {
-            return (
-                <Table.Row key={index}>
-                    <Responsive as={Table.Cell} minWidth={Responsive.onlyMobile.minWidth}>
-                        <Header as='h4' image>
-                            <Image src={BooksAvatar} rounded size='mini' />
-                            <Header.Content>
-                                {value.display_name}
-                                <Header.Subheader>{value.updated}</Header.Subheader>
-                            </Header.Content>
-                        </Header>
-                    </Responsive>
-                    <Responsive as={Table.Cell} minWidth={Responsive.onlyMobile.minWidth}>{value.oldest_published_date}</Responsive>
-                    <Responsive as={Table.Cell} minWidth={Responsive.onlyMobile.minWidth}>{value.newest_published_date}</Responsive>
-                    <Responsive as={Table.Cell} minWidth={Responsive.onlyMobile.minWidth}>
-                        <Link to={{ pathname: `/categories/${value.list_name_encoded}`, state: { category: value } }}>
-                            <Button>Detail</Button>
-                        </Link>
-                    </Responsive>
-                </Table.Row>
-            )
-        })
+    const addKeyCategories = state.categories.length > 0 && state.categories.map((category, index) => {
+        category["key"] = `${index + 1}`;
+        return category;
+    })
+
+    const columns = [
+        {
+          title: 'Display Name',
+          dataIndex: 'display_name',
+          key: 'display_name',
+          render: (text) => {
+              return (
+                  <div style={{display: 'flex', alignItems: 'center'}}>
+                      <img src={BooksAvatar} style={{height: '30px', marginRight: '5px'}}/>
+                        <p>{text}</p>
+                  </div>
+              )
+          }
+        },
+        {
+          title: 'Oldest Published Date',
+          dataIndex: 'oldest_published_date',
+          key: 'oldest_published_date',
+        },
+        {
+          title: 'Newest Published Date',
+          dataIndex: 'newest_published_date',
+          key: 'newest_published_date',
+        },
+        {
+          title: 'Updated',
+          dataIndex: 'updated',
+          key: 'updated',
+        },
+        {
+            title: 'Action',
+            dataIndex: '',
+            key: 'detail',
+            render: (record) => {
+                return (
+                    <Link to={{ pathname: `/categories/${record.list_name_encoded}`, state: { category: record } }}>
+                        <Button>Detail</Button>
+                    </Link>
+                )
+            },
+        }
+      ];
+
     return (
         <div className="category-table">
-            <Container>
-                <Table basic='very' celled collapsing>
-                    <Table.Header>
-                        <Table.Row>
-                            <Responsive as={Table.HeaderCell} minWidth={Responsive.onlyMobile.minWidth}>Display Name</Responsive>
-                            <Responsive as={Table.HeaderCell} minWidth={Responsive.onlyMobile.minWidth}>Oldest Published Date</Responsive>
-                            <Responsive as={Table.HeaderCell} minWidth={Responsive.onlyMobile.minWidth}>Newest Published Date</Responsive>
-                            <Responsive as={Table.HeaderCell} minWidth={Responsive.onlyMobile.minWidth}>Action</Responsive>
-                        </Table.Row>
-                    </Table.Header>
-
-                    <Table.Body>
-                        {allCategories}
-                    </Table.Body>
-                </Table>
-            </Container>
+            <Table columns={columns} dataSource={addKeyCategories}/>
         </div>
     )
 }

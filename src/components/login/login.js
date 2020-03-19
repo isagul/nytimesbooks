@@ -1,20 +1,21 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Input, Modal } from 'semantic-ui-react';
+import { Input, Modal, Spin } from 'antd';
 import firebase from '../../firebase.config';
-import {Store} from '../../store';
-import {NotificationManager} from "react-notifications";
-import {SET_USERS, LOGGED_USER} from '../../constants/actions';
+import { Store } from '../../store';
+import { NotificationManager } from "react-notifications";
+import { SET_USERS, LOGGED_USER } from '../../constants/actions';
 import axios from 'axios';
 import './login.scss';
 
-const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
-    const {state, dispatch} = useContext(Store);
+const Login = ({ modalValue, toggleLoginModal, toggleRegisterModal }) => {
+    const { state, dispatch } = useContext(Store);
     const [mailAddress, setMailAddress] = useState("");
     const [password, setPassword] = useState("");
-    
+    const [spin, setSpin] = useState(false);
+
     const db = firebase.firestore();
     const ref = db.collection('nytimes');
-    const auth = firebase.auth();
+    // const auth = firebase.auth();
 
     useEffect(() => {
         ref.get().then(snapshot => {
@@ -26,9 +27,9 @@ const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
                 })
             })
         })
-    },[]);
+    }, []);
 
-    function getMailAddress(e){
+    function getMailAddress(e) {
         setMailAddress(e.target.value);
     }
 
@@ -36,18 +37,15 @@ const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
         setPassword(e.target.value);
     }
 
-    function loginUser(){
-        /*let newUser = {
-            mailAddress,
-            password
-        }*/
-        
+    function loginUser() {
+        setSpin(true);
+
         axios.post('https://api-appnytimes.herokuapp.com/user/login', {
             email: mailAddress,
             password: password
         })
             .then(response => {
-                if(response.data.status) {
+                if (response.data.status) {
                     NotificationManager.success(`You logged in successfully`, 'Success');
                     dispatch({
                         type: LOGGED_USER,
@@ -60,12 +58,15 @@ const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
                 }
             })
             .catch(err => {
-                console.log(err);                
+                console.log(err);
             })
-
-        toggleLoginModal(false);      
-
+        // toggleLoginModal(false);
+        setSpin(false);
         /*
+        let newUser = {
+            mailAddress,
+            password
+        }
         const existUser = state.users.some(user => {
             return user.mailAddress === newUser.mailAddress;
         })
@@ -86,23 +87,28 @@ const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
     }
 
     return (
-        <Modal size="mini" open={modalValue} onClose={() => toggleLoginModal(false)} className="login-modal" closeIcon>
-            <Modal.Header>Login</Modal.Header>
-            <Modal.Content>
+
+        <Modal
+            title="Login"
+            className="login-modal"
+            visible={modalValue}
+            onOk={() => loginUser()}
+            onCancel={() => toggleLoginModal(false)}
+            footer={<p>If you do not have any account please <span className="sign-up-text" onClick={() => { toggleLoginModal(false); toggleRegisterModal(true) }}>sign up!</span></p>}
+        >
+            <Spin spinning={spin}>
                 <section className="login-input">
                     <div>E-mail Address</div>
                     <Input value={mailAddress} autoFocus onChange={(e) => getMailAddress(e)} placeholder="Email address" />
                 </section>
                 <section className="login-input">
                     <div>Password</div>
-                    <Input type="password" placeholder="Password" value={password} onChange={e => getPassword(e)}/>
+                    <Input type="password" placeholder="Password" value={password} onChange={e => getPassword(e)} />
                 </section>
                 <button className="login-button" onClick={() => loginUser()}>Login</button>
-            </Modal.Content>
-            <Modal.Actions>
-                <p>If you do not have any account please <span className="sign-up-text" onClick={() => {toggleLoginModal(false); toggleRegisterModal(true)}}>sign up!</span></p>
-            </Modal.Actions>
+            </Spin>
         </Modal>
+
     )
 }
 

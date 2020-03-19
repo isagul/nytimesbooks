@@ -4,7 +4,7 @@ import firebase from '../../firebase.config';
 import Header from '../header/Header';
 import TotalBasket from '../total-basket/TotalBasket';
 import FooterComponent from '../footer/Footer';
-import { Button, Modal } from 'semantic-ui-react';
+import { Button, Modal } from 'antd';
 import ScrollUpButton from '../shared/scrollUpButton';
 import Paginate from '../../services/pagination/paginate';
 import { GET_SHOPPING_ITEMS, INCREASE_ITEM_COUNT, DECREASE_ITEM_COUNT, DELETE_BOOK } from '../../constants/actions';
@@ -187,26 +187,21 @@ const ShoppingBasket = () => {
               <p className="item-count">Item Count: <span>{value.order_count}</span></p>
               <p className="price">Total Price: <span>${Number(value.total_book_price.toFixed(2))}</span></p>
             </div>
-            <Button inverted color='red' onClick={() => show(value)} className="delete-button">
+            <Button danger onClick={() => show(value)} className="delete-button">
               Delete
             </Button>
           </div>
         </div>
-        <Modal size="mini" open={openModal} onClose={close} className="delete-modal">
-          <Modal.Header>Delete Book</Modal.Header>
-          <Modal.Content>
-            <p className="modal-content"><span>{deletedBook.title}</span> will be deleted.</p>
-          </Modal.Content>
-          <Modal.Actions>
-            <Button negative onClick={close}>No</Button>
-            <Button
-              positive
-              icon='checkmark'
-              labelPosition='right'
-              content='Yes'
-              onClick={() => deleteItem(deletedBook)}
-            />
-          </Modal.Actions>
+        <Modal
+          title="Delete Book"
+          className="delete-modal"
+          visible={openModal}
+          onOk={() => deleteItem(deletedBook)}
+          onCancel={close}
+          okButtonProps={{type: 'danger'}}
+          centered
+        >
+           <p className="modal-content"><span>{deletedBook.title}</span> will be deleted.</p>
         </Modal>
       </div>
     )

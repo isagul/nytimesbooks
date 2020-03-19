@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, forwardRef, useImperativeHandle } from 'react';
 import './paginate.scss';
-import { Icon } from 'semantic-ui-react';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { PAGINATE_BOOKS, UPDATE_PAGINATE_BOOKS } from '../../constants/actions';
 import { Store } from '../../store'
 
@@ -97,9 +97,13 @@ const Paginate = forwardRef((props, ref) => {
             {
                 addedItems.length > 3 &&
                 <ul className="page-numbers">
-                    <li className={`page-direction ${currentPage === 1 && 'disable-paginate-button'} `} onClick={paginateLeft}><Icon name="chevron left" /></li>
+                    <li className={`page-direction ${currentPage === 1 && 'disable-paginate-button'} `} onClick={paginateLeft}>
+                        <LeftOutlined />
+                    </li>
                     {renderPageNumbers}
-                    <li className={`page-direction ${currentPage === pageNumbers.length && 'disable-paginate-button'} `} onClick={paginateRight}><Icon name="chevron right" /></li>
+                    <li className={`page-direction ${currentPage === pageNumbers.length && 'disable-paginate-button'} `} onClick={paginateRight}>
+                        <RightOutlined />
+                    </li>
                 </ul>
             }
         </>

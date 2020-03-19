@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Store } from '../../store';
 import axios from 'axios';
-import { Dimmer, Loader, Segment, Button } from 'semantic-ui-react';
+import { Spin, Button } from 'antd';
 import './CategoryBooks.scss';
 import firebase from '../../firebase.config';
 import ScrollUpButton from '../shared/scrollUpButton';
@@ -10,16 +10,16 @@ import FooterComponent from '../footer/Footer';
 import { NotificationManager } from 'react-notifications';
 import {SET_CATEGORY_DATA, GET_SHOPPING_ITEMS, ADD_TO_CARD} from '../../constants/actions';
 
-
 const CategoryBooks = (props) => {
   const { state, dispatch } = React.useContext(Store);
   const [isActive, setIsActive] = useState(true);
 
-  const db = firebase.firestore();
-  const auth = firebase.auth();
+  /*const db = firebase.firestore();
+  const auth = firebase.auth();*/
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    console.log(localStorage.getItem('list_name_encoded'));
     let categoryRoute = props.location.state.category.list_name_encoded;
     axios.get(`https://api.nytimes.com/svc/books/v3/lists/current/${categoryRoute}.json`, {
       params: {
@@ -146,7 +146,7 @@ const CategoryBooks = (props) => {
               <p><span>by </span>{value.author}</p>
             </div>
             <p className="desc">{value.description}</p>
-            <Button inverted color="orange" onClick={() => addToCard(value)} className="add-to-card">
+            <Button onClick={() => addToCard(value)} className="add-to-card">
               Add To Cart
             </Button>
           </div>
@@ -157,21 +157,12 @@ const CategoryBooks = (props) => {
   return (
     <div className="category-books">
       <HeaderComponent />
-      {
-        isActive ?
-          <Segment>
-            <Dimmer active style={{ height: '100vh' }}>
-              <Loader indeterminate>Loading</Loader>
-            </Dimmer>
-          </Segment> :
-          <div className="category-detail-container">
-            <h2 className="title">{props.location.state.category.display_name}</h2>
-            {
-              categoryDetail
-            }
-          </div>
-
-      }
+      <Spin spinning={isActive} size="large" style={{height: '100vh', maxHeight: 'none'}}>
+        <div className="category-detail-container">
+          <h2 className="title">{props.location.state.category.display_name}</h2>
+          { categoryDetail }
+        </div>
+      </Spin>
       <FooterComponent />
       <ScrollUpButton />
     </div>

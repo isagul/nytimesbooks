@@ -8,6 +8,7 @@ import {BrowserRouter as Router,Switch, Route} from 'react-router-dom';
 import {NotificationContainer} from "react-notifications";
 import {CATEGORIES_NAME, HOME, SHOPPING_BASKET} from './constants/routes';
 import './index.scss';
+import 'antd/dist/antd.css';
 import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 
 

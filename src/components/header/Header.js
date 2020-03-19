@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Icon } from 'semantic-ui-react';
+import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import {Spin} from 'antd'
 import './Header.scss';
 import Search from '../search/Search';
 import Login from '../login/login';
@@ -101,7 +102,7 @@ const HeaderComponent = (props) => {
       <div className="header-user-action">
         <div className="user-area">
           <div className="user-info">
-            <Icon name='user' className="user icon" />
+            <UserOutlined className="user icon"/>
           </div>
           {
             !localStorage.getItem('token') ?
@@ -118,7 +119,7 @@ const HeaderComponent = (props) => {
         </div>
         <Link to='/your-shopping-basket' className="basket">
           <div className="shopping-area">
-            <Icon name='shopping cart' className="shopping-cart icon" />
+            <ShoppingCartOutlined className="shopping-cart icon" />
 
             {
               state.addedItems.length > 0 &&
@@ -132,7 +133,7 @@ const HeaderComponent = (props) => {
       }
       {
         openSignModal && <Register modalValue={openSignModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal} />
-      }
+      }      
     </div>
   )
 }

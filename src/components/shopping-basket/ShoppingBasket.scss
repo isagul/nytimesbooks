@@ -8,7 +8,7 @@
     justify-content: space-evenly;
     margin-bottom: 5rem;
     .items-div {
-        margin-top: 5rem;
+        margin-top: 6rem;
         .added-items {
           display: flex;
           flex-direction: column;
@@ -90,7 +90,8 @@
                 flex-direction: row;
                 justify-content: flex-end;
                 button {
-                  font-size: 10px;
+                  font-size: 15px;
+                  margin-left: 3px;
                 }
               }
               .delete-button {
@@ -103,7 +104,7 @@
   }
   .empty-cart {
     text-align: center;
-    margin-top: 5rem;
+    margin-top: 6rem;
     font-weight: bold;
     font-size: 20px;
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import ScrollToTop from 'react-scroll-up';
-import { Icon } from 'semantic-ui-react';
+import {ArrowUpOutlined} from '@ant-design/icons'
 
 const ScrollUpButton = () => {
     const scrollUpBtnStyle = {
@@ -13,7 +13,7 @@ const ScrollUpButton = () => {
     }
     return (
         <ScrollToTop showUnder={160} style={scrollUpBtnStyle}>
-            <span><Icon name="arrow up" />Scroll Up</span>
+            <span><ArrowUpOutlined /> Scroll Up</span>
         </ScrollToTop>
     )
 }
