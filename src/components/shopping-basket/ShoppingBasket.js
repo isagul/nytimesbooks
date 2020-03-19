@@ -55,6 +55,16 @@ const ShoppingBasket = () => {
       payload: value
     });
 
+    axios.post('https://api-appnytimes.herokuapp.com/user/update-basket', {
+      email: localStorage.getItem('email'),
+      basket: state.addedItems
+    })
+      .then(response => {
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    /*
     auth.onAuthStateChanged(user => {
       if (user) {
         db.collection("nytimes").where("uid", "==", user.uid)
@@ -66,7 +76,7 @@ const ShoppingBasket = () => {
           })
       }
     })
-    
+    */
     paginationComp.current.updatePaginateBooks();
   }
 
@@ -76,7 +86,17 @@ const ShoppingBasket = () => {
       payload: value
     })
 
-    auth.onAuthStateChanged(user => {
+    axios.post('https://api-appnytimes.herokuapp.com/user/update-basket', {
+      email: localStorage.getItem('email'),
+      basket: state.addedItems
+    })
+      .then(response => {
+      })
+      .catch(error => {
+        console.log(error);
+      })
+
+    /*auth.onAuthStateChanged(user => {
       if (user) {
         db.collection("nytimes").where("uid", "==", user.uid)
           .get()
@@ -86,7 +106,7 @@ const ShoppingBasket = () => {
             });
           })
       }
-    })
+    })*/
 
     paginationComp.current.updatePaginateBooks();
   }

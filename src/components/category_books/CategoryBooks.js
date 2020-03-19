@@ -102,7 +102,8 @@ const CategoryBooks = (props) => {
           "book_image": value.book_image,
           "buy_links": value.buy_links,
           "book_price": value.book_price,
-          "total_book_price": value.total_book_price
+          "total_book_price": value.total_book_price,
+          "order_count": value.order_count
       })
         .then(response => {
           // console.log(response);
