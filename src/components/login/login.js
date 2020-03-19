@@ -91,11 +91,11 @@ const Login = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
             <Modal.Content>
                 <section className="login-input">
                     <div>E-mail Address</div>
-                    <Input value={mailAddress} onChange={(e) => getMailAddress(e)} />
+                    <Input value={mailAddress} autoFocus onChange={(e) => getMailAddress(e)} placeholder="Email address" />
                 </section>
                 <section className="login-input">
                     <div>Password</div>
-                    <Input type="password" value={password} onChange={e => getPassword(e)}/>
+                    <Input type="password" placeholder="Password" value={password} onChange={e => getPassword(e)}/>
                 </section>
                 <button className="login-button" onClick={() => loginUser()}>Login</button>
             </Modal.Content>

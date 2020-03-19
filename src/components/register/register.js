@@ -85,16 +85,16 @@ const Register = ({modalValue, toggleLoginModal, toggleRegisterModal}) => {
             <Modal.Content>
                 <section className="login-input">
                     <div>E-mail Address</div>
-                    <Input value={mailAddress} onChange={(e) => getMailAddress(e)}/>
+                    <Input autoFocus value={mailAddress} onChange={(e) => getMailAddress(e)} placeholder="Email address"/>
                 </section>
                 <section className="login-input">
                     <div>Password</div>
-                    <Input type="password" value={password} onChange={e => getPassword(e)}/>
+                    <Input type="password" placeholder="Password" value={password} onChange={e => getPassword(e)}/>
                 </section>
                 <button className="login-button" onClick={() => registerUser()}>Sign Up</button>
             </Modal.Content>
             <Modal.Actions>
-                <p>If you have any account <span className="login-text" onClick={() => {toggleRegisterModal(false); toggleLoginModal(true)}}>log-in!</span></p>
+                <p>If you have any account <span className="login-text" onClick={() => {toggleRegisterModal(false); toggleLoginModal(true)}}>login!</span></p>
             </Modal.Actions>
         </Modal>
     )

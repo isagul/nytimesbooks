@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   background-color: $header-bg-color;
   padding: 1rem 8px;
@@ -16,7 +16,7 @@
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
   h1 {
     color: $header-title-color;
-    font-family: 'Lora', serif;
+    // font-family: 'Lora', serif;
     &:hover {
       cursor: pointer;
     }
@@ -52,7 +52,7 @@
         width:200px;    
         font-weight: 400!important;
         position: absolute;
-        left: -90px;
+        left: -100px;
         background-color: #fff;
         box-shadow: 0 4px 3px 1px rgba(0,0,0,.07);
         border: solid 1px #d6d6d6;
@@ -67,12 +67,12 @@
           height: 0;
         }
         &::after{
-          left: 106px;
+          left: 115px;
           border: 10px solid transparent;
           border-bottom-color: #fff;
         }
         &::before {
-          left: 105px;
+          left: 114px;
           border: 11px solid transparent;
           border-bottom-color: #ddd;
         }
@@ -97,6 +97,10 @@
           font-family: 'Open Sans', sans-serif;
         }
         .user-mail {
+          color: #f27a1a;
+          font-weight: bold;
+        }
+        .basket-total-price{
           color: #f27a1a;
           font-weight: bold;
         }

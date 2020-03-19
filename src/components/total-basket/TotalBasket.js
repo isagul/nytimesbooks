@@ -8,7 +8,7 @@ const TotalBasket = () => {
   let totalPrice = 0;
   useEffect(() => {
     let result = state.addedItems.map(a => a.total_book_price);
-    totalPrice = result.reduce((acc, sum) => {
+    let totalPrice = result.reduce((acc, sum) => {
       return sum += acc;
     }, 0);
     setOrderPrice(totalPrice);

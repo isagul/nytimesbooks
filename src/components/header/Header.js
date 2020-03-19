@@ -17,6 +17,7 @@ const HeaderComponent = (props) => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openSignModal, setOpenSignModal] = useState(false);
   const [loggedUser, setLoggedUser] = useState("")
+  const [orderPrice, setOrderPrice] = useState(0);
 
   const auth = firebase.auth();
   const db = firebase.firestore();
@@ -44,7 +45,7 @@ const HeaderComponent = (props) => {
         .catch(err => {
           console.log(err)
         })
-    }
+    }    
 
     /*auth.onAuthStateChanged(user => {
       if (user) {
@@ -64,6 +65,14 @@ const HeaderComponent = (props) => {
       }
     })*/
   }, [state.loggedUser])
+
+  useEffect(() => {
+    let result = state.addedItems.map(a => a.total_book_price);
+    let totalPrice = result.reduce((acc, sum) => {
+      return sum += acc;
+    }, 0);
+    setOrderPrice(totalPrice);
+  }, [state])
 
   function toggleLoginModal(value) {
     setOpenLoginModal(value);
@@ -88,7 +97,7 @@ const HeaderComponent = (props) => {
       <Link to="/">
         <h1>The New York Times Bestsellers</h1>
       </Link>
-      {isShowSearch && <Search />}
+      {/* {isShowSearch && <Search />} */}
       <div className="header-user-action">
         <div className="user-area">
           <div className="user-info">
@@ -102,6 +111,7 @@ const HeaderComponent = (props) => {
               </div> :
               <div className="login-panel-container">
                 <p className="user-mail">{loggedUser}</p>
+                <p>Order Total: <span className="basket-total-price">${Number(orderPrice.toFixed(2))}</span></p>
                 <button className="account-button logout" onClick={(e) => logoutUser(e)}>Logout</button>
               </div>
           }
