@@ -8,7 +8,7 @@
   align-items: center;
   background-color: $header-bg-color;
   padding: 1rem 8px;
-  position: fixed;
+  position: sticky;
   width: 100%;
   top:0;
   z-index: 1;
@@ -16,13 +16,18 @@
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
   h1 {
     color: $header-title-color;
-    // font-family: 'Lora', serif;
+    font-family: 'Lora', serif;
     &:hover {
       cursor: pointer;
     }
-  }
+  }  
   .search {
-    margin-top: 5px;
+    width: 50%;
+    &:focus {
+      border: 2px solid $header-title-color;
+      outline: none;
+      box-shadow: none;
+    }
   }
   .header-user-action {
     display: flex;
@@ -33,18 +38,11 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        .icon-info {
-          font-size: 12px;
-        }
       }
       &:hover {
         .login-panel-container {
           visibility: visible;
         }
-      }
-      .user {
-        color:black;
-        font-size: 22px;        
       }
       .login-panel-container {
         visibility: hidden;
@@ -109,6 +107,7 @@
           color: #fff;
           background-color: #f27a1a;
           font-family: 'Open Sans', sans-serif;
+          outline: none;
         } 
       }
     }
@@ -117,8 +116,6 @@
       position: relative;
       .shopping-cart{
         color:black;
-        font-size: 22px;
-        margin-right: 1rem;
         &:hover {
           cursor: pointer;
           border-bottom :3px solid $shopping-cart-color;
@@ -129,8 +126,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        right: 0;
-        top: -15px;
+        right: -12px;
+        top: -12px;
         border: 1px solid $shopping-cart-color;
         border-radius: 50%;
         height: 25px;
@@ -140,8 +137,20 @@
         color:white;
       }
     }
+    .favourite-icon {
+      transition: all 0.2s ease-out;
+      color: black;
+      &:hover {
+        cursor: pointer;
+        color:$shopping-cart-color;
+      }
+    }
     .icon {
       margin-left: 1rem;
+    }
+    .anticon {
+      color: black;
+      font-size: 25px;
     }
   }
 }
@@ -151,11 +160,19 @@
 }
 
 @media screen and (max-width: 425px) {
-  .header-component {    
-    h1 {
-      font-size:16px;
+  .header-component { 
+    flex-wrap: wrap;   
+    a {
+      flex:1;
+      h1 {
+        font-size:16px;
+      }
+    }
+    .search {
+      flex:2;
     }
     .header-user-action {
+      flex:1;
       .shopping-area {
         .item-count {
           top:-12px;

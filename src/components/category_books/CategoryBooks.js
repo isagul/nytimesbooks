@@ -2,24 +2,41 @@ import React, { useEffect, useState } from 'react';
 import { Store } from '../../store';
 import axios from 'axios';
 import { Spin, Button } from 'antd';
-import './CategoryBooks.scss';
-import firebase from '../../firebase.config';
+import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import ScrollUpButton from '../shared/scrollUpButton';
 import HeaderComponent from '../header/Header';
 import FooterComponent from '../footer/Footer';
 import { NotificationManager } from 'react-notifications';
-import {SET_CATEGORY_DATA, GET_SHOPPING_ITEMS, ADD_TO_CARD} from '../../constants/actions';
+import { 
+  SET_CATEGORY_DATA, 
+  ADD_TO_CARD, 
+  ADD_TO_FAVOURITE, 
+  REMOVE_FAVOURITE,
+  GET_FAVOURITES 
+} from '../../constants/actions';
+import './CategoryBooks.scss';
 
 const CategoryBooks = (props) => {
   const { state, dispatch } = React.useContext(Store);
   const [isActive, setIsActive] = useState(true);
 
-  /*const db = firebase.firestore();
-  const auth = firebase.auth();*/
+  useEffect(() => {
+    axios.post('https://api-appnytimes.herokuapp.com/book/get-favourites', {
+      "email": localStorage.getItem('email')
+    }).then(response => {
+      if (response.data.status) {
+        dispatch({
+          type: GET_FAVOURITES,
+          payload: response.data.favourites
+        })
+      }
+    }).catch(error => {
+      // console.log(error);
+    })
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log(localStorage.getItem('list_name_encoded'));
     let categoryRoute = props.location.state.category.list_name_encoded;
     axios.get(`https://api.nytimes.com/svc/books/v3/lists/current/${categoryRoute}.json`, {
       params: {
@@ -40,41 +57,8 @@ const CategoryBooks = (props) => {
       })
   }, []);
 
-  useEffect(() => {
-    axios.post('https://api-appnytimes.herokuapp.com/user/get-info', {
-        email: localStorage.getItem('email')
-      })
-      .then(response => {
-          if (response.data.status) {
-            dispatch({
-              type: GET_SHOPPING_ITEMS,
-              payload: response.data.user.basket
-            })
-          } 
-      })
-      .catch(error => {
-        console.log(error);
-      })
-    /*auth.onAuthStateChanged(user => {
-      if (user) {
-        db.collection("nytimes").where("uid", "==", user.uid)
-          .get()
-          .then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-              if (doc.data().basket) {
-                dispatch({
-                  type: GET_SHOPPING_ITEMS,
-                  payload: doc.data().basket
-                })
-              }
-            });
-          })
-      }
-    })*/
-  }, [])
-
   function addToCard(value) {
-
+    setIsActive(true);
     const index = state.addedItems.findIndex(el => el.primary_isbn10 == value.primary_isbn10);
     if (index === -1) {
       let price = Number((Math.random() * (30 - 10) + 10).toFixed(2));
@@ -83,14 +67,13 @@ const CategoryBooks = (props) => {
       value["total_book_price"] = price;
       value["order_count"] = orderCount;
 
-      setIsActive(true);
-
       dispatch({
         type: ADD_TO_CARD,
         payload: value
       });
 
-      axios.post('https://api-appnytimes.herokuapp.com/book/add-to-cart', {    
+      if(localStorage.getItem('email')) {
+        axios.post('https://api-appnytimes.herokuapp.com/book/add-to-cart', {
           "email": localStorage.getItem('email'),
           "primary_isbn10": value.primary_isbn10,
           "primary_isbn13": value.primary_isbn13,
@@ -104,33 +87,98 @@ const CategoryBooks = (props) => {
           "book_price": value.book_price,
           "total_book_price": value.total_book_price,
           "order_count": value.order_count
-      })
-        .then(response => {
-          // console.log(response);
         })
-        .catch(error => {
-          console.log(error);
-        })
-
-      /*
-      const newItemsArray = [...state.addedItems, value];
-
-      auth.onAuthStateChanged(user => {
-        if (user) {
-          db.collection("nytimes").where("uid", "==", user.uid)
-            .get()
-            .then(function (querySnapshot) {
-              querySnapshot.forEach(function (doc) {
-                db.collection("nytimes").doc(doc.id).update({ basket: newItemsArray });
-              });
-            })
-        }
-      })*/
+          .then(response => {
+            NotificationManager.success(`Book was added successfully`, 'Success');
+            // console.log(response);
+          })
+          .catch(error => {
+            NotificationManager.error('Something went wrong!', 'Error');            
+          })
+      }
       setTimeout(() => {
         setIsActive(false);
       }, 500);
     } else {
       NotificationManager.warning('This book already exists in your cart', 'Warning');
+      setIsActive(false);
+    }
+  }
+
+  function addToFavourite(value) {
+    setIsActive(true);
+
+    dispatch({
+      type: ADD_TO_FAVOURITE,
+      payload: value
+    });
+
+    if(localStorage.getItem('email')) {
+      axios.post('https://api-appnytimes.herokuapp.com/book/favourites/add', {
+        "email": localStorage.getItem('email'),
+        "primary_isbn10": value.primary_isbn10,
+        "primary_isbn13": value.primary_isbn13,
+        "publisher": value.publisher,
+        "description": value.description,
+        "title": value.title,
+        "author": value.author,
+        "contributor": value.contributor,
+        "book_image": value.book_image,
+        "buy_links": value.buy_links,
+        "book_price": value.book_price,
+        "total_book_price": value.total_book_price,
+        "order_count": value.order_count,
+        "is_favourite": true
+      })
+        .then(response => {
+          setIsActive(false);
+        })
+        .catch(error => {
+          setIsActive(false);
+        })
+    }   
+    setTimeout(() => {
+      setIsActive(false);
+    }, 500); 
+  }
+
+  function removeFavourite(value) {
+    setIsActive(true);
+
+    dispatch({
+      type: REMOVE_FAVOURITE,
+      payload: value
+    });
+
+    if(localStorage.getItem('email')) {
+      axios.delete('https://api-appnytimes.herokuapp.com/book/favourites/delete', {
+        data: {
+          email: localStorage.getItem('email'),
+          primary_isbn10: value.primary_isbn10
+        }
+      })
+        .then(response => {
+          // console.log(response);
+          setIsActive(false);
+        })
+        .catch(error => {
+          // console.log(error);
+          setIsActive(false);
+        })
+    }
+    setTimeout(() => {
+      setIsActive(false);
+    }, 500);    
+  }
+
+  const createHeartIcon = value => {
+    const book = state.favourites.find(favourite => favourite.title === value.title);
+    if (book) {
+      return (
+        <HeartFilled onClick={() => removeFavourite(value)} className="remove-favourite" />
+      )
+    } else {
+      return <HeartOutlined onClick={() => addToFavourite(value)} className="add-to-favourite" />
     }
   }
 
@@ -138,7 +186,6 @@ const CategoryBooks = (props) => {
     state.categoryBooks.map((value, index) => {
       return (
         <div className="all-detail" key={index}>
-          <p className="index-number">{index + 1}</p>
           <img className="book-image" src={`${value.book_image}`} />
           <div className="details">
             <div className="name-author">
@@ -146,9 +193,15 @@ const CategoryBooks = (props) => {
               <p><span>by </span>{value.author}</p>
             </div>
             <p className="desc">{value.description}</p>
-            <Button onClick={() => addToCard(value)} className="add-to-card">
-              Add To Cart
-            </Button>
+            <div className="actions-area">
+              {
+                state.favourites.length > 0 ? createHeartIcon(value)
+                  : <HeartOutlined onClick={() => addToFavourite(value)} className="add-to-favourite" />
+              }
+              <Button onClick={() => addToCard(value)} className="add-to-card">
+                Add To Cart
+              </Button>
+            </div>
           </div>
         </div>
       )
@@ -157,10 +210,10 @@ const CategoryBooks = (props) => {
   return (
     <div className="category-books">
       <HeaderComponent />
-      <Spin spinning={isActive} size="large" style={{height: '100vh', maxHeight: 'none'}}>
+      <Spin spinning={isActive} size="large" style={{ height: '100vh', maxHeight: 'none' }}>
         <div className="category-detail-container">
           <h2 className="title">{props.location.state.category.display_name}</h2>
-          { categoryDetail }
+          {categoryDetail}
         </div>
       </Spin>
       <FooterComponent />

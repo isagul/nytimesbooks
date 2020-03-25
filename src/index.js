@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import App from './components/App';
 import CategoryBooks from './components/category_books/CategoryBooks';
 import ShoppingBasket from './components/shopping-basket/ShoppingBasket';
+import Favourites from './components/favourites/favourites';
 import {StoreProvider} from './store';
 import {BrowserRouter as Router,Switch, Route} from 'react-router-dom';
 import {NotificationContainer} from "react-notifications";
-import {CATEGORIES_NAME, HOME, SHOPPING_BASKET} from './constants/routes';
+import {CATEGORIES_NAME, HOME, SHOPPING_BASKET, FAVOURITES} from './constants/routes';
 import './index.scss';
 import 'antd/dist/antd.css';
 import runtime from 'serviceworker-webpack-plugin/lib/runtime';
@@ -32,6 +33,7 @@ ReactDOM.render(
                 <Route exact path={HOME} component={App}></Route>
                 <Route exact path={CATEGORIES_NAME} component={CategoryBooks}></Route>
                 <Route exact path={SHOPPING_BASKET} component={ShoppingBasket}></Route>
+                <Route exact path={FAVOURITES} component={Favourites}></Route>
             </Switch>
         </Router>
         <NotificationContainer />

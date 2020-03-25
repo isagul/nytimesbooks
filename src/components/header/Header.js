@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
-import {Spin} from 'antd'
+import { ShoppingCartOutlined, UserOutlined, HeartOutlined } from '@ant-design/icons';
 import './Header.scss';
 import Search from '../search/Search';
 import Login from '../login/login';
@@ -9,8 +8,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Store } from '../../store';
 import axios from 'axios';
 import { GET_SHOPPING_ITEMS } from '../../constants/actions';
-import firebase from '../../firebase.config';
-
+import {SHOPPING_BASKET, FAVOURITES, HOME} from '../../constants/routes';
 
 const HeaderComponent = (props) => {
   const { state, dispatch } = useContext(Store);
@@ -19,9 +17,6 @@ const HeaderComponent = (props) => {
   const [openSignModal, setOpenSignModal] = useState(false);
   const [loggedUser, setLoggedUser] = useState("")
   const [orderPrice, setOrderPrice] = useState(0);
-
-  const auth = firebase.auth();
-  const db = firebase.firestore();
 
   useEffect(() => {
     props.location.pathname === '/' ? setIsShowSearch(true) : setIsShowSearch(false);
@@ -47,24 +42,6 @@ const HeaderComponent = (props) => {
           console.log(err)
         })
     }    
-
-    /*auth.onAuthStateChanged(user => {
-      if (user) {
-        setLoggedUser(user.email);
-        db.collection("nytimes").where("uid", "==", user.uid)
-          .get()
-          .then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-              if (doc.data().basket) {
-                dispatch({
-                  type: GET_SHOPPING_ITEMS,
-                  payload: doc.data().basket
-                })
-              }              
-            });
-          })
-      }
-    })*/
   }, [state.loggedUser])
 
   useEffect(() => {
@@ -88,18 +65,18 @@ const HeaderComponent = (props) => {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
     window.location.reload();
-    /*auth.signOut().then(() => {
-      window.location.reload();
-    })*/
   }
 
   return (
     <div className="header-component">
-      <Link to="/">
+      <Link to={HOME}>
         <h1>The New York Times Bestsellers</h1>
       </Link>
-      {/* {isShowSearch && <Search />} */}
+      {/*isShowSearch && <Search />*/}
       <div className="header-user-action">
+        <Link to={FAVOURITES}>
+          <HeartOutlined className="favourite-icon"/>
+        </Link>
         <div className="user-area">
           <div className="user-info">
             <UserOutlined className="user icon"/>
@@ -117,10 +94,9 @@ const HeaderComponent = (props) => {
               </div>
           }
         </div>
-        <Link to='/your-shopping-basket' className="basket">
+        <Link to={SHOPPING_BASKET} className="basket">
           <div className="shopping-area">
             <ShoppingCartOutlined className="shopping-cart icon" />
-
             {
               state.addedItems.length > 0 &&
               <div className="item-count">{state.addedItems.length}</div>
@@ -128,12 +104,8 @@ const HeaderComponent = (props) => {
           </div>
         </Link>
       </div>
-      {
-        openLoginModal && <Login modalValue={openLoginModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal} />
-      }
-      {
-        openSignModal && <Register modalValue={openSignModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal} />
-      }      
+      { openLoginModal && <Login modalValue={openLoginModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal} /> }
+      { openSignModal && <Register modalValue={openSignModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal} /> }      
     </div>
   )
 }

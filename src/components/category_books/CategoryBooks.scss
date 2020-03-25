@@ -4,8 +4,6 @@
     .category-detail-container {
         display: flex;
         flex-direction: column;
-        margin-bottom: 5rem;
-        margin-top: 6rem;
     }
     .title {
         text-align: center;
@@ -23,6 +21,17 @@
         color:black;
         @media screen and (max-width: 767px) {
             width: 100%;
+        }
+        @media screen and (max-width: 414px) {
+            width: 75%;
+            flex-direction: column;
+            align-items: center;
+
+            img {
+                width:200px;
+                margin-right: 0;
+                margin-bottom: 5px;
+            }
         }
         &:hover {
             box-shadow: 3px 3px 8px 4px grey;
@@ -56,28 +65,33 @@
                 margin-top: 1rem;
                 text-align: justify;
             }
-            .add-to-card {
-                margin-top: 5rem;
-                display: block;
-                margin-left: auto;
-                color: $shopping-cart-color;
-                border: 2px solid $shopping-image-outline-color;
-                font-weight: bold;
-                height: 40px;
-                &:hover{
-                    background-color: $shopping-cart-color;
-                    color:white
+            .actions-area {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-top: 3rem;
+                .add-to-favourite {
+                    font-size: 30px;
+                    transition: color 0.1s ease-out;
+                    &:hover {
+                        color: $shopping-cart-color;
+                    }
+                }
+                .remove-favourite {
+                    font-size: 30px;
+                    color: $shopping-cart-color;
+                }
+                .add-to-card {
+                    color: $shopping-cart-color;
+                    border: 2px solid $shopping-image-outline-color;
+                    font-weight: 600;
+                    height: 40px;
+                    &:hover{
+                        background-color: $shopping-cart-color;
+                        color:white
+                    }
                 }
             }
         }
     }
-}
-
-@media screen and (max-width: 414px) {
-  .all-detail {
-    margin-top: 2rem;
-  }
-  .category-detail-container {
-    margin-top: 8rem !important;
-  }
 }

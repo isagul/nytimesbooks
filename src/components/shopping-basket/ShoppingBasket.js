@@ -1,13 +1,15 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { Store } from '../../store';
-import firebase from '../../firebase.config';
 import Header from '../header/Header';
 import TotalBasket from '../total-basket/TotalBasket';
 import FooterComponent from '../footer/Footer';
 import { Button, Modal } from 'antd';
+import { ShoppingCartOutlined } from '@ant-design/icons';
 import ScrollUpButton from '../shared/scrollUpButton';
 import Paginate from '../../services/pagination/paginate';
-import { GET_SHOPPING_ITEMS, INCREASE_ITEM_COUNT, DECREASE_ITEM_COUNT, DELETE_BOOK } from '../../constants/actions';
+import { INCREASE_ITEM_COUNT, DECREASE_ITEM_COUNT, DELETE_BOOK } from '../../constants/actions';
+import { HOME } from '../../constants/routes';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './ShoppingBasket.scss';
 
@@ -17,28 +19,6 @@ const ShoppingBasket = () => {
   const [deletedBook, setDeletedBook] = useState({});
 
   const paginationComp = useRef();
-
-  const db = firebase.firestore();
-  const auth = firebase.auth();
-
-  useEffect(() => {
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        db.collection("nytimes").where("uid", "==", user.uid)
-          .get()
-          .then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-              if (doc.data().basket) {
-                dispatch({
-                  type: GET_SHOPPING_ITEMS,
-                  payload: doc.data().basket
-                })
-              }
-            });
-          })
-      }
-    })
-  }, [])
 
   const show = function (value) {
     setOpenModal(true);
@@ -55,28 +35,18 @@ const ShoppingBasket = () => {
       payload: value
     });
 
-    axios.post('https://api-appnytimes.herokuapp.com/user/update-basket', {
-      email: localStorage.getItem('email'),
-      basket: state.addedItems
-    })
-      .then(response => {
+    if(localStorage.getItem('email')) {
+      axios.post('https://api-appnytimes.herokuapp.com/user/update-basket', {
+        email: localStorage.getItem('email'),
+        basket: state.addedItems
       })
-      .catch(error => {
-        console.log(error);
-      })
-    /*
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        db.collection("nytimes").where("uid", "==", user.uid)
-          .get()
-          .then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-              db.collection("nytimes").doc(doc.id).update({ basket: state.addedItems });
-            });
-          })
-      }
-    })
-    */
+        .then(response => {
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    }
+    
     paginationComp.current.updatePaginateBooks();
   }
 
@@ -86,27 +56,17 @@ const ShoppingBasket = () => {
       payload: value
     })
 
-    axios.post('https://api-appnytimes.herokuapp.com/user/update-basket', {
-      email: localStorage.getItem('email'),
-      basket: state.addedItems
-    })
-      .then(response => {
+    if(localStorage.getItem('email')) {
+      axios.post('https://api-appnytimes.herokuapp.com/user/update-basket', {
+        email: localStorage.getItem('email'),
+        basket: state.addedItems
       })
-      .catch(error => {
-        console.log(error);
-      })
-
-    /*auth.onAuthStateChanged(user => {
-      if (user) {
-        db.collection("nytimes").where("uid", "==", user.uid)
-          .get()
-          .then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-              db.collection("nytimes").doc(doc.id).update({ basket: state.addedItems });
-            });
-          })
-      }
-    })*/
+        .then(response => {
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    }    
 
     paginationComp.current.updatePaginateBooks();
   }
@@ -118,33 +78,21 @@ const ShoppingBasket = () => {
       payload: value
     });
 
-    axios.delete('https://api-appnytimes.herokuapp.com/book/delete', {
-      data: {
-        email: localStorage.getItem('email'),
-        primary_isbn10: value.primary_isbn10
-      }
-    })
-    .then(response => {
-      // console.log('delete book', response)
-    })
-    .catch(error => {
-      console.log(error);
-    })
+    if (localStorage.getItem('email')) {
+      axios.delete('https://api-appnytimes.herokuapp.com/book/delete', {
+        data: {
+          email: localStorage.getItem('email'),
+          primary_isbn10: value.primary_isbn10
+        }
+      })
+        .then(response => {
+          // console.log('delete book', response)
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    }
     
-    /*auth.onAuthStateChanged(user => {
-      if (user) {
-        db.collection("nytimes").where("uid", "==", user.uid)
-          .get()
-          .then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-              const basket = doc.data().basket;
-              const index = basket.findIndex(el => el.primary_isbn10 == value.primary_isbn10);
-              basket.splice(index, 1);
-              db.collection("nytimes").doc(doc.id).update({ basket });
-            });
-          })
-      }
-    })*/
     paginationComp.current.deletedBookFromParent();
   }
 
@@ -198,10 +146,10 @@ const ShoppingBasket = () => {
           visible={openModal}
           onOk={() => deleteItem(deletedBook)}
           onCancel={close}
-          okButtonProps={{type: 'danger'}}
+          okButtonProps={{ type: 'danger' }}
           centered
         >
-           <p className="modal-content"><span>{deletedBook.title}</span> will be deleted.</p>
+          <p className="modal-content"><span>{deletedBook.title}</span> will be deleted.</p>
         </Modal>
       </div>
     )
@@ -210,16 +158,23 @@ const ShoppingBasket = () => {
   return (
     <div className="shopping-basket-component">
       <Header />
+      <h3 className="page-title">My Cart</h3>
       {
         state.addedItems.length > 0 ?
           <div className="shopping-basket">
             <div className="items-div">
               {items}
-              <Paginate ref={paginationComp} paginateBook={state.paginateBooks}/>
+              <Paginate ref={paginationComp} paginateBook={state.paginateBooks} />
             </div>
             <TotalBasket />
           </div> :
-          <p className="empty-cart">Your shopping cart is empty.</p>
+          <div className="empty-basket">
+            <ShoppingCartOutlined className="shopping-icon" />
+            <span className="info">Your shopping cart is empty</span>
+            <Link to={HOME}>
+              <Button className="btn-view-books">View Books</Button>
+            </Link>
+          </div>
       }
       <FooterComponent />
       <ScrollUpButton />

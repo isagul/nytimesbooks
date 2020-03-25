@@ -1,11 +1,14 @@
-var CACHE_NAME = 'v1';
+const CACHE_NAME = 'v1';
+import { Queue } from 'workbox-background-sync';
+
+const queue = new Queue('nytimesQueue');
 
 const assets = [
     '../assets/images/books-avatar.png',
     '../assets/images/favicon.png',
     '../dist/index.html',
 ];
-
+/*
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
@@ -29,7 +32,7 @@ self.addEventListener('activate', event => {
 });
 
 
-self.addEventListener('fetch', event => {    
+self.addEventListener('fetch', event => {
     let pattern = new RegExp("^(http|https):");
     let result = pattern.test(event.request.url);
     if (result === true) {
@@ -37,6 +40,10 @@ self.addEventListener('fetch', event => {
             fetch(event.request)
                 .then(res => {
                     const resClone = res.clone();
+                    const promiseChain = fetch(resClone).catch((err) => {
+                        return queue.pushRequest({ request: event.request });
+                    });
+                    event.waitUntil(promiseChain);
                     caches
                         .open(CACHE_NAME)
                         .then(cache => {
@@ -45,5 +52,5 @@ self.addEventListener('fetch', event => {
                     return res;
                 }).catch(err => caches.match(event.request).then(res => res))
         );
-    }    
-});
+    }
+});*/
