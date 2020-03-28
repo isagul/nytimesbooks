@@ -1,12 +1,14 @@
 @import '../../index.scss';
 
 .category-books {    
+    margin-top: 1rem;
     .category-detail-container {
         display: flex;
         flex-direction: column;
     }
     .title {
         text-align: center;
+        margin-bottom: 10px;
     }
     .all-detail {
         display: flex;
@@ -19,20 +21,7 @@
         padding: 10px 10px 2rem 10px;
         transition: all 0.2s ease-in-out;
         color:black;
-        @media screen and (max-width: 767px) {
-            width: 100%;
-        }
-        @media screen and (max-width: 414px) {
-            width: 75%;
-            flex-direction: column;
-            align-items: center;
 
-            img {
-                width:200px;
-                margin-right: 0;
-                margin-bottom: 5px;
-            }
-        }
         &:hover {
             box-shadow: 3px 3px 8px 4px grey;
             transform: scale(1.02);
@@ -62,14 +51,13 @@
                 }
             }
             .desc {
-                margin-top: 1rem;
-                text-align: justify;
+                margin: 0;
             }
             .actions-area {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
-                margin-top: 3rem;
+                margin-top: 5rem;
                 .add-to-favourite {
                     font-size: 30px;
                     transition: color 0.1s ease-out;
@@ -95,3 +83,28 @@
         }
     }
 }
+
+
+@media screen and (max-width: 425px) {
+    .category-books {
+        .all-detail {
+            width: 75%;
+            flex-direction: column;
+            align-items: center;
+    
+            img {
+                width:200px;
+                margin-right: 0;
+                margin-bottom: 5px;
+            }
+            .details {
+                .actions-area {
+                    margin-top: 2rem;
+                }
+            }
+        }
+    }
+    
+
+}
+  

@@ -15,6 +15,7 @@ const HeaderComponent = (props) => {
   const [isShowSearch, setIsShowSearch] = useState(true);
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openSignModal, setOpenSignModal] = useState(false);
+  const [isUserAreaShow, setIsUserAreaShow] = useState(false);
   const [loggedUser, setLoggedUser] = useState("")
   const [orderPrice, setOrderPrice] = useState(0);
 
@@ -67,31 +68,40 @@ const HeaderComponent = (props) => {
     window.location.reload();
   }
 
+  function showUserArea(){
+    isUserAreaShow === true ? setIsUserAreaShow(false) : setIsUserAreaShow(true);
+  }
+
   return (
     <div className="header-component">
       <Link to={HOME}>
-        <h1>The New York Times Bestsellers</h1>
+        <span className="project-name">The New York Times Bestsellers</span>
       </Link>
-      {/*isShowSearch && <Search />*/}
+      {isShowSearch && <Search />}
       <div className="header-user-action">
         <Link to={FAVOURITES}>
           <HeartOutlined className="favourite-icon"/>
         </Link>
-        <div className="user-area">
+        <div className="user-area" 
+              onClick={showUserArea} 
+              onMouseOver={() => setIsUserAreaShow(true)} 
+              onMouseLeave={() => setIsUserAreaShow(false)}>
           <div className="user-info">
             <UserOutlined className="user icon"/>
           </div>
           {
-            !localStorage.getItem('token') ?
-              <div className="login-panel-container">
-                <div className="account-button login" onClick={() => toggleLoginModal(true)}>Login</div>
-                <div className="account-button register" onClick={() => toggleRegisterModal(true)}>Sign Up</div>
-              </div> :
-              <div className="login-panel-container">
-                <p className="user-mail">{loggedUser}</p>
-                <p>Order Total: <span className="basket-total-price">${Number(orderPrice.toFixed(2))}</span></p>
-                <button className="account-button logout" onClick={(e) => logoutUser(e)}>Logout</button>
-              </div>
+              isUserAreaShow ? 
+                !localStorage.getItem('token') ?
+                <div className="login-panel-container">
+                  <div className="account-button login" onClick={() => toggleLoginModal(true)}>Login</div>
+                  <div className="account-button register" onClick={() => toggleRegisterModal(true)}>Sign Up</div>
+                </div> :
+                <div className="login-panel-container">
+                  <p className="user-mail">{loggedUser}</p>
+                  <p>Order Total: <span className="basket-total-price">${Number(orderPrice.toFixed(2))}</span></p>
+                  <button className="account-button logout" onClick={(e) => logoutUser(e)}>Logout</button>
+                </div> : 
+                <></>
           }
         </div>
         <Link to={SHOPPING_BASKET} className="basket">

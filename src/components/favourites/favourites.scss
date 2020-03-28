@@ -7,14 +7,14 @@
     }
     .favourites-area {
         display: grid;
-        grid-template-columns: repeat(auto-fill,minmax(240px,1fr));
+        grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
         grid-gap: 2rem;              
         .favourite-book {
             display: flex;
             flex-direction: column;
             position: relative;
             .book-image {
-                width: 250px;
+                width: 160px;
                 margin-bottom: 8px;
             }
             .title {
@@ -68,3 +68,11 @@
         }
     }
 }
+
+@media screen and (max-width: 425px) {
+    .favourites-component  { 
+      width: auto;
+      margin: auto 1rem;
+    }    
+  }
+  

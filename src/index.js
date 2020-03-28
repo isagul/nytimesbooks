@@ -4,6 +4,7 @@ import App from './components/App';
 import CategoryBooks from './components/category_books/CategoryBooks';
 import ShoppingBasket from './components/shopping-basket/ShoppingBasket';
 import Favourites from './components/favourites/favourites';
+import Categories from './components/categories/Categories';
 import {StoreProvider} from './store';
 import {BrowserRouter as Router,Switch, Route} from 'react-router-dom';
 import {NotificationContainer} from "react-notifications";
@@ -30,7 +31,7 @@ ReactDOM.render(
     <StoreProvider>
         <Router>
             <Switch>
-                <Route exact path={HOME} component={App}></Route>
+                <Route exact path={HOME} component={Categories}></Route>
                 <Route exact path={CATEGORIES_NAME} component={CategoryBooks}></Route>
                 <Route exact path={SHOPPING_BASKET} component={ShoppingBasket}></Route>
                 <Route exact path={FAVOURITES} component={Favourites}></Route>

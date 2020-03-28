@@ -9,13 +9,15 @@
   background-color: $header-bg-color;
   padding: 1rem 8px;
   position: sticky;
-  width: 100%;
   top:0;
   z-index: 1;
+  flex-shrink: 1;
   border-bottom: solid 1px lightgray;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
-  h1 {
+  .project-name {
     color: $header-title-color;
+    font-size: 22px;
+    font-weight: 600;
     font-family: 'Lora', serif;
     &:hover {
       cursor: pointer;
@@ -38,14 +40,15 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        cursor: pointer;
       }
       &:hover {
         .login-panel-container {
-          visibility: visible;
         }
       }
       .login-panel-container {
-        visibility: hidden;
+        z-index: 9999;
+        // visibility: hidden;
         position: absolute;
         width:200px;    
         font-weight: 400!important;
@@ -159,35 +162,14 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+
 @media screen and (max-width: 425px) {
   .header-component { 
-    flex-wrap: wrap;   
-    a {
-      flex:1;
-      h1 {
-        font-size:16px;
-      }
+    .header-user-action {
+      margin-top: 10px;
     }
     .search {
-      flex:2;
+      margin-top: 10px;
     }
-    .header-user-action {
-      flex:1;
-      .shopping-area {
-        .item-count {
-          top:-12px;
-          font-size: 12px;
-          height:22px;
-          width:22px;
-        }
-      }
-      i {
-        font-size: 18px !important;
-      }
-    }
-    .basket {
-      display: block;
-      margin-left: auto;
-    }
-  }
+  }    
 }

@@ -1,12 +1,10 @@
 import React, { useContext, useState, useRef } from 'react';
 import { Store } from '../../store';
-import Header from '../header/Header';
 import TotalBasket from '../total-basket/TotalBasket';
-import FooterComponent from '../footer/Footer';
 import { Button, Modal } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
-import ScrollUpButton from '../shared/scrollUpButton';
 import Paginate from '../../services/pagination/paginate';
+import App from '../App';
 import { INCREASE_ITEM_COUNT, DECREASE_ITEM_COUNT, DELETE_BOOK } from '../../constants/actions';
 import { HOME } from '../../constants/routes';
 import { Link } from 'react-router-dom';
@@ -35,7 +33,7 @@ const ShoppingBasket = () => {
       payload: value
     });
 
-    if(localStorage.getItem('email')) {
+    if (localStorage.getItem('email')) {
       axios.post('https://api-appnytimes.herokuapp.com/user/update-basket', {
         email: localStorage.getItem('email'),
         basket: state.addedItems
@@ -46,7 +44,7 @@ const ShoppingBasket = () => {
           console.log(error);
         })
     }
-    
+
     paginationComp.current.updatePaginateBooks();
   }
 
@@ -56,7 +54,7 @@ const ShoppingBasket = () => {
       payload: value
     })
 
-    if(localStorage.getItem('email')) {
+    if (localStorage.getItem('email')) {
       axios.post('https://api-appnytimes.herokuapp.com/user/update-basket', {
         email: localStorage.getItem('email'),
         basket: state.addedItems
@@ -66,7 +64,7 @@ const ShoppingBasket = () => {
         .catch(error => {
           console.log(error);
         })
-    }    
+    }
 
     paginationComp.current.updatePaginateBooks();
   }
@@ -92,7 +90,7 @@ const ShoppingBasket = () => {
           console.log(error);
         })
     }
-    
+
     paginationComp.current.deletedBookFromParent();
   }
 
@@ -156,29 +154,28 @@ const ShoppingBasket = () => {
   });
 
   return (
-    <div className="shopping-basket-component">
-      <Header />
-      <h3 className="page-title">My Cart</h3>
-      {
-        state.addedItems.length > 0 ?
-          <div className="shopping-basket">
-            <div className="items-div">
-              {items}
-              <Paginate ref={paginationComp} paginateBook={state.paginateBooks} />
+    <App>
+      <div className="shopping-basket-component">
+        <h3 className="page-title">My Cart</h3>
+        {
+          state.addedItems.length > 0 ?
+            <div className="shopping-basket">
+              <div className="items-div">
+                {items}
+                <Paginate ref={paginationComp} paginateBook={state.paginateBooks} />
+              </div>
+              <TotalBasket />
+            </div> :
+            <div className="empty-basket">
+              <ShoppingCartOutlined className="shopping-icon" />
+              <span className="info">Your shopping cart is empty</span>
+              <Link to={HOME}>
+                <Button className="btn-view-books">View Books</Button>
+              </Link>
             </div>
-            <TotalBasket />
-          </div> :
-          <div className="empty-basket">
-            <ShoppingCartOutlined className="shopping-icon" />
-            <span className="info">Your shopping cart is empty</span>
-            <Link to={HOME}>
-              <Button className="btn-view-books">View Books</Button>
-            </Link>
-          </div>
-      }
-      <FooterComponent />
-      <ScrollUpButton />
-    </div>
+        }
+      </div>
+    </App>
   )
 }
 

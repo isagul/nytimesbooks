@@ -2,14 +2,14 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import './App.scss';
 const axios = require('axios');
 import { Store } from '../store';
+import { Spin } from 'antd';
 import HeaderComponent from './header/Header';
 import FooterComponent from './footer/Footer';
 import 'react-notifications/lib/notifications.css';
 import ScrollUpButton from './shared/scrollUpButton';
 import { SET_DATA } from '../constants/actions';
-import Categories from './categories/Categories';
 
-const App = () => {
+const App = (props) => {
   const { state, dispatch } = React.useContext(Store);
   const [isActive, setIsActive] = useState(true);
 
@@ -44,9 +44,11 @@ const App = () => {
 
   return (
     <div className="app-component">
-      <HeaderComponent />     
-      <Categories />
-      <FooterComponent />
+      <HeaderComponent />
+      <Spin spinning={isActive} size="large">
+        {props.children}
+      </Spin>
+      {/* <FooterComponent /> */}
       <ScrollUpButton />
     </div>
   )

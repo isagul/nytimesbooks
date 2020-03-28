@@ -144,12 +144,17 @@
 
 
 @media screen and (max-width: 425px) {
-  .shopping-basket-component {
+  .shopping-basket-component  { 
+    width: auto;
+    margin: auto 1rem;
     .shopping-basket {
       flex-direction: column;
+      .items-div {
+        .added-items {
+          width: auto;
+          padding: 0;
+        }
+      }
     }
-    .empty-cart {
-      margin-top: 10rem;
-    }
-  }
+  }    
 }

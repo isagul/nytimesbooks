@@ -3,16 +3,15 @@ import { Store } from '../../store';
 import axios from 'axios';
 import { Spin, Button } from 'antd';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
-import ScrollUpButton from '../shared/scrollUpButton';
-import HeaderComponent from '../header/Header';
-import FooterComponent from '../footer/Footer';
+import App from '../App';
 import { NotificationManager } from 'react-notifications';
-import { 
-  SET_CATEGORY_DATA, 
-  ADD_TO_CARD, 
-  ADD_TO_FAVOURITE, 
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import {
+  SET_CATEGORY_DATA,
+  ADD_TO_CARD,
+  ADD_TO_FAVOURITE,
   REMOVE_FAVOURITE,
-  GET_FAVOURITES 
+  GET_FAVOURITES
 } from '../../constants/actions';
 import './CategoryBooks.scss';
 
@@ -21,7 +20,8 @@ const CategoryBooks = (props) => {
   const [isActive, setIsActive] = useState(true);
 
   useEffect(() => {
-    axios.post('https://api-appnytimes.herokuapp.com/book/get-favourites', {
+    if(localStorage.getItem('email')) {
+      axios.post('https://api-appnytimes.herokuapp.com/book/get-favourites', {
       "email": localStorage.getItem('email')
     }).then(response => {
       if (response.data.status) {
@@ -33,6 +33,7 @@ const CategoryBooks = (props) => {
     }).catch(error => {
       // console.log(error);
     })
+    }
   }, []);
 
   useEffect(() => {
@@ -72,7 +73,7 @@ const CategoryBooks = (props) => {
         payload: value
       });
 
-      if(localStorage.getItem('email')) {
+      if (localStorage.getItem('email')) {
         axios.post('https://api-appnytimes.herokuapp.com/book/add-to-cart', {
           "email": localStorage.getItem('email'),
           "primary_isbn10": value.primary_isbn10,
@@ -93,7 +94,7 @@ const CategoryBooks = (props) => {
             // console.log(response);
           })
           .catch(error => {
-            NotificationManager.error('Something went wrong!', 'Error');            
+            NotificationManager.error('Something went wrong!', 'Error');
           })
       }
       setTimeout(() => {
@@ -113,7 +114,7 @@ const CategoryBooks = (props) => {
       payload: value
     });
 
-    if(localStorage.getItem('email')) {
+    if (localStorage.getItem('email')) {
       axios.post('https://api-appnytimes.herokuapp.com/book/favourites/add', {
         "email": localStorage.getItem('email'),
         "primary_isbn10": value.primary_isbn10,
@@ -136,10 +137,10 @@ const CategoryBooks = (props) => {
         .catch(error => {
           setIsActive(false);
         })
-    }   
+    }
     setTimeout(() => {
       setIsActive(false);
-    }, 500); 
+    }, 500);
   }
 
   function removeFavourite(value) {
@@ -150,7 +151,7 @@ const CategoryBooks = (props) => {
       payload: value
     });
 
-    if(localStorage.getItem('email')) {
+    if (localStorage.getItem('email')) {
       axios.delete('https://api-appnytimes.herokuapp.com/book/favourites/delete', {
         data: {
           email: localStorage.getItem('email'),
@@ -168,7 +169,7 @@ const CategoryBooks = (props) => {
     }
     setTimeout(() => {
       setIsActive(false);
-    }, 500);    
+    }, 500);
   }
 
   const createHeartIcon = value => {
@@ -186,7 +187,11 @@ const CategoryBooks = (props) => {
     state.categoryBooks.map((value, index) => {
       return (
         <div className="all-detail" key={index}>
-          <img className="book-image" src={`${value.book_image}`} />
+          <LazyLoadImage 
+            className="book-image" 
+            src={`${value.book_image}`} 
+            effect="blur"
+            />
           <div className="details">
             <div className="name-author">
               <h3>{value.title}</h3>
@@ -208,17 +213,16 @@ const CategoryBooks = (props) => {
     })
 
   return (
-    <div className="category-books">
-      <HeaderComponent />
-      <Spin spinning={isActive} size="large" style={{ height: '100vh', maxHeight: 'none' }}>
-        <div className="category-detail-container">
-          <h2 className="title">{props.location.state.category.display_name}</h2>
-          {categoryDetail}
-        </div>
-      </Spin>
-      <FooterComponent />
-      <ScrollUpButton />
-    </div>
+    <App>
+      <div className="category-books">
+        <Spin spinning={isActive} size="large" style={{ height: '100vh', maxHeight: 'none' }}>
+          <div className="category-detail-container">
+            <h2 className="title">{props.location.state.category.display_name}</h2>
+            {categoryDetail}
+          </div>
+        </Spin>
+      </div>
+    </App>
   )
 }
 
