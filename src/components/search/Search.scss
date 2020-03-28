@@ -1,0 +1,18 @@
+.search {
+    &:focus {
+        border: 2px solid #f27a1a;;
+        outline: none;
+        box-shadow: none;
+      }
+}
+
+.ant-input-affix-wrapper {
+    &:hover {
+        border-color: #f27a1a !important;
+    }
+}
+
+.ant-input-affix-wrapper-focused {
+    border-color: #f27a1a !important;
+    box-shadow: none !important;
+}

@@ -25,11 +25,7 @@
   }  
   .search {
     width: 50%;
-    &:focus {
-      border: 2px solid $header-title-color;
-      outline: none;
-      box-shadow: none;
-    }
+    border-radius: 50px;
   }
   .header-user-action {
     display: flex;
@@ -41,10 +37,6 @@
         flex-direction: column;
         align-items: center;
         cursor: pointer;
-      }
-      &:hover {
-        .login-panel-container {
-        }
       }
       .login-panel-container {
         z-index: 9999;

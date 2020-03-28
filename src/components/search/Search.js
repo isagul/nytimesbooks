@@ -27,6 +27,7 @@ const Search = (props) => {
 
   return (
       <Input className="search"
+            autoFocus
             placeholder='Search Categories...' 
             size="large" onKeyPress={handleSearchParam}
             onChange={handleSearchParam}  

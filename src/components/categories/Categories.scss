@@ -26,6 +26,24 @@
         }
       }
     }
+    .ant-table-pagination {
+      .ant-pagination-item, .ant-pagination-prev, .ant-pagination-next {
+        outline: none;
+        &:hover {
+          border-color: #f27a1a;
+          a {
+            border-color: #f27a1a;
+            color: #f27a1a;
+          }
+        }
+      }
+      .ant-pagination-item-active {
+        border-color: #f27a1a;
+        a {
+          color: #f27a1a;
+        }
+      }
+    }
 }
 
 .ant-table {
