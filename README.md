@@ -9,9 +9,13 @@ You can click following link to see how it works.
 [Live Demo](https://app-nytimes.herokuapp.com/)
 
 ### Used Technologies
+#### Frontend
  1. React Hooks
  2. Context
  2. Webpack
- 3. Firebase
  4. Babel
- 5. Express
+
+### Backend
+ 1. NodeJS
+ 2. MongoDB
+ 
