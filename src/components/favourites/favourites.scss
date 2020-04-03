@@ -13,6 +13,15 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            &:hover {
+                cursor: pointer;                
+                .add-to-cart {
+                    visibility: visible;
+                    top: 100px;
+                    left: 35px;
+                    opacity: 0.9;
+                }
+            }
             .book-image {
                 width: 160px;
                 margin-bottom: 8px;
@@ -40,6 +49,20 @@
                     color: #f28232;
                     background-color: #faf9f9;
                 }
+            }
+            .add-to-cart {
+                border: 2px solid #f28232;
+                font-weight: 600;
+                height: 40px;
+                background-color: #f28232;
+                color: white;
+                visibility: hidden;
+                transition: top 0.5s ease-out, opacity 0.5s ease-out;
+                cursor: pointer;
+                position: absolute;
+                opacity: 0.5;
+                top: 120px;
+                left: 35px;
             }
         }
     }
