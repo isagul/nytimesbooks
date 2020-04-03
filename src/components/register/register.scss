@@ -2,6 +2,12 @@
 
 .register-modal {
     width: 400px !important;
+    .register-form {
+      max-width: 250px;
+      .error-area {
+
+      }
+    }
     .ant-modal-content {
       .ant-modal-header {
         text-align: center;
@@ -11,14 +17,30 @@
         flex-direction: column;
         align-items: center;
       }
-      .login-input {
+      .register-input {
         margin-bottom: 10px;
+        .invalid {
+          margin-top: 3px;
+          border: 1px solid #ffa499;
+          color: #ea2a15;
+          background: #ffeeec;
+          text-align: center;
+          padding: 2px 0;
+        }
         > div {
           margin-bottom: 5px;
         }
+        .ant-input {
+          &:focus, &:hover {
+            border: 1px solid #f27a1a;
+            border-right-width: 1px !important;
+            outline: none;
+            box-shadow: none;
+          }
+        }
       }
-      .login-button {
-        width: 180px;
+      .register-button {
+        width: 120px;
         border:none;
         padding: 10px 0;
         color:white;
@@ -26,6 +48,8 @@
         background-color: $login-button-bg-color;
         font-weight: bold;
         border-radius: 3px;
+        display: block;
+        margin: 0 auto;
         &:hover {
           cursor: pointer;
         }
