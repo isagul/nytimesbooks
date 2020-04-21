@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Input, Modal, Spin } from 'antd';
 import axios from 'axios';
+import {Store} from '../../store';
 import { NotificationManager } from "react-notifications";
+import { LOGGED_USER } from '../../constants/actions';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import './register.scss';
 
 const Register = ({ modalValue, toggleLoginModal, toggleRegisterModal }) => {
     const [spin, setSpin] = useState(false);
+    const { dispatch } = useContext(Store);
 
     return (
         <Modal
@@ -30,11 +33,11 @@ const Register = ({ modalValue, toggleLoginModal, toggleRegisterModal }) => {
                             firstname: Yup.string()
                                 .required('*required')
                                 .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/gi,
-                                "*invalid firstname"),
+                                    "*invalid firstname"),
                             lastname: Yup.string()
                                 .required('*required')
                                 .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/gi,
-                                "*invalid lastname"),
+                                    "*invalid lastname"),
                             email: Yup.string()
                                 .email('*invalid email address')
                                 .required('*required'),
@@ -55,6 +58,28 @@ const Register = ({ modalValue, toggleLoginModal, toggleRegisterModal }) => {
                                 .then(response => {
                                     if (response.data.status) {
                                         NotificationManager.success(`You signed in successfully`, 'Success');
+                                        axios.post('https://api-appnytimes.herokuapp.com/user/login', {
+                                            email: email,
+                                            password: password
+                                        })
+                                            .then(response => {
+                                                if (response.data.status) {
+                                                    NotificationManager.success(`You logged in successfully`, 'Success');
+                                                    dispatch({
+                                                        type: LOGGED_USER,
+                                                        payload: response.data.user
+                                                    });
+                                                    localStorage.setItem('token', response.data.token);
+                                                    localStorage.setItem('email', response.data.user.email);
+                                                } else {
+                                                    NotificationManager.error(`${response.data.error.message}`, 'Error');
+                                                }
+                                                setSpin(false);
+                                                toggleLoginModal(false);
+                                            })
+                                            .catch(err => {
+                                                console.log(err);
+                                            })
                                     } else {
                                         NotificationManager.error(`${response.data.error.message}`, 'Error');
                                     }
