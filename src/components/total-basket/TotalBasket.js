@@ -6,6 +6,7 @@ const TotalBasket = () => {
   const { state, dispatch } = useContext(Store);
   const [orderPrice, setOrderPrice] = useState(0);
   let totalPrice = 0;
+  
   useEffect(() => {
     let result = state.addedItems.map(a => a.total_book_price);
     let totalPrice = result.reduce((acc, sum) => {
@@ -13,6 +14,7 @@ const TotalBasket = () => {
     }, 0);
     setOrderPrice(totalPrice);
   }, [state])
+
   return (
     <div className="total-basket">
       <h2 className="title">Order Summary</h2>

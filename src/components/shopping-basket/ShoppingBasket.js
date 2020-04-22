@@ -7,7 +7,7 @@ import Paginate from '../../services/pagination/paginate';
 import App from '../App';
 import { INCREASE_ITEM_COUNT, DECREASE_ITEM_COUNT, DELETE_BOOK } from '../../constants/actions';
 import { HOME } from '../../constants/routes';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import './ShoppingBasket.scss';
 
@@ -15,6 +15,7 @@ const ShoppingBasket = () => {
   const { state, dispatch } = useContext(Store);
   const [openModal, setOpenModal] = useState(false);
   const [deletedBook, setDeletedBook] = useState({});
+  const history = useHistory();
 
   const paginationComp = useRef();
 
@@ -169,9 +170,7 @@ const ShoppingBasket = () => {
             <div className="empty-basket">
               <ShoppingCartOutlined className="shopping-icon" />
               <span className="info">Your shopping cart is empty</span>
-              <Link to={HOME}>
-                <Button className="btn-view-books">View Books</Button>
-              </Link>
+              <Button onClick={() => history.push(HOME)} className="btn-view-books">View Books</Button>
             </div>
         }
       </div>

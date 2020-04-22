@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Button } from 'antd';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Store } from '../../store';
 import BooksAvatar from '../../../assets/images/books-avatar.png';
 import App from '../App';
@@ -9,6 +9,7 @@ import './Categories.scss';
 
 const Categories = () => {
   const { state } = React.useContext(Store);
+  const history = useHistory();
 
   const addKeyCategories = state.categories.length > 0 && state.categories.map((category, index) => {
     category["key"] = `${index + 1}`;
@@ -50,9 +51,12 @@ const Categories = () => {
       key: 'detail',
       render: (record) => {
         return (
-          <Link to={{ pathname: `/categories/${record.list_name_encoded}`, state: { category: record } }}>
-            <Button>Detail</Button>
-          </Link>
+          <div>
+            <Button className="detail-button" onClick={() => history.push({
+              pathname: `/categories/${record.list_name_encoded}`,
+              state: { category: record }
+            })}>Detail</Button>
+          </div>
         )
       },
     }

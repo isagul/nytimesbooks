@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Store } from '../../store';
 import { Spin, Button } from 'antd';
 import { CloseCircleFilled, HeartOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { REMOVE_FAVOURITE, GET_FAVOURITES, ADD_TO_CARD } from '../../constants/actions';
 import App from '../App';
 import { NotificationManager } from 'react-notifications';
@@ -14,6 +14,7 @@ import './favourites.scss';
 const Favourites = () => {
     const { state, dispatch } = useContext(Store);
     const [isActive, setIsActive] = useState(false);
+    const history = useHistory();
 
     useEffect(() => {
         if (localStorage.getItem('email')) {
@@ -136,9 +137,7 @@ const Favourites = () => {
                             <div className="empty-favourites">
                                 <HeartOutlined className="heart-icon" />
                                 <span className="info">Your favorites list is empty</span>
-                                <Link to={HOME}>
-                                    <Button className="btn-view-books">View Books</Button>
-                                </Link>
+                                <Button onClick= {() => history.push(HOME)} className="btn-view-books">View Books</Button>
                             </div>
                     }
                 </Spin>

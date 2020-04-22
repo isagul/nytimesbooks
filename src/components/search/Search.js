@@ -2,18 +2,20 @@ import React, { useState } from 'react';
 import { Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { Store } from '../../store';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {FILTER_CATEGORIES} from '../../constants/actions';
+import {HOME} from '../../constants/routes';
 import './Search.scss';
 
 const Search = (props) => {
   const [searchParam, setSearchParam] = useState('');
   const { dispatch } = React.useContext(Store);
+  // const history = useHistory();
 
   const handleSearchParam = (event) => {
     setSearchParam(event.target.value);
     if (event.key === 'Enter') {
-      props.history.push('/');
+      history.push(HOME);
       filterParam();
     }
   }
@@ -37,4 +39,4 @@ const Search = (props) => {
   )
 }
 
-export default withRouter(Search);
+export default Search;

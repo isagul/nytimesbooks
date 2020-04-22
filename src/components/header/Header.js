@@ -4,14 +4,15 @@ import './Header.scss';
 import Search from '../search/Search';
 import Login from '../login/login';
 import Register from '../register/register';
-import { Link, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Store } from '../../store';
 import axios from 'axios';
 import { GET_SHOPPING_ITEMS } from '../../constants/actions';
-import {SHOPPING_BASKET, FAVOURITES, HOME} from '../../constants/routes';
+import { SHOPPING_BASKET, FAVOURITES, HOME } from '../../constants/routes';
 
 const HeaderComponent = (props) => {
   const { state, dispatch } = useContext(Store);
+  const history = useHistory();
   const [isShowSearch, setIsShowSearch] = useState(true);
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openSignModal, setOpenSignModal] = useState(false);
@@ -20,7 +21,7 @@ const HeaderComponent = (props) => {
   const [orderPrice, setOrderPrice] = useState(0);
 
   useEffect(() => {
-    props.location.pathname === '/' ? setIsShowSearch(true) : setIsShowSearch(false);
+    history.location.pathname === '/' ? setIsShowSearch(true) : setIsShowSearch(false);
   }, []);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const HeaderComponent = (props) => {
         .catch(err => {
           console.log(err)
         })
-    }    
+    }
   }, [state.loggedUser])
 
   useEffect(() => {
@@ -68,30 +69,26 @@ const HeaderComponent = (props) => {
     window.location.reload();
   }
 
-  function showUserArea(){
+  function showUserArea() {
     isUserAreaShow === true ? setIsUserAreaShow(false) : setIsUserAreaShow(true);
   }
 
   return (
     <div className="header-component">
-      <Link to={HOME}>
-        <span className="project-name">The New York Times Bestsellers</span>
-      </Link>
+      <span className="project-name" onClick={() => history.push(HOME)}>The New York Times Bestsellers</span>
       {isShowSearch && <Search />}
       <div className="header-user-action">
-        <Link to={FAVOURITES}>
-          <HeartOutlined className="favourite-icon"/>
-        </Link>
-        <div className="user-area" 
-              onClick={showUserArea} 
-              onMouseOver={() => setIsUserAreaShow(true)} 
-              onMouseLeave={() => setIsUserAreaShow(false)}>
+        <HeartOutlined onClick={() => history.push(FAVOURITES)} className="favourite-icon" />
+        <div className="user-area"
+          onClick={showUserArea}
+          onMouseOver={() => setIsUserAreaShow(true)}
+          onMouseLeave={() => setIsUserAreaShow(false)}>
           <div className="user-info">
-            <UserOutlined className="user icon"/>
+            <UserOutlined className="user icon" />
           </div>
           {
-              isUserAreaShow ? 
-                !localStorage.getItem('token') ?
+            isUserAreaShow ?
+              !localStorage.getItem('token') ?
                 <div className="login-panel-container">
                   <div className="account-button login" onClick={() => toggleLoginModal(true)}>Login</div>
                   <div className="account-button register" onClick={() => toggleRegisterModal(true)}>Sign Up</div>
@@ -100,11 +97,11 @@ const HeaderComponent = (props) => {
                   <p className="user-mail">{loggedUser}</p>
                   <p>Order Total: <span className="basket-total-price">${Number(orderPrice.toFixed(2))}</span></p>
                   <button className="account-button logout" onClick={(e) => logoutUser(e)}>Logout</button>
-                </div> : 
-                <></>
+                </div> :
+              <></>
           }
         </div>
-        <Link to={SHOPPING_BASKET} className="basket">
+        <div onClick={() => history.push(SHOPPING_BASKET)} className="basket">
           <div className="shopping-area">
             <ShoppingCartOutlined className="shopping-cart icon" />
             {
@@ -112,12 +109,12 @@ const HeaderComponent = (props) => {
               <div className="item-count">{state.addedItems.length}</div>
             }
           </div>
-        </Link>
+        </div>
       </div>
-      { openLoginModal && <Login modalValue={openLoginModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal} /> }
-      { openSignModal && <Register modalValue={openSignModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal} /> }      
+      {openLoginModal && <Login modalValue={openLoginModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal} />}
+      {openSignModal && <Register modalValue={openSignModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal} />}
     </div>
   )
 }
 
-export default withRouter(HeaderComponent);
+export default HeaderComponent;
