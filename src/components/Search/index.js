@@ -4,7 +4,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { Store } from '../../store';
 import { withRouter } from 'react-router-dom';
 import {FILTER_CATEGORIES} from '../../constants/actions';
-import './Search.scss';
+import './style.scss';
 
 const Search = (props) => {
   const [searchParam, setSearchParam] = useState('');

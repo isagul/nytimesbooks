@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Store } from '../../store';
-import './TotalBasket.scss'
+import './style.scss'
 
 const TotalBasket = () => {
   const { state, dispatch } = useContext(Store);

@@ -3,8 +3,8 @@ import { Table, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { Store } from '../../store';
 import BooksAvatar from '../../../assets/images/books-avatar.png';
-import App from '../App';
-import './Categories.scss';
+import App from '../../components/App';
+import './style.scss';
 
 
 const Categories = () => {
@@ -62,7 +62,7 @@ const Categories = () => {
     <App>
       <div className="category-table">
         <h3 className="page-title">Categories</h3>
-        <Table columns={columns} dataSource={addKeyCategories} />
+        <Table columns={columns} dataSource={addKeyCategories} pagination={{ position: ["bottomLeft"] }} />
       </div>
     </App>
   )

@@ -4,7 +4,7 @@ module.exports = {
   mode: 'development',  
   devServer: {
     contentBase: './dist',
-    compress: true,
+    host: "localhost",
     hot: true,
     port: 3001,
     historyApiFallback: true,

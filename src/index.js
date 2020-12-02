@@ -1,14 +1,13 @@
 import React from "react";
 import ReactDOM from 'react-dom';
-import App from './components/App';
-import CategoryBooks from './components/category_books/CategoryBooks';
-import ShoppingBasket from './components/shopping-basket/ShoppingBasket';
-import Favourites from './components/favourites/favourites';
-import Categories from './components/categories/Categories';
 import {StoreProvider} from './store';
 import {BrowserRouter as Router,Switch, Route} from 'react-router-dom';
 import {NotificationContainer} from "react-notifications";
 import {CATEGORIES_NAME, HOME, SHOPPING_BASKET, FAVOURITES} from './constants/routes';
+import CategoryBooks from './views/CategoryBooks';
+import ShoppingBasket from './views/ShoppingBasket';
+import Favourites from './views/Favourites';
+import Categories from './views/Categories';
 import './index.scss';
 import 'antd/dist/antd.css';
 import runtime from 'serviceworker-webpack-plugin/lib/runtime';

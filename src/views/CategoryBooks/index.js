@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Store } from '../../store';
 import axios from 'axios';
 import { Spin, Button } from 'antd';
-import { HeartOutlined, HeartFilled } from '@ant-design/icons';
-import App from '../App';
+import { HeartOutlined, HeartFilled, ShoppingCartOutlined } from '@ant-design/icons';
+import App from '../../components/App';
 import { NotificationManager } from 'react-notifications';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import {
@@ -13,7 +13,7 @@ import {
   REMOVE_FAVOURITE,
   GET_FAVOURITES
 } from '../../constants/actions';
-import './CategoryBooks.scss';
+import './style.scss';
 
 const CategoryBooks = (props) => {
   const { state, dispatch } = React.useContext(Store);
@@ -204,7 +204,7 @@ const CategoryBooks = (props) => {
                   : <HeartOutlined onClick={() => addToFavourite(value)} className="add-to-favourite" />
               }
               <Button onClick={() => addToCard(value)} className="add-to-card">
-                Add To Cart
+                <ShoppingCartOutlined /> Add To Cart
               </Button>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, forwardRef, useImperativeHandle } from 'react';
-import './paginate.scss';
+import './style.scss';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { PAGINATE_BOOKS, UPDATE_PAGINATE_BOOKS } from '../../constants/actions';
 import { Store } from '../../store'

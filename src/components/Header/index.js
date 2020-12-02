@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ShoppingCartOutlined, UserOutlined, HeartOutlined } from '@ant-design/icons';
-import './Header.scss';
-import Search from '../search/Search';
-import Login from '../login/login';
-import Register from '../register/register';
+import { Spin } from 'antd';
+import Search from '../Search';
+import Login from '../Login';
+import Register from '../Register';
 import { Link, withRouter } from 'react-router-dom';
 import { Store } from '../../store';
 import axios from 'axios';
 import { GET_SHOPPING_ITEMS } from '../../constants/actions';
-import {SHOPPING_BASKET, FAVOURITES, HOME} from '../../constants/routes';
+import { SHOPPING_BASKET, FAVOURITES, HOME } from '../../constants/routes';
+import './style.scss';
 
 const HeaderComponent = (props) => {
   const { state, dispatch } = useContext(Store);
@@ -18,6 +19,7 @@ const HeaderComponent = (props) => {
   const [isUserAreaShow, setIsUserAreaShow] = useState(false);
   const [loggedUser, setLoggedUser] = useState("")
   const [orderPrice, setOrderPrice] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     props.location.pathname === '/' ? setIsShowSearch(true) : setIsShowSearch(false);
@@ -25,6 +27,7 @@ const HeaderComponent = (props) => {
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
+      setLoading(true);
       axios.post('https://api-appnytimes.herokuapp.com/user/get-info', {
         email: localStorage.getItem('email')
       })
@@ -42,7 +45,10 @@ const HeaderComponent = (props) => {
         .catch(err => {
           console.log(err)
         })
-    }    
+        .then(() => {
+          setLoading(false);
+        })
+    }
   }, [state.loggedUser])
 
   useEffect(() => {
@@ -68,7 +74,7 @@ const HeaderComponent = (props) => {
     window.location.reload();
   }
 
-  function showUserArea(){
+  function showUserArea() {
     isUserAreaShow === true ? setIsUserAreaShow(false) : setIsUserAreaShow(true);
   }
 
@@ -80,28 +86,31 @@ const HeaderComponent = (props) => {
       {isShowSearch && <Search />}
       <div className="header-user-action">
         <Link to={FAVOURITES}>
-          <HeartOutlined className="favourite-icon"/>
+          <HeartOutlined className="favourite-icon" />
         </Link>
-        <div className="user-area" 
-              onClick={showUserArea} 
-              onMouseOver={() => setIsUserAreaShow(true)} 
-              onMouseLeave={() => setIsUserAreaShow(false)}>
+        <div className="user-area"
+          onClick={showUserArea}
+          onMouseOver={() => setIsUserAreaShow(true)}
+          onMouseLeave={() => setIsUserAreaShow(false)}
+        >
           <div className="user-info">
-            <UserOutlined className="user icon"/>
+            <UserOutlined className="user icon" />
           </div>
           {
-              isUserAreaShow ? 
-                !localStorage.getItem('token') ?
+            isUserAreaShow ?
+              !localStorage.getItem('token') ?
                 <div className="login-panel-container">
                   <div className="account-button login" onClick={() => toggleLoginModal(true)}>Login</div>
                   <div className="account-button register" onClick={() => toggleRegisterModal(true)}>Sign Up</div>
                 </div> :
                 <div className="login-panel-container">
-                  <p className="user-mail">{loggedUser}</p>
-                  <p>Order Total: <span className="basket-total-price">${Number(orderPrice.toFixed(2))}</span></p>
-                  <button className="account-button logout" onClick={(e) => logoutUser(e)}>Logout</button>
-                </div> : 
-                <></>
+                  <Spin spinning={loading}>
+                    <p className="user-mail">{loggedUser}</p>
+                    <p>Order Total: <span className="basket-total-price">${Number(orderPrice.toFixed(2))}</span></p>
+                    <button className="account-button logout" onClick={(e) => logoutUser(e)}>Logout</button>
+                  </Spin>
+                </div> :
+              <></>
           }
         </div>
         <Link to={SHOPPING_BASKET} className="basket">
@@ -114,8 +123,8 @@ const HeaderComponent = (props) => {
           </div>
         </Link>
       </div>
-      { openLoginModal && <Login modalValue={openLoginModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal} /> }
-      { openSignModal && <Register modalValue={openSignModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal} /> }      
+      { openLoginModal && <Login modalValue={openLoginModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal} />}
+      { openSignModal && <Register modalValue={openSignModal} toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal} />}
     </div>
   )
 }

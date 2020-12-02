@@ -4,7 +4,7 @@ import axios from 'axios';
 import { NotificationManager } from "react-notifications";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import './register.scss';
+import './style.scss';
 
 const Register = ({ modalValue, toggleLoginModal, toggleRegisterModal }) => {
     const [spin, setSpin] = useState(false);

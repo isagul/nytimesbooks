@@ -3,10 +3,10 @@ import './App.scss';
 const axios = require('axios');
 import { Store } from '../store';
 import { Spin } from 'antd';
-import HeaderComponent from './header/Header';
-import FooterComponent from './footer/Footer';
+import HeaderComponent from './Header';
+import FooterComponent from './Footer';
 import 'react-notifications/lib/notifications.css';
-import ScrollUpButton from './shared/scrollUpButton';
+import ScrollUpButton from './ScrollUpButton';
 import { SET_DATA } from '../constants/actions';
 
 const App = (props) => {
@@ -48,7 +48,7 @@ const App = (props) => {
       <Spin spinning={isActive} size="large">
         {props.children}
       </Spin>
-      {/* <FooterComponent /> */}
+      <FooterComponent />
       <ScrollUpButton />
     </div>
   )

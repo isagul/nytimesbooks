@@ -4,16 +4,22 @@ import {ArrowUpOutlined} from '@ant-design/icons'
 
 const ScrollUpButton = () => {
     const scrollUpBtnStyle = {
-        padding: '10px 1rem',
-        border: '1px solid lightgray',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '40px',
+        width: '40px',
+        border: 'none',
         fontFamily: 'Open Sans, sans-serif',
-        fontWeight: 'bold',
-        backgroundColor: 'white',
-        bottom: '100px'
+        fontSize: '20px',
+        backgroundColor: '#f28232',
+        bottom: '72px',
+        color: '#fff',
+        borderRadius: '50%'
     }
     return (
         <ScrollToTop showUnder={160} style={scrollUpBtnStyle}>
-            <span><ArrowUpOutlined /> Scroll Up</span>
+            <span><ArrowUpOutlined /></span>
         </ScrollToTop>
     )
 }

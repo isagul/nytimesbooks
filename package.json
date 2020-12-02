@@ -32,6 +32,7 @@
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.13.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "prettier": "2.2.1",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
     "terser-webpack-plugin": "^2.2.1",
@@ -44,7 +45,7 @@
     "workbox-webpack-plugin": "^5.0.0"
   },
   "dependencies": {
-    "antd": "^4.0.3",
+    "antd": "^4.9.1",
     "axios": "^0.19.0",
     "cross-env": "^6.0.3",
     "dotenv-webpack": "^1.7.0",

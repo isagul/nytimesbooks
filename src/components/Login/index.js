@@ -6,7 +6,7 @@ import { LOGGED_USER } from '../../constants/actions';
 import axios from 'axios';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import './login.scss';
+import './style.scss';
 
 const Login = ({ modalValue, toggleLoginModal, toggleRegisterModal }) => {
     const { state, dispatch } = useContext(Store);

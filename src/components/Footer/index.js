@@ -1,5 +1,5 @@
 import React from 'react';
-import './Footer.scss';
+import './style.scss';
 import { GithubOutlined } from '@ant-design/icons';
 
 
@@ -8,7 +8,7 @@ const FooterComponent = () => {
         <div className="footer-component">
             <a href="https://github.com/isagul/nytimesbooks" target="_blank">
                 <GithubOutlined className="github-icon" />
-            <p>View Github Repository</p>
+            <p>View on GitHub</p>
             </a>
         </div>
     )

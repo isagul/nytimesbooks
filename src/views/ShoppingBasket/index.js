@@ -1,15 +1,15 @@
 import React, { useContext, useState, useRef } from 'react';
 import { Store } from '../../store';
-import TotalBasket from '../total-basket/TotalBasket';
+import TotalBasket from '../../components/TotalBasket';
 import { Button, Modal } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
-import Paginate from '../../services/pagination/paginate';
-import App from '../App';
+import Paginate from '../../utils/pagination';
+import App from '../../components/App';
 import { INCREASE_ITEM_COUNT, DECREASE_ITEM_COUNT, DELETE_BOOK } from '../../constants/actions';
 import { HOME } from '../../constants/routes';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import './ShoppingBasket.scss';
+import './style.scss';
 
 const ShoppingBasket = () => {
   const { state, dispatch } = useContext(Store);
