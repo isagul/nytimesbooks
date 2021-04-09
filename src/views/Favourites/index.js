@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Store } from '../../store';
-import { Spin, Button, Card, message } from 'antd';
+import { Spin, Button, Card, message, Tooltip } from 'antd';
 import { CloseCircleFilled, HeartFilled, HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { REMOVE_FAVOURITE, GET_FAVOURITES, ADD_TO_CARD } from '../../constants/actions';
@@ -143,8 +143,16 @@ const Favourites = () => {
                         ]}
                       >
                         <Meta
-                          title={favourite.title}
-                          description={favourite.contributor}
+                          title={
+                            <Tooltip placement="topLeft" title={favourite.title}>
+                              {favourite.title}
+                            </Tooltip>
+                          }
+                          description={
+                            <Tooltip placement="topLeft" title={favourite.contributor}>
+                              {favourite.contributor}
+                            </Tooltip>
+                          }
                         />
                       </Card>
                     )

@@ -45,6 +45,11 @@
         }
       }
     }
+    .category-table-row-select .ant-table-tbody tr {
+      &:hover {
+        cursor: pointer;
+      }
+    }
 }
 
 .ant-table {

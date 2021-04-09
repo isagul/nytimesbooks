@@ -1,13 +1,16 @@
 import React from 'react';
 import { Table, Button } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link,  } from 'react-router-dom';
 import { Store } from '../../store';
 import BooksAvatar from '../../../assets/images/books-avatar.png';
 import App from '../../components/App';
+// import {
+//   EyeOutlined
+// } from '@ant-design/icons';
 import './style.scss';
 
 
-const Categories = () => {
+const Categories = (props) => {
   const { state } = React.useContext(Store);
 
   const addKeyCategories = state.categories.length > 0 && state.categories.map((category, index) => {
@@ -44,25 +47,42 @@ const Categories = () => {
       dataIndex: 'updated',
       key: 'updated',
     },
-    {
-      title: 'Action',
-      dataIndex: '',
-      key: 'detail',
-      render: (record) => {
-        return (
-          <Link to={{ pathname: `/categories/${record.list_name_encoded}`, state: { category: record } }}>
-            <Button>Detail</Button>
-          </Link>
-        )
-      },
-    }
+    // {
+    //   title: '',
+    //   dataIndex: '',
+    //   key: 'detail',
+    //   align: "center",
+    //   render: (record) => {
+    //     return (
+    //       <Link to={{ pathname: `/categories/${record.list_name_encoded}`, state: { category: record } }}>
+    //         <EyeOutlined />
+    //       </Link>
+    //     )
+    //   },
+    // }
   ];
+
+  function handleRow (record) {
+    props.history.push({
+      pathname: `/categories/${record.list_name_encoded}`,
+      state: { category: record }
+    })
+  }
 
   return (
     <App>
       <div className="category-table">
         <h3 className="page-title">Categories</h3>
-        <Table columns={columns} dataSource={addKeyCategories} pagination={{ position: ["bottomLeft"] }} />
+        <Table 
+          className='category-table-row-select'
+          columns={columns} 
+          dataSource={addKeyCategories} 
+          onRow={(record) => {
+            return {
+              onClick: () => handleRow(record)
+            };
+          }}
+          pagination={{ position: ["bottomRight"] }} />
       </div>
     </App>
   )

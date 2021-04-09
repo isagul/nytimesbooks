@@ -199,13 +199,15 @@ const CategoryBooks = (props) => {
             </div>
             <p className="desc">{value.description}</p>
             <div className="actions-area">
-              {
-                state.favourites.length > 0 ? createHeartIcon(value)
-                  : <HeartOutlined onClick={() => addToFavourite(value)} className="add-to-favourite" />
-              }
-              <Button onClick={() => addToCard(value)} className="add-to-card">
-                <ShoppingCartOutlined /> Add To Cart
-              </Button>
+              <div className="actions-area-wrapper">
+                {
+                  state.favourites.length > 0 ? createHeartIcon(value)
+                    : <HeartOutlined onClick={() => addToFavourite(value)} className="add-to-favourite" />
+                }
+                <Button onClick={() => addToCard(value)} className="add-to-card">
+                  <ShoppingCartOutlined /> Add To Cart
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -218,7 +220,9 @@ const CategoryBooks = (props) => {
         <Spin spinning={isActive} size="large" style={{ height: '100vh', maxHeight: 'none' }}>
           <div className="category-detail-container">
             <h2 className="title">{props.location.state.category.display_name}</h2>
-            {categoryDetail}
+            <div className="books-list-section">
+              {categoryDetail}
+            </div>
           </div>
         </Spin>
       </div>

@@ -48,7 +48,7 @@ const App = (props) => {
       <Spin spinning={isActive} size="large">
         {props.children}
       </Spin>
-      <FooterComponent />
+      {/* <FooterComponent /> */}
       <ScrollUpButton />
     </div>
   )

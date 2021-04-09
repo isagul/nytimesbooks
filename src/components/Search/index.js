@@ -26,14 +26,15 @@ const Search = (props) => {
   }
 
   return (
-      <Input className="search"
-            autoFocus
-            placeholder='Search Categories...' 
-            size="large" onKeyPress={handleSearchParam}
-            onChange={handleSearchParam}  
-            value={searchParam} 
-            prefix={<SearchOutlined />} 
-            />
+      <Input 
+        className="search"
+        autoFocus
+        placeholder='Search category display name' 
+        size="large" onKeyPress={handleSearchParam}
+        onChange={handleSearchParam}  
+        value={searchParam} 
+        prefix={<SearchOutlined />} 
+      />
   )
 }
 
